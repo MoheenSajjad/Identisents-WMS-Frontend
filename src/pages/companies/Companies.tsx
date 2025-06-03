@@ -172,9 +172,9 @@ export const Companies = () => {
   return (
     <Paper>
       <Paper.BigTitle title="Companies">
-        <div className="flex gap-3">
-          <AddNewButton />
+        <div className="flex gap-2">
           <ReloadButton />
+          <AddNewButton />
         </div>
       </Paper.BigTitle>
       <TableSearchInput placeholder="Search by Name, Url, Server Name and Database" />

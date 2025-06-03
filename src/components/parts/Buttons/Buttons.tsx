@@ -27,9 +27,13 @@ export const EditIconButton = () => {
 };
 
 export const AddNewButton = () => {
-  return <Button>Add New</Button>;
+  return (
+    <Button variant={Button.Variant.PRIMARY} size={Button.Size.DEFAULT}>
+      Add New
+    </Button>
+  );
 };
 
 export const ReloadButton = () => {
-  return <Button>Reload</Button>;
+  return <Button variant={Button.Variant.OUTLINE}>Reload</Button>;
 };
