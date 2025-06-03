@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import { useNotification } from "@/context/NotificationContext";
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
-import { Toast } from "../ui/Toast";
+import React, { useState, useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+import { useNotification } from '@/context/NotificationContext';
+import Sidebar from './Sidebar';
+import Navbar from './Navbar';
+import { Toast } from '../ui/Toast';
 
 interface LayoutProps {}
 
 export const Layout: React.FC<LayoutProps> = ({}) => {
   const [sidebarOpen, setSidebarOpen] = useState(() => {
-    const saved = localStorage.getItem("sidebarOpen");
+    const saved = localStorage.getItem('sidebarOpen');
     if (saved !== null) {
       return JSON.parse(saved);
     }
@@ -31,8 +31,8 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
       }
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [sidebarOpen]);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
   }, [location.pathname, isMobile]);
 
   useEffect(() => {
-    localStorage.setItem("sidebarOpen", JSON.stringify(sidebarOpen));
+    localStorage.setItem('sidebarOpen', JSON.stringify(sidebarOpen));
   }, [sidebarOpen]);
 
   const toggleSidebar = () => {
@@ -56,32 +56,28 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
   };
 
   return (
-    <div className="flex h-screen bg-[#f8f9fa]  transition-colors">
+    <div className="flex h-screen bg-[#f8f9fa] transition-colors">
       {isMobile && sidebarOpen && (
         <div
-          className="fixed inset-0 z-20 bg-gray-600 bg-opacity-75 lg:hidden"
+          className="bg-opacity-75 fixed inset-0 z-20 bg-gray-600 lg:hidden"
           onClick={handleOverlayClick}
         />
       )}
 
-      <Sidebar
-        isOpen={sidebarOpen}
-        isMobile={isMobile}
-        onClose={() => setSidebarOpen(false)}
-      />
+      <Sidebar isOpen={sidebarOpen} isMobile={isMobile} onClose={() => setSidebarOpen(false)} />
 
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar onMenuClick={toggleSidebar} sidebarOpen={sidebarOpen} />
 
-        <main className="flex-1  overflow-auto h-full ">
-          <div className=" max-w-7xl">
+        <main className="h-full flex-1 overflow-auto">
+          <div className="max-w-7xl">
             <Outlet />
           </div>
         </main>
       </div>
 
       <div className="fixed top-4 right-4 z-50 space-y-2">
-        {notifications.map((notification) => (
+        {notifications.map(notification => (
           <Toast
             key={notification.id}
             type={notification.type}

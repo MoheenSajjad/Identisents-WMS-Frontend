@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { LayoutDashboard, Building2, Package } from "lucide-react";
-import { cn } from "@/utils/helpers";
-import logo from "@/assets/logo.avif";
+import React, { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Building2, Package } from 'lucide-react';
+import { cn } from '@/utils/helpers';
+import logo from '@/assets/logo.avif';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -41,14 +41,14 @@ const NavItem: React.FC<NavItemProps> = ({
   };
 
   const itemClasses = cn(
-    "flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 group",
-    "hover:bg-gray-100  text-gray-600"
+    'flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 group',
+    'hover:bg-gray-100  text-gray-600'
   );
 
   const iconClasses = cn(
-    "text-xl transition-colors  p-[6px] rounded-lg",
-    isActive && "text-white bg-blue-400",
-    !isActive && "text-gray-500  group-hover:text-gray-700 bg-white"
+    'text-xl transition-colors  p-[6px] rounded-lg',
+    isActive && 'text-white bg-blue-400',
+    !isActive && 'text-gray-500  group-hover:text-gray-700 bg-white'
   );
 
   const content = (
@@ -56,7 +56,7 @@ const NavItem: React.FC<NavItemProps> = ({
       <span className={iconClasses}>
         <item.icon size={18} />
       </span>
-      <span className="text-sm font-medium flex-1">{item.label}</span>
+      <span className="flex-1 text-sm font-medium">{item.label}</span>
     </>
   );
 
@@ -66,7 +66,7 @@ const NavItem: React.FC<NavItemProps> = ({
         <NavLink
           to={item.path}
           className={({ isActive: linkActive }) =>
-            cn(itemClasses, linkActive && "bg-white/80 drop-shadow-xs ")
+            cn(itemClasses, linkActive && 'bg-white/80 drop-shadow-xs')
           }
           onClick={handleClick}
         >
@@ -74,7 +74,7 @@ const NavItem: React.FC<NavItemProps> = ({
         </NavLink>
       ) : (
         <button
-          className={cn(itemClasses, "w-full text-left")}
+          className={cn(itemClasses, 'w-full text-left')}
           onClick={handleClick}
           disabled={item.isComingSoon}
         >
@@ -86,7 +86,7 @@ const NavItem: React.FC<NavItemProps> = ({
 };
 
 const NavItemComponent: React.FC<
-  Omit<NavItemProps, "isActive" | "hasActiveChild"> & {
+  Omit<NavItemProps, 'isActive' | 'hasActiveChild'> & {
     onItemClick: (item: NavItem) => void;
   }
 > = ({ item, level = 0, onItemClick }) => {
@@ -94,44 +94,37 @@ const NavItemComponent: React.FC<
 
   const isActive = item.path === location.pathname;
 
-  return (
-    <NavItem
-      item={item}
-      level={level}
-      isActive={isActive}
-      onItemClick={onItemClick}
-    />
-  );
+  return <NavItem item={item} level={level} isActive={isActive} onItemClick={onItemClick} />;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
   const [user] = useState({
-    name: "John Doe",
-    email: "john@example.com",
-    avatar: "/api/placeholder/32/32",
-    role: "Administrator",
+    name: 'John Doe',
+    email: 'john@example.com',
+    avatar: '/api/placeholder/32/32',
+    role: 'Administrator',
   });
 
   const navigationItems: NavItem[] = [
     {
-      id: "dashboard",
-      label: "Dashboard",
+      id: 'dashboard',
+      label: 'Dashboard',
       icon: LayoutDashboard,
-      path: "/dashboard",
+      path: '/dashboard',
     },
     {
-      id: "companies",
-      label: "Companies",
+      id: 'companies',
+      label: 'Companies',
       icon: Building2,
-      path: "/companies",
+      path: '/companies',
       badge: 12,
     },
 
     {
-      id: "warehouses",
-      label: "Warehouses",
+      id: 'warehouses',
+      label: 'Warehouses',
       icon: Package,
-      path: "/warehouses",
+      path: '/warehouses',
     },
   ];
 
@@ -142,33 +135,29 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
   };
 
   const handleLogout = () => {
-    console.log("Logout clicked");
+    console.log('Logout clicked');
   };
 
   return (
     <aside
       className={cn(
-        " transition-all duration-300 ease-in-out h-full shadow-xl flex flex-col",
-        " ",
-        isOpen ? "w-56 px-3" : "w-0",
-        isMobile && "fixed inset-y-0 left-0 z-30",
-        !isMobile && !isOpen && "overflow-hidden"
+        'flex h-full flex-col shadow-xl transition-all duration-300 ease-in-out',
+        ' ',
+        isOpen ? 'w-56 px-3' : 'w-0',
+        isMobile && 'fixed inset-y-0 left-0 z-30',
+        !isMobile && !isOpen && 'overflow-hidden'
       )}
     >
-      <div className="flex items-center justify-between pt-4 ">
-        <div className="flex items-center justify-center w-full">
+      <div className="flex items-center justify-between pt-4">
+        <div className="flex w-full items-center justify-center">
           <img src={logo} />
         </div>
       </div>
 
-      <nav className="flex-1 py-4 overflow-y-auto">
+      <nav className="flex-1 overflow-y-auto py-4">
         <ul className="space-y-1">
-          {navigationItems.map((item) => (
-            <NavItemComponent
-              key={item.id}
-              item={item}
-              onItemClick={handleItemClick}
-            />
+          {navigationItems.map(item => (
+            <NavItemComponent key={item.id} item={item} onItemClick={handleItemClick} />
           ))}
         </ul>
       </nav>
