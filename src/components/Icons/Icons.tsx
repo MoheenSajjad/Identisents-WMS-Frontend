@@ -46,7 +46,7 @@ export const Icons = {
       aria-hidden="true"
       width={28}
       height={28}
-      className={`inline w-20 h-24 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300 ${props.className}`}
+      className={`inline h-24 w-20 animate-spin fill-gray-600 text-gray-200 dark:fill-gray-300 dark:text-gray-600 ${props.className}`}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -133,4 +133,92 @@ export const Icons = {
       <circle cx="11" cy="11" r="8" />
     </svg>
   ),
+
+  ChevronsLeft: (props: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={props.className}
+    >
+      <path d="m11 17-5-5 5-5" />
+      <path d="m18 17-5-5 5-5" />
+    </svg>
+  ),
+  ChevronLeft: (props: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={props.className}
+    >
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  ),
+  ChevronsRight: (props: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={props.className}
+    >
+      <path d="m6 17 5-5-5-5" />
+      <path d="m13 17 5-5-5-5" />
+    </svg>
+  ),
+  ChevronRight: (props: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      className={props.className}
+    >
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  ),
+  ArrowUpDown: (props: { className?: string }) => {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        className={props.className}
+      >
+        <path d="m21 16-4 4-4-4" />
+        <path d="M17 20V4" />
+        <path d="m3 8 4-4 4 4" />
+        <path d="M7 4v16" />
+      </svg>
+    );
+  },
 };
