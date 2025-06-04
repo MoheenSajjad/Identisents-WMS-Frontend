@@ -210,15 +210,17 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
     >
       <div className="flex items-center gap-1">
         <Button
+          className="!border-gray-400 !text-gray-900 hover:!border-gray-600"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}
-          icon={<Icons.ChevronsLeft />}
+          icon={<Icons.ChevronsLeft className="font-bold text-black" />}
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1 || isDisabled}
         />
 
         <Button
+          className="!border-gray-400"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}
@@ -241,6 +243,7 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
         ))}
 
         <Button
+          className="!border-gray-400"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}
@@ -249,6 +252,7 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
           disabled={currentPage >= totalPages || isDisabled}
         />
         <Button
+          className="!border-gray-400"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}

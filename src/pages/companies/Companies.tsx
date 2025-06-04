@@ -133,7 +133,7 @@ export const Companies = () => {
                             src={company.logoUrl}
                             name={company.name}
                             size={AvatarSize.MD}
-                            variant={AvatarVariant.ROUNDED}
+                            variant={AvatarVariant.CIRCLE}
                             fallbackSrc="/default-company-logo.png"
                             className=""
                           />
