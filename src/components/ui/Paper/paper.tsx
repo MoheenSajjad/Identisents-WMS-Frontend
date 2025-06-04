@@ -16,7 +16,7 @@ type PaperComponent = {
 };
 
 export const Paper: PaperComponent = ({ className, header, children }: PaperProps): JSX.Element => {
-  const rootCls = clsx(['bg-gray-100 rounded', className]);
+  const rootCls = clsx(['bg-[#fffff] rounded', className]);
 
   return (
     <div className={rootCls}>

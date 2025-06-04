@@ -38,13 +38,14 @@ export const EditIconButton = ({ onClick, isDisabled }: IBaseButtonProps) => {
 };
 
 export const AddNewButton = () => {
-  return <Button>Add New</Button>;
-};
-
-export const ReloadButton = ({ onClick, isDisabled }: IBaseButtonProps) => {
   return (
-    <Button onClick={onClick} disabled={isDisabled}>
-      Reload
+    <Button variant={Button.Variant.PRIMARY} size={Button.Size.DEFAULT}>
+      Add New
     </Button>
   );
+};
+
+
+  return <Button variant={Button.Variant.OUTLINE}>Reload</Button>;
+
 };

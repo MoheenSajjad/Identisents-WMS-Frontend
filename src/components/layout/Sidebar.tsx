@@ -41,22 +41,27 @@ const NavItem: React.FC<NavItemProps> = ({
   };
 
   const itemClasses = cn(
-    'flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 group',
-    'hover:bg-gray-100  text-gray-600'
+
+    'flex items-center gap-3 px-3 py-2 transition-all duration-200 group ',
+    'hover:bg-gray-100  text-gray-600',
+    isActive && 'bg-blue-400 text-black border-l-4 border-gray-800 rounded-tl rounded-bl'
   );
 
   const iconClasses = cn(
-    'text-xl transition-colors  p-[6px] rounded-lg',
-    isActive && 'text-white bg-blue-400',
-    !isActive && 'text-gray-500  group-hover:text-gray-700 bg-white'
+    'text-xl transition-colors',
+    isActive && 'text-white bg-transparent text-black',
+    !isActive && 'text-gray-500  group-hover:text-gray-700 bg-transparent'
+
   );
 
   const content = (
     <>
       <span className={iconClasses}>
-        <item.icon size={18} />
+        <item.icon size={16} />
       </span>
-      <span className="flex-1 text-sm font-medium">{item.label}</span>
+
+      <span className="flex-1 text-xs font-semibold">{item.label}</span>
+
     </>
   );
 
@@ -66,7 +71,9 @@ const NavItem: React.FC<NavItemProps> = ({
         <NavLink
           to={item.path}
           className={({ isActive: linkActive }) =>
-            cn(itemClasses, linkActive && 'bg-white/80 drop-shadow-xs')
+
+            cn(itemClasses, linkActive && 'bg-gray-100 drop-shadow-xs')
+
           }
           onClick={handleClick}
         >
@@ -141,21 +148,25 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
   return (
     <aside
       className={cn(
-        'flex h-full flex-col shadow-xl transition-all duration-300 ease-in-out',
+
+        'flex h-full flex-col shadow-2xl shadow-[#adb5bd] transition-all duration-300 ease-in-out',
         ' ',
-        isOpen ? 'w-56 px-3' : 'w-0',
+        isOpen ? 'w-48 px-3' : 'w-0',
+
         isMobile && 'fixed inset-y-0 left-0 z-30',
         !isMobile && !isOpen && 'overflow-hidden'
       )}
     >
       <div className="flex items-center justify-between pt-4">
-        <div className="flex w-full items-center justify-center">
-          <img src={logo} />
+
+        <div className="flex w-full items-start justify-start px-2">
+          <img src={logo} className="w-[110px] cursor-pointer" />
         </div>
       </div>
 
-      <nav className="flex-1 overflow-y-auto py-4">
-        <ul className="space-y-1">
+      <nav className="mt-2 flex-1 overflow-y-auto py-4">
+        <ul className="space-y-3">
+
           {navigationItems.map(item => (
             <NavItemComponent key={item.id} item={item} onItemClick={handleItemClick} />
           ))}

@@ -80,9 +80,11 @@ export const Companies = () => {
   return (
     <Paper>
       <Paper.BigTitle title="Companies">
-        <div className="flex gap-3">
+
+        <div className="flex gap-2">
+          <ReloadButton />
           <AddNewButton />
-          <ReloadButton onClick={handleReload} isDisabled={loading} />
+
         </div>
       </Paper.BigTitle>
 
