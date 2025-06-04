@@ -80,11 +80,9 @@ export const Companies = () => {
   return (
     <Paper>
       <Paper.BigTitle title="Companies">
-
         <div className="flex gap-2">
-          <ReloadButton />
+          <ReloadButton onClick={handleReload} />
           <AddNewButton />
-
         </div>
       </Paper.BigTitle>
 
@@ -121,11 +119,11 @@ export const Companies = () => {
         <Table.Body>
           <LoadingBoundary isLoading={loading} fallback={<TableSkeleton />}>
             <NoDataBoundary
-              condition={Array.isArray(companies) && companies.length > 0}
+              condition={Array.isArray(dummyCompanies) && dummyCompanies.length > 0}
               fallback={<Table.Empty title="No Companies Found" />}
             >
               <Map
-                items={companies}
+                items={dummyCompanies}
                 renderItem={(company: ICompany) => {
                   return (
                     <Table.Row key={company.id} className={loading ? 'opacity-50' : ''}>
@@ -178,15 +176,81 @@ export const Companies = () => {
         </Table.Body>
       </Table>
 
-      {pagination && (
+      {
         <Table.Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          totalItems={totalItems}
+          currentPage={4}
+          totalPages={10}
+          totalItems={15}
           onPageChange={handlePageChange}
           isDisabled={loading}
         />
-      )}
+      }
     </Paper>
   );
 };
+
+const dummyCompanies: ICompany[] = [
+  {
+    id: 'dummy-1',
+    name: 'Dummy Company',
+    serverUrl: 'https://dummyserver.com',
+    databaseId: 'dummy-db',
+    password: 'dummyPassword',
+    createdAt: new Date().toISOString(),
+    logoUrl: '',
+  },
+  {
+    id: 'dummy-1',
+    name: 'Dummy Company',
+    serverUrl: 'https://dummyserver.com',
+    databaseId: 'dummy-db',
+    password: 'dummyPassword',
+    createdAt: new Date().toISOString(),
+    logoUrl: '',
+  },
+  {
+    id: 'dummy-1',
+    name: 'Dummy Company',
+    serverUrl: 'https://dummyserver.com',
+    databaseId: 'dummy-db',
+    password: 'dummyPassword',
+    createdAt: new Date().toISOString(),
+    logoUrl: '',
+  },
+  {
+    id: 'dummy-1',
+    name: 'Dummy Company',
+    serverUrl: 'https://dummyserver.com',
+    databaseId: 'dummy-db',
+    password: 'dummyPassword',
+    createdAt: new Date().toISOString(),
+    logoUrl: '',
+  },
+  {
+    id: 'dummy-1',
+    name: 'Dummy Company',
+    serverUrl: 'https://dummyserver.com',
+    databaseId: 'dummy-db',
+    password: 'dummyPassword',
+    createdAt: new Date().toISOString(),
+    logoUrl: '',
+  },
+  {
+    id: 'dummy-1',
+    name: 'Dummy Company',
+    serverUrl: 'https://dummyserver.com',
+    databaseId: 'dummy-db',
+    password: 'dummyPassword',
+    createdAt: new Date().toISOString(),
+    logoUrl: '',
+  },
+  {
+    id: 'dummy-1',
+    name: 'Dummy Company',
+    serverUrl: 'https://dummyserver.com',
+    databaseId: 'dummy-db',
+    password: 'dummyPassword',
+    createdAt: new Date().toISOString(),
+    logoUrl: '',
+  },
+];
