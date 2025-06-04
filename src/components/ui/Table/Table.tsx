@@ -1,3 +1,8 @@
+import React from 'react';
+import { Button } from '../Button';
+import { Icons } from '@/components/Icons';
+import { Empty } from '../Empty';
+
 // Table Components
 interface TableProps {
   children: React.ReactNode;
@@ -25,6 +30,7 @@ interface TableCellProps {
   className?: string;
   align?: 'left' | 'center' | 'right';
   justify?: JustifyCell;
+  colSpan?: number;
 }
 
 interface TableHeaderCellProps {
@@ -88,6 +94,7 @@ export const TableCell: React.FC<TableCellProps> = ({
   className = '',
   align = 'left',
   justify = JustifyCell.Left,
+  colSpan,
 }) => {
   const alignClasses = {
     left: 'text-left',
@@ -99,6 +106,39 @@ export const TableCell: React.FC<TableCellProps> = ({
     <td className={`px-4 py-1 text-xs text-gray-900 ${className}`}>
       <div className={`flex ${justifyCellClasses[justify]} ${alignClasses[align]}`}>{children}</div>
     </td>
+  );
+};
+
+export const TableEmpty = ({ title = 'No Records Found' }: { title?: string }) => {
+  return (
+    <TableRow>
+      <TableCell
+        colSpan={12}
+        className="h-24 text-center"
+        align={'center'}
+        justify={JustifyCell.Center}
+      >
+        <Empty label={title} />
+      </TableCell>
+    </TableRow>
+  );
+};
+
+export const TableSkeleton = ({ length = 6 }: { length?: number }) => {
+  return Array.from({ length }).map((_, index) => (
+    <TableSkeletonRow key={index}>
+      <td colSpan={12} className="px-3 py-1">
+        <div className="mx-auto h-8 w-full animate-pulse rounded bg-gray-300"></div>
+      </td>
+    </TableSkeletonRow>
+  ));
+};
+
+const TableSkeletonRow = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <tr className="w-full animate-pulse rounded border-b border-gray-300 transition duration-150 ease-in-out last:border-b-0">
+      {children}
+    </tr>
   );
 };
 
@@ -119,22 +159,117 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
     >
       <div className={`flex items-center gap-1 ${justifyCellClasses[justify]}`}>
         {children}
-        {sortable && (
-          <span className="text-gray-400">
-            {sortDirection === 'asc' ? '↑' : sortDirection === 'desc' ? '↓' : '↕'}
-          </span>
-        )}
+        {sortable && <Icons.ArrowUpDown />}
       </div>
     </th>
   );
 };
 
-// Compose Table with dot notation
-export const Table = Object.assign(TableRoot, {
+interface TablePaginationProps {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  onPageChange: (page: number) => void;
+  className?: string;
+  isDisabled?: boolean;
+}
+
+export const TablePagination: React.FC<TablePaginationProps> = ({
+  currentPage,
+  totalPages,
+  onPageChange,
+  className = '',
+  isDisabled,
+}) => {
+  const getVisiblePages = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show current page and 2 pages before and after when possible
+      const start = Math.max(1, currentPage - 2);
+      const end = Math.min(totalPages, currentPage + 2);
+
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  };
+
+  const visiblePages = getVisiblePages();
+
+  return (
+    <div
+      className={`flex items-center justify-center rounded-tl-none rounded-tr-none border border-gray-200 bg-white px-4 py-3 ${className}`}
+    >
+      <div className="flex items-center gap-1">
+        <Button
+          size={Button.Size.ICON}
+          roundness={Button.Roundness.FULL}
+          variant={Button.Variant.OUTLINE}
+          icon={<Icons.ChevronsLeft />}
+          onClick={() => onPageChange(1)}
+          disabled={currentPage <= 1 || isDisabled}
+        />
+
+        <Button
+          size={Button.Size.ICON}
+          roundness={Button.Roundness.FULL}
+          variant={Button.Variant.OUTLINE}
+          icon={<Icons.ChevronLeft />}
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage <= 1 || isDisabled}
+        />
+
+        {visiblePages.map(page => (
+          <Button
+            key={page}
+            onClick={() => onPageChange(page)}
+            size={Button.Size.ICON}
+            roundness={Button.Roundness.FULL}
+            variant={currentPage === page ? Button.Variant.PRIMARY : Button.Variant.SECONDARY}
+            disabled={isDisabled}
+          >
+            {page}
+          </Button>
+        ))}
+
+        <Button
+          size={Button.Size.ICON}
+          roundness={Button.Roundness.FULL}
+          variant={Button.Variant.OUTLINE}
+          icon={<Icons.ChevronRight />}
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage >= totalPages || isDisabled}
+        />
+        <Button
+          size={Button.Size.ICON}
+          roundness={Button.Roundness.FULL}
+          variant={Button.Variant.OUTLINE}
+          icon={<Icons.ChevronsRight />}
+          onClick={() => onPageChange(totalPages)}
+          disabled={currentPage >= totalPages || isDisabled}
+        />
+      </div>
+    </div>
+  );
+};
+
+const TableWithPagination = Object.assign(TableRoot, {
   Header: TableHeader,
   Body: TableBody,
   Row: TableRow,
   Cell: TableCell,
   HeaderCell: TableHeaderCell,
+  Pagination: TablePagination,
   Justify: JustifyCell,
+  Empty: TableEmpty,
 });
+
+export { TableWithPagination as Table };
