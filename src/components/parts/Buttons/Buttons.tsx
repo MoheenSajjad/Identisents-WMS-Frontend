@@ -1,13 +1,13 @@
 import { Icons } from '@/components/Icons';
 import { Button } from '@/components/ui/Button';
 
-interface IBaseButtonProps {
+interface IButtonBaseProps {
   onClick?: () => void;
   className?: string;
   isDisabled?: boolean;
   isLoading?: boolean;
 }
-export const DeleteIconButton = ({ onClick, isDisabled, isLoading }: IBaseButtonProps) => {
+export const DeleteIconButton = ({ onClick, isDisabled, isLoading }: IButtonBaseProps) => {
   return (
     <Button
       size={Button.Size.ICON}
@@ -23,7 +23,7 @@ export const DeleteIconButton = ({ onClick, isDisabled, isLoading }: IBaseButton
   );
 };
 
-export const EditIconButton = ({ onClick, isDisabled }: IBaseButtonProps) => {
+export const EditIconButton = ({ onClick, isDisabled }: IButtonBaseProps) => {
   return (
     <Button
       size={Button.Size.ICON}
@@ -45,7 +45,10 @@ export const AddNewButton = () => {
   );
 };
 
-
-  return <Button variant={Button.Variant.OUTLINE}>Reload</Button>;
-
+export const ReloadButton = ({ onClick }: IButtonBaseProps) => {
+  return (
+    <Button variant={Button.Variant.OUTLINE} onClick={onClick}>
+      Reload
+    </Button>
+  );
 };
