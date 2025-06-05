@@ -69,7 +69,7 @@ export const TableRoot: React.FC<TableProps> = ({ children, className = '' }) =>
 
 // Table Header
 export const TableHeader: React.FC<TableHeaderProps> = ({ children, className = '' }) => {
-  return <thead className={`bg-gray-200 ${className}`}>{children}</thead>;
+  return <thead className={`bg-[#e9ecef] ${className}`}>{children}</thead>;
 };
 
 // Table Body
@@ -103,7 +103,7 @@ export const TableCell: React.FC<TableCellProps> = ({
   };
 
   return (
-    <td className={`px-4 py-2 text-sm text-gray-900 ${className}`} colSpan={colSpan}>
+    <td className={`px-4 py-1 text-xs text-gray-900 ${className}`}>
       <div className={`flex ${justifyCellClasses[justify]} ${alignClasses[align]}`}>{children}</div>
     </td>
   );
@@ -152,7 +152,7 @@ export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
 }) => {
   return (
     <th
-      className={`px-4 py-3 text-xs font-medium tracking-wider text-gray-500 uppercase ${
+      className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase ${
         sortable ? 'cursor-pointer hover:bg-gray-100' : ''
       } ${className}`}
       onClick={sortable ? onSort : undefined}
@@ -210,15 +210,17 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
     >
       <div className="flex items-center gap-1">
         <Button
+          className="!border-gray-400 !text-gray-900 hover:!border-gray-600"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}
-          icon={<Icons.ChevronsLeft />}
+          icon={<Icons.ChevronsLeft className="font-bold text-black" />}
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1 || isDisabled}
         />
 
         <Button
+          className="!border-gray-400"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}
@@ -241,6 +243,7 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
         ))}
 
         <Button
+          className="!border-gray-400"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}
@@ -249,6 +252,7 @@ export const TablePagination: React.FC<TablePaginationProps> = ({
           disabled={currentPage >= totalPages || isDisabled}
         />
         <Button
+          className="!border-gray-400"
           size={Button.Size.ICON}
           roundness={Button.Roundness.FULL}
           variant={Button.Variant.OUTLINE}
