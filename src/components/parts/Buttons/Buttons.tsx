@@ -1,11 +1,13 @@
 import { Icons } from '@/components/Icons';
 import { Button } from '@/components/ui/Button';
+import { Loader } from 'lucide-react';
 
 interface IButtonBaseProps {
   onClick?: () => void;
   className?: string;
   isDisabled?: boolean;
   isLoading?: boolean;
+  label?: string;
 }
 export const DeleteIconButton = ({ onClick, isDisabled, isLoading }: IButtonBaseProps) => {
   return (
@@ -37,9 +39,9 @@ export const EditIconButton = ({ onClick, isDisabled }: IButtonBaseProps) => {
   );
 };
 
-export const AddNewButton = () => {
+export const AddNewButton = ({ onClick }: IButtonBaseProps) => {
   return (
-    <Button variant={Button.Variant.PRIMARY} size={Button.Size.DEFAULT}>
+    <Button variant={Button.Variant.PRIMARY} size={Button.Size.DEFAULT} onClick={onClick}>
       Add New
     </Button>
   );
@@ -47,8 +49,42 @@ export const AddNewButton = () => {
 
 export const ReloadButton = ({ onClick }: IButtonBaseProps) => {
   return (
-    <Button variant={Button.Variant.OUTLINE} onClick={onClick}>
+    <Button variant={Button.Variant.OUTLINE} icon={<Loader />} onClick={onClick}>
       Reload
+    </Button>
+  );
+};
+
+export const SubmitButton = () => {
+  return (
+    <Button variant={Button.Variant.PRIMARY} size={Button.Size.DEFAULT} type="submit">
+      Submit
+    </Button>
+  );
+};
+
+export const CancelButton = ({ onClick }: IButtonBaseProps) => {
+  return (
+    <Button variant={Button.Variant.OUTLINE} onClick={onClick}>
+      Cancel
+    </Button>
+  );
+};
+
+export const HeaderButton = ({
+  onClick,
+  label,
+  className,
+  showSortIcon = true,
+}: IButtonBaseProps & { showSortIcon?: boolean }) => {
+  return (
+    <Button
+      variant={Button.Variant.GHOST}
+      className={`${className}`}
+      onClick={onClick}
+      suffixIcon={showSortIcon && <Icons.ArrowUpDown className="ml-2" />}
+    >
+      {label}
     </Button>
   );
 };

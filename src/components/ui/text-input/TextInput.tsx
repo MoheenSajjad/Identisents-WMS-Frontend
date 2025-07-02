@@ -12,12 +12,13 @@ type TextInputProps = {
   suffixIcon?: React.ReactNode;
   error?: string;
   showErrorMessage?: boolean;
-  required?: boolean;
-  disabled?: boolean;
+  isRequired?: boolean;
+  isDisabled?: boolean;
   size?: InputSize;
   className?: string;
   borderClassName?: string;
   maxLength?: number;
+  hasError?: boolean;
   type?: 'text' | 'email' | 'password' | 'url' | 'tel';
 };
 
@@ -32,13 +33,14 @@ export const TextInput: React.FC<TextInputProps> = ({
   suffixIcon,
   error,
   showErrorMessage = false,
-  required = false,
-  disabled = false,
+  isRequired = false,
+  isDisabled = false,
   size = InputSize.DEFAULT,
   className,
   borderClassName,
   maxLength,
   type = 'text',
+  hasError,
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
 
@@ -60,17 +62,13 @@ export const TextInput: React.FC<TextInputProps> = ({
     <Input
       size={size}
       className={className}
-      isRequired={required}
+      isRequired={isRequired}
       hasFocus={isFocused}
       hasError={!!error}
-      isDisabled={disabled}
+      isDisabled={isDisabled}
     >
-      {label && <Input.Label value={label} hasError={!!error} isRequired={required} />}
-      <Input.Border
-        className={borderClassName}
-        hasError={!!error}
-        showErrorMessage={showErrorMessage}
-      >
+      {label && <Input.Label value={label} hasError={!!error} isRequired={isRequired} />}
+      <Input.Border className={borderClassName} hasError={true} showErrorMessage={showErrorMessage}>
         {icon && <Input.Icon>{icon}</Input.Icon>}
         <Input.Control className={`${!icon && 'px-3'}`}>
           <input
@@ -80,7 +78,7 @@ export const TextInput: React.FC<TextInputProps> = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
             placeholder={placeholder}
-            disabled={disabled}
+            disabled={isDisabled}
             maxLength={maxLength}
             className="h-full w-full border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
           />

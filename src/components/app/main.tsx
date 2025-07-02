@@ -1,8 +1,8 @@
-import { Dashboard } from "@/pages/dashboard";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Layout } from "../layout";
-import { Companies } from "@/pages/companies";
-import { Warehouses } from "@/pages/warehouses";
+import { Dashboard } from '@/pages/dashboard';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Layout } from '../layout';
+import { Companies } from '@/pages/companies';
+import { Warehouses } from '@/pages/warehouses';
 
 export const Main = () => {
   return (
