@@ -3,6 +3,7 @@ import { PaginationFilters } from './api';
 export interface ICompany {
   _id: string;
   name: string;
+  companyId: string;
   username: string;
   database: string;
   serverUrl: string;
@@ -24,6 +25,7 @@ export interface CreateCompanyData {
   serverUrl: string;
   password: string;
   logoUrl?: string;
+  logoBase64?: string;
 }
 
 export interface UpdateCompanyData {
@@ -32,4 +34,5 @@ export interface UpdateCompanyData {
   serverUrl?: string;
   password?: string;
   logoUrl?: string;
+  logoBase64?: string;
 }

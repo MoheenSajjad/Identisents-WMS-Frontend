@@ -55,9 +55,15 @@ export const ReloadButton = ({ onClick }: IButtonBaseProps) => {
   );
 };
 
-export const SubmitButton = () => {
+export const SubmitButton = ({ isDisabled, isLoading }: IButtonBaseProps) => {
   return (
-    <Button variant={Button.Variant.PRIMARY} size={Button.Size.DEFAULT} type="submit">
+    <Button
+      variant={Button.Variant.PRIMARY}
+      size={Button.Size.DEFAULT}
+      loading={isLoading}
+      disabled={isDisabled}
+      type="submit"
+    >
       Submit
     </Button>
   );

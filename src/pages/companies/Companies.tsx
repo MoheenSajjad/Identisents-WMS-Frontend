@@ -15,7 +15,22 @@ import { useToggle } from '@/hooks/use-toggle';
 
 export const Companies = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const columns = useMemo(() => getColumns(), []);
+  const [selectedCompany, setSelecetdcompany] = useState<ICompany | null>(null);
+
+  const columns = useMemo(
+    () =>
+      getColumns(
+        company => {
+          setSelecetdcompany(company);
+          toggleOn();
+        },
+        company => handleDelete(company)
+      ),
+
+    []
+  );
+
+  function handleDelete(company: ICompany) {}
 
   const { isToggled, toggleOn, toggleOff } = useToggle();
 
@@ -42,6 +57,9 @@ export const Companies = () => {
     }
   }, [page]);
 
+  const handleOnSubmit = () => {
+    toggleOff(), refetch();
+  };
   return (
     <>
       <PageTransition>
@@ -55,7 +73,14 @@ export const Companies = () => {
           </DataTable>
         </Paper>
       </PageTransition>
-      {isToggled && <CreateCompany onSubmit={toggleOff} onCancel={toggleOff} />}
+      {isToggled && (
+        <CreateCompany
+          company={selectedCompany}
+          mode={!!selectedCompany ? 'edit' : 'create'}
+          onSubmit={handleOnSubmit}
+          onCancel={toggleOff}
+        />
+      )}
     </>
   );
 };

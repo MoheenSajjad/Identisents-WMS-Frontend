@@ -15,14 +15,14 @@ class CompanyServices {
   }
 
   static async getCompanyById(id: string, signal: AbortSignal): Promise<ApiResponse<ICompany>> {
-    return apiClient.get<ApiResponse<ICompany>>(`/companies/${id}`, { signal });
+    return apiClient.get<ApiResponse<ICompany>>(`/company/${id}`, { signal });
   }
 
   static async createCompany(
     data: CreateCompanyData,
     signal: AbortSignal
   ): Promise<ApiResponse<ICompany>> {
-    return apiClient.post<ApiResponse<ICompany>>('/companies', data, { signal });
+    return apiClient.post<ApiResponse<ICompany>>('/company/create', data, { signal });
   }
 
   static async updateCompany(
@@ -30,11 +30,11 @@ class CompanyServices {
     data: UpdateCompanyData,
     signal: AbortSignal
   ): Promise<ApiResponse<ICompany>> {
-    return apiClient.put<ApiResponse<ICompany>>(`/companies/${id}`, data, { signal });
+    return apiClient.put<ApiResponse<ICompany>>(`/company/${id}`, data, { signal });
   }
 
   static async deleteCompany(id: string, signal: AbortSignal): Promise<ApiResponse<void>> {
-    return apiClient.delete<ApiResponse<void>>(`/companies/${id}`, { signal });
+    return apiClient.delete<ApiResponse<void>>(`/company/${id}`, { signal });
   }
 
   static async searchCompanies(

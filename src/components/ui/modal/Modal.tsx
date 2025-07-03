@@ -38,7 +38,7 @@ interface ModalFooterProps {
 
 export const ModalHeader = ({ onClose, children }: ModalHeaderProps) => {
   return (
-    <div className="flex items-center justify-between rounded-t-md border-b-[1px] px-4 py-4">
+    <div className="flex items-center justify-between rounded-t-md border-b border-gray-200 bg-neutral-50 px-4 py-4">
       <h3 className="text-primary font-semibold" id="modal-title">
         {children && children}
       </h3>

@@ -1,5 +1,16 @@
 import React from 'react';
 import { Input, InputSize } from '../input';
+import { Shake } from '@/components/parts/animations';
+
+export enum TextInputType {
+  TEXT = 'text',
+  PASSWORD = 'password',
+  DATE = 'date',
+  TIME = 'time',
+  TEXTAREA = 'text-area',
+  NUMBER = 'number',
+  DATETIME = 'datetime-local',
+}
 
 type TextInputProps = {
   label?: string;
@@ -19,7 +30,7 @@ type TextInputProps = {
   borderClassName?: string;
   maxLength?: number;
   hasError?: boolean;
-  type?: 'text' | 'email' | 'password' | 'url' | 'tel';
+  type?: TextInputType;
 };
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -39,7 +50,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   className,
   borderClassName,
   maxLength,
-  type = 'text',
+  type = TextInputType.TEXT,
   hasError,
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
@@ -67,24 +78,30 @@ export const TextInput: React.FC<TextInputProps> = ({
       hasError={!!error}
       isDisabled={isDisabled}
     >
-      {label && <Input.Label value={label} hasError={!!error} isRequired={isRequired} />}
-      <Input.Border className={borderClassName} hasError={true} showErrorMessage={showErrorMessage}>
-        {icon && <Input.Icon>{icon}</Input.Icon>}
-        <Input.Control className={`${!icon && 'px-3'}`}>
-          <input
-            type={type}
-            value={value}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            placeholder={placeholder}
-            disabled={isDisabled}
-            maxLength={maxLength}
-            className="h-full w-full border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
-          />
-        </Input.Control>
-        {suffixIcon && <Input.Handler>{suffixIcon}</Input.Handler>}
-      </Input.Border>
+      <Shake shouldShake={!!hasError}>
+        {label && <Input.Label value={label} hasError={!!error} isRequired={isRequired} />}
+        <Input.Border
+          className={borderClassName}
+          hasError={hasError}
+          showErrorMessage={showErrorMessage}
+        >
+          {icon && <Input.Icon>{icon}</Input.Icon>}
+          <Input.Control className={`${!icon && 'px-3'}`}>
+            <input
+              type={type}
+              value={value}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              placeholder={placeholder}
+              disabled={isDisabled}
+              maxLength={maxLength}
+              className="h-full w-full border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
+            />
+          </Input.Control>
+          {suffixIcon && <Input.Handler>{suffixIcon}</Input.Handler>}
+        </Input.Border>
+      </Shake>
       {error && showErrorMessage && <Input.Feedback value={error} />}
     </Input>
   );

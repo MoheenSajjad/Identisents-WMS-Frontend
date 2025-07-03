@@ -2,6 +2,7 @@ import { ICompany } from '@/types/company';
 import { ColumnDef } from '@tanstack/react-table';
 import { DeleteIconButton, EditIconButton, HeaderButton } from '@/components/parts/Buttons';
 import { TableAlign } from '@/components/ui/Table';
+import { DateTime } from '@/utils/date-time';
 
 export function getColumns(
   onEdit?: (company: ICompany) => void,
@@ -50,9 +51,8 @@ export function getColumns(
     },
     {
       accessorKey: 'password',
-      header: ({ column }) => <HeaderButton label="Password" />,
+      header: () => <HeaderButton label="Password" />,
     },
-
     {
       accessorKey: 'createdAt',
       header: ({ column }) => (
@@ -61,6 +61,7 @@ export function getColumns(
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         />
       ),
+      cell: ({ row }) => DateTime.parse(row.original.createdAt).toString(),
       enableSorting: true,
     },
     {

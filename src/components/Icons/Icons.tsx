@@ -40,6 +40,18 @@ export const Icons = {
       />
     </SvgIcon>
   ),
+  Loader: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M12 2v4" />
+      <path d="m16.2 7.8 2.9-2.9" />
+      <path d="M18 12h4" />
+      <path d="m16.2 16.2 2.9 2.9" />
+      <path d="M12 18v4" />
+      <path d="m4.9 19.1 2.9-2.9" />
+      <path d="M2 12h4" />
+      <path d="m4.9 4.9 2.9 2.9" />
+    </SvgIcon>
+  ),
   Edit: ({ className }: IconProps) => (
     <SvgIcon className={className}>
       <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />

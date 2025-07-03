@@ -180,7 +180,7 @@ export const Button: ButtonComponent = ({
       className={classes}
       {...ariaProps}
     >
-      {loading ? <Icons.Spinner className="animate-spin" /> : icon && <span>{icon}</span>}
+      {loading ? <Icons.Loader className="animate-spin" /> : icon && <span>{icon}</span>}
 
       {children}
 

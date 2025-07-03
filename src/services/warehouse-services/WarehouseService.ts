@@ -8,7 +8,7 @@ class WarehouseService {
     signal: AbortSignal
   ): Promise<ApiResponse<PaginatedResponse<IWarehouse[]>>> {
     return apiClient.post<ApiResponse<PaginatedResponse<IWarehouse[]>>>(
-      `/warehouse?page=${page}&limit=2`,
+      `/warehouse?page=${page}`,
       undefined,
       { signal }
     );
