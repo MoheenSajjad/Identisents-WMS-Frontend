@@ -1,8 +1,10 @@
 import React, { JSX } from 'react';
+import { Input } from '../input';
 
 interface SwitchProps {
   checked?: boolean;
   defaultChecked?: boolean;
+  isRequired?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
   className?: string;
@@ -42,6 +44,7 @@ export const Switch: SwicthComponenet = ({
   onChange,
   disabled = false,
   className = '',
+  isRequired = true,
   style,
   size = SwitchSize.MEDIUM,
   color = 'bg-blue-500',
@@ -89,13 +92,7 @@ export const Switch: SwicthComponenet = ({
 
   return (
     <>
-      <label
-        className={`text-darker-grey block text-sm font-medium transition-colors duration-150 ${
-          false ? 'text-red-500' : ''
-        } ${true && "relative after:ml-1 after:text-red-500 after:content-['*']"}`}
-      >
-        {label}
-      </label>
+      {label && <Input.Label value={label} isRequired={isRequired} />}
 
       <div
         id={id}

@@ -9,3 +9,8 @@ export interface IWarehouse {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ISAPWarehouses {
+  WarehouseCode: string;
+  WarehouseName: string;
+}

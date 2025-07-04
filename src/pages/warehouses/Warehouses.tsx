@@ -10,6 +10,8 @@ import { WarehouseService } from '@/services/warehouse-services';
 import { AddNewButton, ReloadButton } from '@/components/parts/Buttons';
 import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { PageTransition } from '@/components/parts/animations';
+import { useToggle } from '@/hooks/use-toggle';
+import { CreateWarehouse } from '@/components/parts/modals/create-warehouse';
 
 export const Warehouses = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,17 +40,32 @@ export const Warehouses = () => {
     }
   }, [page]);
 
+  const { toggleOff, toggleOn, isToggled } = useToggle();
+
   return (
-    <PageTransition>
-      <Paper>
-        <Paper.BigTitle title="Warehouse" />
-        <DataTable table={table} isLoading={isLoading}>
-          <DataTableToolbar table={table}>
-            <ReloadButton onClick={refetch} />
-            <AddNewButton />
-          </DataTableToolbar>
-        </DataTable>
-      </Paper>
-    </PageTransition>
+    <>
+      <PageTransition>
+        <Paper>
+          <Paper.BigTitle title="Warehouse" />
+          <DataTable table={table} isLoading={isLoading}>
+            <DataTableToolbar table={table}>
+              <ReloadButton onClick={refetch} />
+              <AddNewButton onClick={toggleOn} />
+            </DataTableToolbar>
+          </DataTable>
+        </Paper>
+      </PageTransition>
+      {isToggled && (
+        <CreateWarehouse
+          onSubmit={() => {
+            toggleOff();
+            refetch();
+          }}
+          onCancel={toggleOff}
+          mode="create"
+          warehouse={null}
+        />
+      )}
+    </>
   );
 };

@@ -22,7 +22,7 @@ class CompanyServices {
     data: CreateCompanyData,
     signal: AbortSignal
   ): Promise<ApiResponse<ICompany>> {
-    return apiClient.post<ApiResponse<ICompany>>('/company/create', data, { signal });
+    return apiClient.post<ApiResponse<ICompany>>('api/company/create', data, { signal });
   }
 
   static async updateCompany(
@@ -30,11 +30,11 @@ class CompanyServices {
     data: UpdateCompanyData,
     signal: AbortSignal
   ): Promise<ApiResponse<ICompany>> {
-    return apiClient.put<ApiResponse<ICompany>>(`/company/${id}`, data, { signal });
+    return apiClient.put<ApiResponse<ICompany>>(`api/company/${id}`, data, { signal });
   }
 
   static async deleteCompany(id: string, signal: AbortSignal): Promise<ApiResponse<void>> {
-    return apiClient.delete<ApiResponse<void>>(`/company/${id}`, { signal });
+    return apiClient.delete<ApiResponse<void>>(`api/company/${id}`, { signal });
   }
 
   static async searchCompanies(
@@ -44,7 +44,7 @@ class CompanyServices {
     signal: AbortSignal
   ): Promise<ApiResponse<PaginatedResponse<ICompany>>> {
     return apiClient.get<ApiResponse<PaginatedResponse<ICompany>>>(
-      `/companies/search?search=${query}&page=${page}&limit=${limit}`,
+      `api/companies/search?search=${query}&page=${page}&limit=${limit}`,
       { signal }
     );
   }
@@ -56,7 +56,7 @@ class CompanyServices {
     signal: AbortSignal
   ): Promise<ApiResponse<PaginatedResponse<ICompany>>> {
     return apiClient.get<ApiResponse<PaginatedResponse<ICompany>>>(
-      `/companies?isActive=${isActive}&page=${page}&limit=${limit}`,
+      `api/companies?isActive=${isActive}&page=${page}&limit=${limit}`,
       { signal }
     );
   }
