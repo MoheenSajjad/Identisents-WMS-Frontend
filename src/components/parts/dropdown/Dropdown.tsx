@@ -2,6 +2,7 @@ import { Icons } from '@/components/Icons';
 import { Button } from '@/components/ui/Button';
 import { CheckIcon, ChevronsUpDown, X } from 'lucide-react';
 import React, { useState, useRef, ReactNode, forwardRef, useEffect } from 'react';
+import { Shake } from '../animations';
 
 type DropdownProps = {
   children: ReactNode;
@@ -144,7 +145,9 @@ export const DropdownTrigger = ({
               src={imgUrl || item.image || item.imgUrl || ''}
             />
           )}
-          <span className="block truncate font-medium">{displayText}</span>
+          <span className="block truncate font-medium">
+            {isLoading ? 'Loading...' : displayText}
+          </span>
         </span>
       );
     }
@@ -174,22 +177,24 @@ export const DropdownTrigger = ({
   };
 
   return (
-    <button
-      type="button"
-      className={`hover:border-primary-orange/55 relative mb-5 min-h-8 w-full min-w-52 cursor-default rounded-lg border py-1.5 pr-10 pl-3 text-left text-gray-500 transition-all duration-300 hover:text-gray-700 focus:outline-none sm:text-xs ${isError ? 'border-red-600 hover:border-red-600' : ''} ${isDisabled ? 'bg-gray-100' : 'cursor-pointer bg-white'} ${className} `}
-      onClick={onClick}
-    >
-      <div className="flex min-h-5 items-center">{getDisplayContent()}</div>
-      <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-        {isLoading ? (
-          <Icons.Loader className="h-5 w-5 animate-spin" />
-        ) : Icon ? (
-          Icon
-        ) : (
-          <Icons.ChevronUpDown />
-        )}
-      </span>
-    </button>
+    <Shake shouldShake={hasError}>
+      <button
+        type="button"
+        className={`hover:border-primary-orange/55 relative min-h-8 w-full min-w-52 cursor-default rounded-lg border py-1.5 pr-10 pl-3 text-left text-gray-500 transition-all duration-300 hover:text-gray-700 focus:outline-none sm:text-xs ${isError ? 'border-red-600 hover:border-red-600' : ''} ${isDisabled ? 'bg-gray-100' : 'cursor-pointer bg-white'} ${className} `}
+        onClick={onClick}
+      >
+        <div className="flex min-h-5 items-center">{getDisplayContent()}</div>
+        <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+          {isLoading ? (
+            <Icons.Loader className="h-5 w-5 animate-spin" />
+          ) : Icon ? (
+            Icon
+          ) : (
+            <Icons.ChevronUpDown />
+          )}
+        </span>
+      </button>
+    </Shake>
   );
 };
 

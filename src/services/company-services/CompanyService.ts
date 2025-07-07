@@ -8,14 +8,10 @@ class CompanyServices {
     signal: AbortSignal
   ): Promise<ApiResponse<PaginatedResponse<ICompany[]>>> {
     return apiClient.post<ApiResponse<PaginatedResponse<ICompany[]>>>(
-      `/company?page=${page}`,
+      `api/company?page=${page}`,
       undefined,
       { signal }
     );
-  }
-
-  static async getCompanyById(id: string, signal: AbortSignal): Promise<ApiResponse<ICompany>> {
-    return apiClient.get<ApiResponse<ICompany>>(`/company/${id}`, { signal });
   }
 
   static async createCompany(
@@ -37,28 +33,8 @@ class CompanyServices {
     return apiClient.delete<ApiResponse<void>>(`api/company/${id}`, { signal });
   }
 
-  static async searchCompanies(
-    query: string,
-    page: number = 1,
-    limit: number = 10,
-    signal: AbortSignal
-  ): Promise<ApiResponse<PaginatedResponse<ICompany>>> {
-    return apiClient.get<ApiResponse<PaginatedResponse<ICompany>>>(
-      `api/companies/search?search=${query}&page=${page}&limit=${limit}`,
-      { signal }
-    );
-  }
-
-  static async getCompaniesByStatus(
-    isActive: boolean,
-    page: number = 1,
-    limit: number = 10,
-    signal: AbortSignal
-  ): Promise<ApiResponse<PaginatedResponse<ICompany>>> {
-    return apiClient.get<ApiResponse<PaginatedResponse<ICompany>>>(
-      `api/companies?isActive=${isActive}&page=${page}&limit=${limit}`,
-      { signal }
-    );
+  static async getAllCompanies(signal: AbortSignal): Promise<ApiResponse<ICompany[]>> {
+    return apiClient.get<ApiResponse<ICompany[]>>(`api/company/all`, { signal });
   }
 }
 

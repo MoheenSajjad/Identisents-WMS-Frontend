@@ -2,6 +2,7 @@ export interface IWarehouse {
   _id: string;
   code: string;
   name: string;
+  companyId: string;
   sapWarehouses: string[];
   isBinLocationEnabled: boolean;
   isActive: boolean;
@@ -13,4 +14,12 @@ export interface IWarehouse {
 export interface ISAPWarehouses {
   WarehouseCode: string;
   WarehouseName: string;
+}
+
+export interface IWarehouseUpdate {
+  name: string;
+  companyId: string;
+  sapWarehouses: string[];
+  isBinLocationEnabled: boolean;
+  isActive: boolean;
 }

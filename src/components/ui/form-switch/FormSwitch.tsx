@@ -1,5 +1,6 @@
 import { Controller, Control, FieldValues, Path } from 'react-hook-form';
 import { Switch } from '@/components/ui/switch';
+import { Icons } from '@/components/Icons';
 
 interface ControlledSwitchProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>;
@@ -30,6 +31,8 @@ export const FormSwitch = <T extends Record<string, any>>({
             onChange={field.onChange}
             disabled={disabled}
             tooltip={tooltip}
+            offIcon={<Icons.CircleX />}
+            onIcon={<Icons.CheckCircle />}
           />
         </div>
       )}

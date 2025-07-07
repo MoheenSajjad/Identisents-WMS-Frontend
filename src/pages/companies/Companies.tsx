@@ -77,7 +77,10 @@ export const Companies = () => {
           company={selectedCompany}
           mode={!!selectedCompany ? 'edit' : 'create'}
           onSubmit={handleOnSubmit}
-          onCancel={toggleOff}
+          onCancel={() => {
+            setSelecetdcompany(null);
+            toggleOff();
+          }}
         />
       )}
     </>

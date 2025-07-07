@@ -59,6 +59,14 @@ export const Icons = {
       </SvgIcon>
     );
   },
+  CheckCircle: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+        <path d="m9 11 3 3L22 4" />
+      </SvgIcon>
+    );
+  },
   Edit: ({ className }: IconProps) => (
     <SvgIcon className={className}>
       <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />

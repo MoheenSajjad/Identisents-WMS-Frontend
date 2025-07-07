@@ -12,6 +12,12 @@ export interface ICompany {
   createdAt: string;
 }
 
+export interface ICompanyDropdown {
+  _id: string;
+  name: string;
+  logoUrl: string;
+}
+
 export interface CompanyFilters extends PaginationFilters {
   search?: string;
   name?: string;

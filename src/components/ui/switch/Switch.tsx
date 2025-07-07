@@ -117,7 +117,9 @@ export const Switch: SwicthComponenet = ({
         ></span>
 
         {onIcon && isChecked && (
-          <span className="absolute top-1/2 left-1 -translate-y-1/2 transform">{onIcon}</span>
+          <span className="absolute top-1/2 left-1 -translate-y-1/2 transform text-white">
+            {onIcon}
+          </span>
         )}
 
         {offIcon && !isChecked && (

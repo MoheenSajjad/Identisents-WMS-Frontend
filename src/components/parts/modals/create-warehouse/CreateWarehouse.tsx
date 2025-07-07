@@ -10,6 +10,9 @@ import { z } from 'zod';
 import { CancelButton, SubmitButton } from '../../Buttons';
 import { FormSwitch } from '@/components/ui/form-switch';
 import { SapWarehousesDropdown } from '../../dropdowns/sap-warehouses-dropdown';
+import { CompanyDropdown } from '../../dropdowns/company-dropdown';
+import { WarehouseService } from '@/services/warehouse-services';
+import { useFormSubmit } from '@/hooks/use-form-submit';
 
 interface ICreateWarehouseModalProps {
   mode: 'edit' | 'create';
@@ -20,6 +23,7 @@ interface ICreateWarehouseModalProps {
 
 const formSchema = z.object({
   name: z.string().min(1),
+  companyId: z.string().min(1),
   sapWarehouses: z.array(z.string()).min(1),
   isBinLocationEnabled: z.boolean(),
   isActive: z.boolean(),
@@ -34,27 +38,55 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
   const existingWarehouse = isEditMode ? props.warehouse : null;
 
   const {
-    register,
     handleSubmit,
     control,
+    reset,
+    getValues,
     formState: { errors },
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: isEditMode ? existingWarehouse?.name || '' : '',
+      companyId: isEditMode ? existingWarehouse?.companyId || '' : '',
       sapWarehouses: isEditMode ? existingWarehouse?.sapWarehouses || [] : [],
       isBinLocationEnabled: isEditMode ? (existingWarehouse?.isBinLocationEnabled ?? true) : true,
       isActive: isEditMode ? (existingWarehouse?.isActive ?? true) : true,
     },
   });
 
+  const { submit, isSubmitting } = useFormSubmit(
+    (formData: FormData, signal: AbortSignal) => {
+      if (isEditMode) {
+        return WarehouseService.updateWarehouse(existingWarehouse!._id, formData, signal);
+      } else {
+        return WarehouseService.createWarehouse(formData, signal);
+      }
+    },
+    {
+      onSuccess: warehouse => {
+        reset();
+        onSubmit(warehouse);
+      },
+      onError: error => {
+        console.error(`Error ${isEditMode ? 'updating' : 'creating'} warehouse:`, error);
+      },
+    }
+  );
+
+  const onFormSubmit = (formData: FormData) => {
+    submit(formData);
+  };
+
+  console.log(errors, getValues());
+
   return (
     <Modal size={Modal.Size.LARGE}>
       <ModalHeader onClose={onCancel}>
         {isEditMode ? 'Edit Warehouse' : 'Create Warehouse'}
       </ModalHeader>
-      <Form onSubmit={() => {}}>
-        <Loading isLoading={false}>
+      <Form onSubmit={handleSubmit(onFormSubmit)}>
+        <Loading isLoading={isSubmitting} showLoader={false}>
           <ModalContent>
             <Grid className="gap-y-4.5">
               <GridCell>
@@ -67,10 +99,18 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
                 />
               </GridCell>
               <GridCell>
-                <FormSwitch
-                  label="Bin Location Enabled"
-                  name="isBinLocationEnabled"
+                <Controller
+                  name="companyId"
                   control={control}
+                  render={({ field, fieldState }) => (
+                    <CompanyDropdown
+                      value={field.value}
+                      className="w-full"
+                      onSelect={value => field.onChange(value._id)}
+                      hasError={!!fieldState.error}
+                      isRequired={true}
+                    />
+                  )}
                 />
               </GridCell>
               <GridCell>
@@ -81,28 +121,39 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
                     <SapWarehousesDropdown
                       value={field.value}
                       className="w-full"
-                      onValueChange={value => field.onChange(value)}
-                      error={undefined}
+                      onSelect={value => field.onChange(value)}
+                      hasError={!!fieldState.error}
                       isRequired={true}
+                      companyId={watch('companyId')}
+                      isDisabled={!getValues('companyId')}
                     />
                   )}
                 />
+              </GridCell>{' '}
+              <GridCell>
+                <FormSwitch
+                  label="Bin Location Enabled"
+                  name="isBinLocationEnabled"
+                  control={control}
+                />
+              </GridCell>
+              <GridCell>
+                <FormSwitch label="Active" name="isActive" control={control} />
               </GridCell>
             </Grid>
           </ModalContent>
         </Loading>
         <ModalFooter>
-          <SubmitButton isLoading={false} isDisabled={false} />
-          <CancelButton onClick={onCancel} isDisabled={false} />
+          <SubmitButton isLoading={isSubmitting} isDisabled={isSubmitting} />
+          <CancelButton
+            onClick={() => {
+              reset();
+              onCancel();
+            }}
+            isDisabled={isSubmitting}
+          />
         </ModalFooter>
       </Form>
     </Modal>
   );
 };
-
-const products = [
-  { id: 1, name: 'Laptop', category: 'Electronics', price: 999 },
-  { id: 2, name: 'Phone', category: 'Electronics', price: 699 },
-  { id: 3, name: 'Book', category: 'Education', price: 29 },
-  { id: 4, name: 'Headphones', category: 'Electronics', price: 199 },
-];

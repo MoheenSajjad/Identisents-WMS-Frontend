@@ -255,7 +255,13 @@ export const CreateCompany = (props: CompanyModalProps) => {
         </Loading>
         <ModalFooter>
           <SubmitButton isLoading={isSubmitting} isDisabled={isSubmitting} />
-          <CancelButton onClick={onCancel} isDisabled={isSubmitting} />
+          <CancelButton
+            onClick={() => {
+              reset();
+              onCancel();
+            }}
+            isDisabled={isSubmitting}
+          />
         </ModalFooter>
       </Form>
     </Modal>

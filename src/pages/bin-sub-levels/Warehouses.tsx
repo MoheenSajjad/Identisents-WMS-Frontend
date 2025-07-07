@@ -15,7 +15,7 @@ import { CreateWarehouse } from '@/components/parts/modals/create-warehouse';
 import DeleteConfirmationModal from '@/components/parts/delete-confirmation/DeleteConfirmation';
 import { useFormSubmit } from '@/hooks/use-form-submit';
 
-export const Warehouses = () => {
+export const BinSubLevels = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedWarehouse, setSelectedWarehouse] = useState<IWarehouse | null>(null);
   const [deleteWarehouseId, setDeleteWarehouseId] = useState<string | null>(null);
@@ -86,7 +86,7 @@ export const Warehouses = () => {
     <>
       <PageTransition>
         <Paper>
-          <Paper.BigTitle title="Warehouse" />
+          <Paper.BigTitle title="Bin Sub Levels" />
           <DataTable table={table} isLoading={isLoading}>
             <DataTableToolbar table={table}>
               <ReloadButton onClick={refetch} />

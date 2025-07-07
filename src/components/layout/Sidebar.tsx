@@ -196,6 +196,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
       icon: Package,
       path: '/warehouses',
     },
+    {
+      id: 'binSubLevel',
+      label: 'Bin Sub Levels',
+      icon: Package,
+      path: '/bin-sub-levels',
+    },
   ];
 
   const handleItemClick = (item: NavItem) => {
