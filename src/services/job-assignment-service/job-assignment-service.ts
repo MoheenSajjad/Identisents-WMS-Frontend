@@ -16,6 +16,10 @@ class JobAssignmentServices {
   ): Promise<ApiResponse<void>> {
     return apiClient.delete<ApiResponse<void>>(`api//${id}`, { signal });
   }
+
+  static async assignJob(id: string, signal: AbortSignal): Promise<ApiResponse<void>> {
+    return apiClient.put<ApiResponse<void>>(`api//${id}`, { signal });
+  }
 }
 
 export const JobAssignmentService = JobAssignmentServices;

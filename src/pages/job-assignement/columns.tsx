@@ -7,6 +7,7 @@ import { DateTime } from '@/utils/date-time';
 import { Button } from '@/components/ui/Button';
 
 export const getColumns = (
+  onAssign: (id: string) => void,
   onDelete?: (job: IJobAssignment) => void
 ): ColumnDef<IJobAssignment>[] => [
   {
@@ -72,7 +73,11 @@ export const getColumns = (
     header: () => <HeaderButton label="Assign" showSortIcon={false} />,
     meta: { CellAlign: TableAlign.CENTER, HeadAlign: TableAlign.CENTER },
     cell: ({ row }) => (
-      <Button variant={Button.Variant.OUTLINE} size={Button.Size.SMALL}>
+      <Button
+        variant={Button.Variant.OUTLINE}
+        size={Button.Size.SMALL}
+        onClick={() => onAssign(row.original._id)}
+      >
         Assign
       </Button>
     ),
