@@ -135,7 +135,7 @@ export const Button: ButtonComponent = ({
     },
     [ButtonColor.DANGER]: {
       [ButtonVariant.OUTLINE]: 'hover:border-red-500 hover:text-red-600',
-      [ButtonVariant.GHOST]: 'text-red-600 hover:bg-red-500 hover:text-white',
+      [ButtonVariant.GHOST]: 'text-red-600 hover:bg-red-400 hover:text-white',
       [ButtonVariant.LINK]: 'text-red-600',
     },
     [ButtonColor.SUCCESS]: {
@@ -180,7 +180,7 @@ export const Button: ButtonComponent = ({
       className={classes}
       {...ariaProps}
     >
-      {loading ? <Icons.Spinner className="animate-spin" /> : icon && <span>{icon}</span>}
+      {loading ? <Icons.Loader className="animate-spin" /> : icon && <span>{icon}</span>}
 
       {children}
 

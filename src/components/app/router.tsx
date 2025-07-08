@@ -1,5 +1,10 @@
-import { Main } from "./main";
+import { AnimatePresence } from 'framer-motion';
+import { Main } from './main';
 
 export const Router = () => {
-  return <Main />;
+  return (
+    <AnimatePresence mode="wait">
+      <Main />
+    </AnimatePresence>
+  );
 };

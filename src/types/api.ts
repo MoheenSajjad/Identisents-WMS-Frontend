@@ -22,6 +22,6 @@ export interface PaginationInfo {
 }
 
 export interface PaginatedResponse<T> {
-  records: T[];
+  records: T;
   pagination: PaginationInfo;
 }

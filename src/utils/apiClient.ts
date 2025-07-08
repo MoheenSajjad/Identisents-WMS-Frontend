@@ -1,20 +1,28 @@
-import { ApiResponse } from '@/types/api';
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { apiUrl } from '@/config';
 
-class ApiClient {
-  private instance: AxiosInstance;
+interface RequestOptions {
+  signal?: AbortSignal;
+  params?: Record<string, any>;
+  headers?: Record<string, string>;
+}
 
-  constructor() {
+abstract class BaseApiClient {
+  protected instance: AxiosInstance;
+
+  constructor(baseURL: string, timeout: number = 10000) {
     this.instance = axios.create({
-      baseURL: apiUrl || '',
-      timeout: 10000,
+      baseURL,
+      timeout,
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    // Simple request interceptor for auth
+    this.setupInterceptors();
+  }
+
+  protected setupInterceptors(): void {
     this.instance.interceptors.request.use(config => {
       const token = localStorage.getItem('authToken');
       if (token) {
@@ -22,32 +30,92 @@ class ApiClient {
       }
       return config;
     });
+
+    this.instance.interceptors.response.use(
+      response => response,
+      error => {
+        if (axios.isCancel(error)) {
+          return Promise.reject({ name: 'AbortError', message: 'Request was cancelled' });
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
-  async get<T>(url: string, params?: any): Promise<ApiResponse<T>> {
-    const response = await this.instance.get(url, { params });
-    return response.data;
+  protected buildConfig(options?: RequestOptions): AxiosRequestConfig {
+    const config: AxiosRequestConfig = {};
+
+    if (options?.signal) {
+      config.signal = options.signal;
+    }
+
+    if (options?.headers) {
+      config.headers = { ...config.headers, ...options.headers };
+    }
+
+    return config;
   }
 
-  async post<T>(url: string, data?: any): Promise<ApiResponse<T>> {
-    const response = await this.instance.post(url, data);
-    return response.data;
-  }
-
-  async put<T>(url: string, data?: any): Promise<ApiResponse<T>> {
-    const response = await this.instance.put(url, data);
-    return response.data;
-  }
-
-  async patch<T>(url: string, data?: any): Promise<ApiResponse<T>> {
-    const response = await this.instance.patch(url, data);
-    return response.data;
-  }
-
-  async delete<T>(url: string): Promise<ApiResponse<T>> {
-    const response = await this.instance.delete(url);
+  protected async request<T>(config: AxiosRequestConfig): Promise<T> {
+    const response = await this.instance.request(config);
     return response.data;
   }
 }
 
+class ApiClient extends BaseApiClient {
+  constructor() {
+    super(apiUrl || '', 10000);
+  }
+
+  async get<T>(url: string, options?: RequestOptions): Promise<T> {
+    const config = this.buildConfig(options);
+    return this.request<T>({
+      method: 'GET',
+      url,
+      params: options?.params,
+      ...config,
+    });
+  }
+
+  async post<T>(url: string, data?: any, options?: RequestOptions): Promise<T> {
+    const config = this.buildConfig(options);
+    return this.request<T>({
+      method: 'POST',
+      url,
+      data,
+      ...config,
+    });
+  }
+
+  async put<T>(url: string, data?: any, options?: RequestOptions): Promise<T> {
+    const config = this.buildConfig(options);
+    return this.request<T>({
+      method: 'PUT',
+      url,
+      data,
+      ...config,
+    });
+  }
+
+  async patch<T>(url: string, data?: any, options?: RequestOptions): Promise<T> {
+    const config = this.buildConfig(options);
+    return this.request<T>({
+      method: 'PATCH',
+      url,
+      data,
+      ...config,
+    });
+  }
+
+  async delete<T>(url: string, options?: RequestOptions): Promise<T> {
+    const config = this.buildConfig(options);
+    return this.request<T>({
+      method: 'DELETE',
+      url,
+      ...config,
+    });
+  }
+}
+
 export const apiClient = new ApiClient();
+export { ApiClient, type RequestOptions };
