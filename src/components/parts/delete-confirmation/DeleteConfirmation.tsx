@@ -8,8 +8,11 @@ interface DeleteConfirmationModalProps {
   onClose: () => void;
   onDelete: () => void;
   isLoading: boolean;
+  isRestore: boolean;
   deleteHeader?: string;
   deleteMessage?: string;
+  restoreHeader?: string;
+  restoreMessage?: string;
 }
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
@@ -17,10 +20,26 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   onClose,
   onDelete,
   isLoading,
+  isRestore = false,
   deleteHeader = 'Delete Record',
   deleteMessage = 'You’re going to delete this record. Are you sure?',
+  restoreHeader = 'Restore Record',
+  restoreMessage = 'You’re going to restore this record. Are you sure?',
 }) => {
   if (!open) return null;
+
+  const header = isRestore ? restoreHeader : deleteHeader;
+  const message = isRestore ? restoreMessage : deleteMessage;
+  const iconColor = isRestore ? 'text-green-500' : 'text-red-500';
+  const iconBg = isRestore ? 'bg-green-100' : 'bg-red-100';
+  const buttonVariant = isRestore ? Button.Variant.PRIMARY : Button.Variant.DESTRUCTIVE;
+  const buttonText = isLoading
+    ? isRestore
+      ? 'Restoring...'
+      : 'Deleting...'
+    : isRestore
+      ? 'Yes, Restore It!'
+      : 'Yes, Delete It!';
 
   return (
     <Portal rootId="modals">
@@ -33,28 +52,28 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <div className="w-[350px] rounded-xl bg-white p-6 text-center shadow-xl">
               <div className="mb-4 flex justify-center">
-                <div className="rounded-full bg-red-100 p-2">
-                  <AlertTriangle className="h-6 w-6 text-red-500" />
+                <div className={`rounded-full p-2 ${iconBg}`}>
+                  <AlertTriangle className={`h-6 w-6 ${iconColor}`} />
                 </div>
               </div>
-              <h2 className="mb-2 text-lg font-semibold text-gray-800">{deleteHeader}</h2>
-              <p className="mb-6 text-sm text-gray-600">{deleteMessage} </p>
+              <h2 className="mb-2 text-lg font-semibold text-gray-800">{header}</h2>
+              <p className="mb-6 text-sm text-gray-600">{message}</p>
               <div className="flex items-center justify-center gap-4">
                 <Button
                   variant={Button.Variant.SECONDARY}
                   onClick={onClose}
                   className="!rounded-full"
                 >
-                  No, Keep It.
+                  {isRestore ? 'No, Don’t Restore.' : 'No, Keep It.'}
                 </Button>
                 <Button
-                  variant={Button.Variant.DESTRUCTIVE}
+                  variant={buttonVariant}
                   onClick={onDelete}
                   className="!rounded-full"
                   loading={isLoading}
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Deleting...' : 'Yes, Delete It!'}
+                  {buttonText}
                 </Button>
               </div>
             </div>

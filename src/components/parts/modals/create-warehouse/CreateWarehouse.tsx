@@ -13,6 +13,7 @@ import { SapWarehousesDropdown } from '../../dropdowns/sap-warehouses-dropdown';
 import { CompanyDropdown } from '../../dropdowns/company-dropdown';
 import { WarehouseService } from '@/services/warehouse-services';
 import { useFormSubmit } from '@/hooks/use-form-submit';
+import { OpacityWrapper } from '../../opacity-wrapper';
 
 interface ICreateWarehouseModalProps {
   mode: 'edit' | 'create';
@@ -78,15 +79,13 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
     submit(formData);
   };
 
-  console.log(errors, getValues());
-
   return (
     <Modal size={Modal.Size.LARGE}>
       <ModalHeader onClose={onCancel}>
         {isEditMode ? 'Edit Warehouse' : 'Create Warehouse'}
       </ModalHeader>
       <Form onSubmit={handleSubmit(onFormSubmit)}>
-        <Loading isLoading={isSubmitting} showLoader={false}>
+        <OpacityWrapper opacity={isSubmitting ? 0.5 : 1} disabled={isSubmitting}>
           <ModalContent>
             <Grid className="gap-y-4.5">
               <GridCell>
@@ -142,7 +141,7 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
               </GridCell>
             </Grid>
           </ModalContent>
-        </Loading>
+        </OpacityWrapper>
         <ModalFooter>
           <SubmitButton isLoading={isSubmitting} isDisabled={isSubmitting} />
           <CancelButton

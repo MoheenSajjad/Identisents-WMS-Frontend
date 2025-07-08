@@ -25,11 +25,41 @@ export const DeleteIconButton = ({ onClick, isDisabled, isLoading }: IButtonBase
   );
 };
 
+export const RestoreIconButton = ({ onClick, isDisabled, isLoading }: IButtonBaseProps) => {
+  return (
+    <Button
+      size={Button.Size.ICON}
+      icon={<Icons.RestoreArchive />}
+      disabled={isDisabled}
+      variant={Button.Variant.GHOST}
+      color={Button.Color.DANGER}
+      roundness={Button.Roundness.FULL}
+      className="ml-1"
+      onClick={onClick}
+      loading={isLoading}
+    />
+  );
+};
+
 export const EditIconButton = ({ onClick, isDisabled }: IButtonBaseProps) => {
   return (
     <Button
       size={Button.Size.ICON}
       icon={<Icons.Edit className="!h-4 !w-4" />}
+      disabled={isDisabled}
+      variant={Button.Variant.GHOST}
+      color={Button.Color.PRIMARY}
+      roundness={Button.Roundness.FULL}
+      onClick={onClick}
+    />
+  );
+};
+
+export const AddIconButton = ({ onClick, isDisabled }: IButtonBaseProps) => {
+  return (
+    <Button
+      size={Button.Size.ICON}
+      icon={<Icons.Plus className="!h-4 !w-4" />}
       disabled={isDisabled}
       variant={Button.Variant.GHOST}
       color={Button.Color.PRIMARY}

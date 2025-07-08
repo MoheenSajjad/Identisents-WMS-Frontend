@@ -1,6 +1,6 @@
 import { apiClient } from '@/utils/apiClient';
 import { ApiResponse, PaginatedResponse } from '@/types/api';
-import { IWarehouse, IWarehouseUpdate } from '@/types/warehouse';
+import { IWarehouse, IWarehouseDropdown, IWarehouseUpdate } from '@/types/warehouse';
 
 class WarehouseService {
   static async getWarehouses(
@@ -14,8 +14,12 @@ class WarehouseService {
     );
   }
 
-  static async getWarehouseById(id: string, signal: AbortSignal): Promise<ApiResponse<IWarehouse>> {
-    return apiClient.get<ApiResponse<IWarehouse>>(`/warehouse/${id}`, { signal });
+  // static async getWarehouseById(id: string, signal: AbortSignal): Promise<ApiResponse<IWarehouse>> {
+  //   return apiClient.get<ApiResponse<IWarehouse>>(`/warehouse/${id}`, { signal });
+  // }
+
+  static async getAllWarehouses(signal: AbortSignal): Promise<ApiResponse<IWarehouseDropdown[]>> {
+    return apiClient.get<ApiResponse<IWarehouseDropdown[]>>(`api/warehouse/all`, { signal });
   }
 
   static async updateWarehouse(

@@ -115,10 +115,11 @@ export const SapWarehousesDropdown: React.FC<ISapWarehousesDropdownProps> = ({
   useOnClickOutside(dialogRef, () => toggleOff());
   return (
     <DropdownDialog isOpen={isToggled} className={className} ref={dialogRef}>
-      <DropdownLabel label="SAP Warehouses" isRequired={isRequired} />
       <DropdownTrigger
         selectedItems={value}
         placeholder={placeholder}
+        label="SAP Warehouses"
+        isRequired={isRequired}
         toggleDropdown={handleToggleDropdown}
         renderSelected={renderSelectedWarehouse}
         isLoading={isLoading}

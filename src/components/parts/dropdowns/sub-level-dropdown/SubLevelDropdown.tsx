@@ -5,62 +5,58 @@ import {
   DropdownEmpty,
   DropdownInput,
   DropdownItem,
-  DropdownItemImage,
   DropdownItemName,
   DropdownLabel,
   DropdownList,
   DropdownTrigger,
 } from '../../dropdown/Dropdown';
-import { useCallback, useState, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { useOnClickOutside } from '@/hooks/use-click-outside';
-import { ICompanyDropdown } from '@/types/company';
-import { CompanyService } from '@/services/company-services';
 import { ApiResponse } from '@/types/api';
 import { IDropdownOption } from '@/types/dropdown';
+import { SubLevelService } from '@/services/sub-level-services';
+import { ISubLevelDropdown } from '@/types/bin-sub-levels';
 
-interface ICompanyDropdownProps extends IDropdownOption<ICompanyDropdown, string> {
-  showLabel?: boolean;
-}
+interface ISubLevelDropdownProps extends IDropdownOption<ISubLevelDropdown, string> {}
 
-export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
+export const SubLevelDropdown: React.FC<ISubLevelDropdownProps> = ({
   value,
   onSelect,
-  placeholder = 'Select company...',
+  placeholder = 'Select sub level...',
   isDisabled = false,
   hasError = false,
   error,
   className,
   isRequired = false,
-  showLabel = true,
 }) => {
   const { isToggled, toggle, toggleOff } = useToggle();
   const [searchTerm, setSearchTerm] = useState('');
   const dialogRef = useRef<any>(null);
 
-  const fetchCompanies = useCallback(
-    (signal: AbortSignal) => CompanyService.getAllCompanies(signal),
+  const fetchSubLevels = useCallback(
+    (signal: AbortSignal) => SubLevelService.getSubLevels(signal),
     []
   );
 
-  const { data: companiesResponse, isLoading } =
-    useFetch<ApiResponse<ICompanyDropdown[]>>(fetchCompanies);
+  const { data: subLevelsResponse, isLoading } =
+    useFetch<ApiResponse<ISubLevelDropdown[]>>(fetchSubLevels);
 
-  const companies = useMemo(() => companiesResponse?.data ?? [], [companiesResponse]);
+  const subLevels = useMemo(() => subLevelsResponse?.data ?? [], [subLevelsResponse]);
 
-  const filteredCompanies = useMemo(() => {
-    if (!searchTerm.trim()) return companies;
+  const filteredSubLevels = useMemo(() => {
+    if (!searchTerm.trim()) return subLevels;
 
     const searchLower = searchTerm.toLowerCase();
-    return companies.filter(company => company.name.toLowerCase().includes(searchLower));
-  }, [companies, searchTerm]);
+    return subLevels.filter(sub => sub.name.toLowerCase().includes(searchLower));
+  }, [subLevels, searchTerm]);
 
-  const selectedCompany = useMemo(() => {
-    return companies.find(c => c._id === value);
-  }, [value, companies]);
+  const selectedSubLevel = useMemo(() => {
+    return subLevels.find(s => s._id === value);
+  }, [value, subLevels]);
 
-  const handleSelectCompany = (company: ICompanyDropdown) => {
-    onSelect?.(company);
+  const handleSelectSubLevel = (subLevel: ISubLevelDropdown) => {
+    onSelect?.(subLevel);
     toggleOff();
   };
 
@@ -81,38 +77,38 @@ export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
     <DropdownDialog isOpen={isToggled} className={className} ref={dialogRef}>
       <DropdownTrigger
         selectedItems={value ? [value] : []}
-        placeholder={placeholder}
-        label="Company"
+        label="Sub Level"
         isRequired={isRequired}
-        showLabel={showLabel}
+        placeholder={placeholder}
         toggleDropdown={handleToggleDropdown}
-        renderSelected={() => (selectedCompany ? selectedCompany.name : '')}
+        renderSelected={() => (selectedSubLevel ? selectedSubLevel.name : '')}
         isLoading={isLoading}
         isDisabled={isDisabled || isLoading}
         hasError={hasError}
         error={error}
         isMultiple={false}
+        className="w-full"
       />
 
       <DropdownContent isOpen={isToggled}>
         <DropdownInput
           value={searchTerm}
           onChange={handleSearchChange}
-          placeholder="Search company..."
+          placeholder="Search sub level..."
         />
 
         <DropdownList>
-          {!isLoading && filteredCompanies.length === 0 && (
-            <DropdownEmpty message="No companies found" />
+          {!isLoading && filteredSubLevels.length === 0 && (
+            <DropdownEmpty message="No sub levels found" />
           )}
 
-          {filteredCompanies.map(company => (
+          {filteredSubLevels.map(sub => (
             <DropdownItem
-              key={company._id}
-              onClick={() => handleSelectCompany(company)}
-              isSelected={company._id === value}
+              key={sub._id}
+              onClick={() => handleSelectSubLevel(sub)}
+              isSelected={sub._id === value}
             >
-              <DropdownItemName>{company.name}</DropdownItemName>
+              <DropdownItemName>{sub.name}</DropdownItemName>
             </DropdownItem>
           ))}
         </DropdownList>

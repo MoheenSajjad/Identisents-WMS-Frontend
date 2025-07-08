@@ -1,52 +1,29 @@
-import { IWarehouse } from '@/types/warehouse';
 import { ColumnDef } from '@tanstack/react-table';
-import { DeleteIconButton, EditIconButton, HeaderButton } from '@/components/parts/Buttons';
+import {
+  DeleteIconButton,
+  EditIconButton,
+  HeaderButton,
+  RestoreIconButton,
+} from '@/components/parts/Buttons';
 import { TableAlign } from '@/components/ui/Table';
 import { Tag } from '@/components/ui/Tag';
-import { Icons } from '@/components/Icons';
+import { IBinSubLevels } from '@/types/bin-sub-levels';
+import { DateTime } from '@/utils/date-time';
 
 export function getColumns(
-  onEdit?: (warehouse: IWarehouse) => void,
-  onDelete?: (warehouse: IWarehouse) => void
-): ColumnDef<IWarehouse>[] {
+  onEdit?: (warehouse: IBinSubLevels) => void,
+  onDelete?: (warehouse: IBinSubLevels) => void
+): ColumnDef<IBinSubLevels>[] {
   return [
     {
-      accessorKey: 'code',
+      accessorKey: 'binLocationSubLevel.name',
       header: ({ column }) => (
         <HeaderButton
-          label="Code"
+          label="Sub Level Name"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         />
       ),
       enableSorting: true,
-    },
-    {
-      accessorKey: 'name',
-      header: ({ column }) => (
-        <HeaderButton
-          label="Name"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        />
-      ),
-      enableSorting: true,
-    },
-    {
-      accessorKey: 'isBinLocationEnabled',
-      meta: { CellAlign: TableAlign.CENTER, HeadAlign: TableAlign.CENTER },
-      header: ({ column }) => (
-        <HeaderButton
-          label="Bin Location Enabled"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        />
-      ),
-      enableSorting: true,
-      cell: ({ row }) => (
-        <Tag
-          type={row.original.isBinLocationEnabled ? Tag.type.ACTIVE : Tag.type.INACTIVE}
-          label={row.original.isBinLocationEnabled ? 'Enabled' : 'Disabled'}
-          icon={row.original.isBinLocationEnabled ? <Icons.CheckCircle /> : <Icons.CircleX />}
-        />
-      ),
     },
     {
       accessorKey: 'isActive',
@@ -66,6 +43,17 @@ export function getColumns(
       ),
     },
     {
+      accessorKey: 'createdAt',
+      header: ({ column }) => (
+        <HeaderButton
+          label="Created Date"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        />
+      ),
+      cell: ({ row }) => DateTime.parse(row.original.createdAt).toString(),
+      enableSorting: true,
+    },
+    {
       id: 'actions',
       header: () => <HeaderButton label="Actions" showSortIcon={false} />,
       meta: { CellAlign: TableAlign.CENTER, HeadAlign: TableAlign.CENTER },
@@ -73,7 +61,11 @@ export function getColumns(
         return (
           <>
             <EditIconButton onClick={() => onEdit?.(row.original)} />
-            <DeleteIconButton onClick={() => onDelete?.(row.original)} />
+            {row.original.isDeleted ? (
+              <RestoreIconButton onClick={() => onDelete?.(row.original)} />
+            ) : (
+              <DeleteIconButton onClick={() => onDelete?.(row.original)} />
+            )}
           </>
         );
       },

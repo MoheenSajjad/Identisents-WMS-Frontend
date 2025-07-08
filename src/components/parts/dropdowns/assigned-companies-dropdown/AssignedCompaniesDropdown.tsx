@@ -5,9 +5,7 @@ import {
   DropdownEmpty,
   DropdownInput,
   DropdownItem,
-  DropdownItemImage,
   DropdownItemName,
-  DropdownLabel,
   DropdownList,
   DropdownTrigger,
 } from '../../dropdown/Dropdown';
@@ -19,14 +17,14 @@ import { CompanyService } from '@/services/company-services';
 import { ApiResponse } from '@/types/api';
 import { IDropdownOption } from '@/types/dropdown';
 
-interface ICompanyDropdownProps extends IDropdownOption<ICompanyDropdown, string> {
+interface IAssignedCompaniesDropdownProps extends IDropdownOption<ICompanyDropdown, string> {
   showLabel?: boolean;
 }
 
-export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
+export const AssignedCompaniesDropdown: React.FC<IAssignedCompaniesDropdownProps> = ({
   value,
   onSelect,
-  placeholder = 'Select company...',
+  placeholder = 'Select assigned company...',
   isDisabled = false,
   hasError = false,
   error,
@@ -38,13 +36,13 @@ export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const dialogRef = useRef<any>(null);
 
-  const fetchCompanies = useCallback(
+  const fetchAssignedCompanies = useCallback(
     (signal: AbortSignal) => CompanyService.getAllCompanies(signal),
     []
   );
 
   const { data: companiesResponse, isLoading } =
-    useFetch<ApiResponse<ICompanyDropdown[]>>(fetchCompanies);
+    useFetch<ApiResponse<ICompanyDropdown[]>>(fetchAssignedCompanies);
 
   const companies = useMemo(() => companiesResponse?.data ?? [], [companiesResponse]);
 
@@ -82,7 +80,7 @@ export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
       <DropdownTrigger
         selectedItems={value ? [value] : []}
         placeholder={placeholder}
-        label="Company"
+        label="Assigned Company"
         isRequired={isRequired}
         showLabel={showLabel}
         toggleDropdown={handleToggleDropdown}
@@ -103,7 +101,7 @@ export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
 
         <DropdownList>
           {!isLoading && filteredCompanies.length === 0 && (
-            <DropdownEmpty message="No companies found" />
+            <DropdownEmpty message="No assigned companies found" />
           )}
 
           {filteredCompanies.map(company => (

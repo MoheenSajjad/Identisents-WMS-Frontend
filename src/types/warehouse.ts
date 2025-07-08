@@ -23,3 +23,9 @@ export interface IWarehouseUpdate {
   isBinLocationEnabled: boolean;
   isActive: boolean;
 }
+
+export interface IWarehouseDropdown {
+  _id: string;
+  code: string;
+  name: string;
+}

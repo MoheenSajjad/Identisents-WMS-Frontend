@@ -11,6 +11,7 @@ import { CompanyService } from '@/services/company-services';
 import { ICompany } from '@/types/company';
 import { Loading } from '@/components/ui/Loading';
 import { Form } from '@/components/ui/form';
+import { OpacityWrapper } from '../../opacity-wrapper';
 
 const formSchema = z
   .object({
@@ -112,8 +113,6 @@ export const CreateCompany = (props: CompanyModalProps) => {
   };
 
   const handleLogoChange = (value: string) => {
-    console.log(value);
-
     if (!value) {
       setValue('logoUrl', '');
     }
@@ -131,7 +130,7 @@ export const CreateCompany = (props: CompanyModalProps) => {
     <Modal size={Modal.Size.LARGE}>
       <ModalHeader onClose={onCancel}>{isEditMode ? 'Edit Company' : 'Create Company'}</ModalHeader>
       <Form onSubmit={handleSubmit(onFormSubmit)}>
-        <Loading isLoading={isSubmitting}>
+        <OpacityWrapper opacity={isSubmitting ? 0.5 : 1} disabled={isSubmitting}>
           <ModalContent>
             <Grid className="gap-y-4.5">
               <GridCell>
@@ -252,7 +251,7 @@ export const CreateCompany = (props: CompanyModalProps) => {
               </GridCell>
             </Grid>
           </ModalContent>
-        </Loading>
+        </OpacityWrapper>
         <ModalFooter>
           <SubmitButton isLoading={isSubmitting} isDisabled={isSubmitting} />
           <CancelButton

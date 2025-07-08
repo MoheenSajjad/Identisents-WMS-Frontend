@@ -8,6 +8,7 @@ interface FormFieldProps<TFieldValues extends FieldValues> {
   className?: string;
   control: Control<TFieldValues>;
   error?: FieldError;
+  hasError?: boolean;
   isDisabled?: boolean;
   isRequired?: boolean;
   type?: TextInputType;
@@ -20,6 +21,7 @@ export const TextFormField = <TFieldValues extends FieldValues>({
   className,
   control,
   error,
+  hasError,
   isDisabled,
   isRequired,
   type = TextInputType.TEXT,
@@ -34,7 +36,8 @@ export const TextFormField = <TFieldValues extends FieldValues>({
         label={label}
         className={`w-full ${className}`}
         placeholder={`Enter ${placeholder ?? label}`}
-        hasError={!!error}
+        hasError={hasError}
+        error={error?.message}
         isRequired={isRequired}
         isDisabled={isDisabled}
       />
@@ -49,6 +52,7 @@ export const NumberFormField = <TFieldValues extends FieldValues>({
   className,
   control,
   error,
+  hasError,
   isDisabled,
   isRequired,
   type = TextInputType.NUMBER,
@@ -67,7 +71,8 @@ export const NumberFormField = <TFieldValues extends FieldValues>({
         }}
         className={`w-full ${className}`}
         placeholder={`Enter ${placeholder ?? label}`}
-        hasError={!!error}
+        hasError={hasError}
+        error={error?.message}
         isRequired={isRequired}
         isDisabled={isDisabled}
       />

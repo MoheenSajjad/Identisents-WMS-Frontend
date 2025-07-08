@@ -59,6 +59,16 @@ export const Icons = {
       </SvgIcon>
     );
   },
+
+  Plus: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M5 12h14" />
+        <path d="M12 5v14" />
+      </SvgIcon>
+    );
+  },
+
   CheckCircle: ({ className }: IconProps) => {
     return (
       <SvgIcon className={className} strokeWidth={2}>
@@ -95,6 +105,16 @@ export const Icons = {
       <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
       <line x1="10" x2="10" y1="11" y2="17" />
       <line x1="14" x2="14" y1="11" y2="17" />
+    </SvgIcon>
+  ),
+
+  RestoreArchive: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <rect width="20" height="5" x="2" y="3" rx="1" />
+      <path d="M4 8v11a2 2 0 0 0 2 2h2" />
+      <path d="M20 8v11a2 2 0 0 1-2 2h-2" />
+      <path d="m9 15 3-3 3 3" />
+      <path d="M12 12v9" />
     </SvgIcon>
   ),
 

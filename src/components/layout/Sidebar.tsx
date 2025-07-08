@@ -202,6 +202,18 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
       icon: Package,
       path: '/bin-sub-levels',
     },
+    {
+      id: 'binLocations',
+      label: 'Bin Locations',
+      icon: Package,
+      path: '/bin-locations',
+    },
+    {
+      id: 'jobs',
+      label: 'Jobs',
+      icon: Package,
+      path: '/jobs',
+    },
   ];
 
   const handleItemClick = (item: NavItem) => {

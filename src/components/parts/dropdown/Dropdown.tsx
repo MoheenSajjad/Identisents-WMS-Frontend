@@ -103,16 +103,22 @@ export const DropdownTrigger = ({
   imgUrl = '',
   hasError = false,
   isMultiple = false,
+  isRequired = false,
   renderSelected,
   onRemoveItem,
+  label,
+  showLabel = true,
 }: {
   selectedItems?: any[];
   placeholder: string;
   error?: string;
   toggleDropdown: () => void;
+  label?: string;
+  showLabel?: boolean;
   className?: string;
   isLoading?: boolean;
   isDisabled?: boolean;
+  isRequired?: boolean;
   Icon?: React.ReactNode;
   showImg?: boolean;
   imgUrl?: string;
@@ -178,6 +184,7 @@ export const DropdownTrigger = ({
 
   return (
     <Shake shouldShake={hasError}>
+      {showLabel && <DropdownLabel label={label!} isRequired={isRequired} />}
       <button
         type="button"
         className={`hover:border-primary-orange/55 relative min-h-8 w-full min-w-52 cursor-default rounded-lg border py-1.5 pr-10 pl-3 text-left text-gray-500 transition-all duration-300 hover:text-gray-700 focus:outline-none sm:text-xs ${isError ? 'border-red-600 hover:border-red-600' : ''} ${isDisabled ? 'bg-gray-100' : 'cursor-pointer bg-white'} ${className} `}
