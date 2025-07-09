@@ -14,6 +14,7 @@ import { JobAssignmentService } from '@/services/job-assignment-service';
 import { getColumns } from './columns';
 import { ApiResponse } from '@/types/api';
 import AssignJobModal from '@/components/parts/modals/assign-job-modal/AssignJobModal';
+import { Outlet } from 'react-router-dom';
 
 export const JobAssignment = () => {
   const [jobToDelete, setJobToDelete] = useState<IJobAssignment | null>(null);
@@ -105,7 +106,11 @@ export const JobAssignment = () => {
         />
       )}
 
-      {isToggled && <AssignJobModal onCancel={toggleOff} onSubmit={() => {}} />}
+      {isToggled && assignJobId && (
+        <AssignJobModal onCancel={toggleOff} onSubmit={() => {}} jobId={assignJobId} />
+      )}
+
+      <Outlet />
     </>
   );
 };

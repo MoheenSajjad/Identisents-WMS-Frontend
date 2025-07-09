@@ -46,14 +46,12 @@ type PaperTitleProps = {
 
 export const PaperTitle = ({ title }: PaperTitleProps): JSX.Element => {
   return (
-    <div className="mb-8 flex w-full items-center first:mt-0 [&:not(:first-child)]:mt-8">
-      <div className="mr-4 flex-shrink-0 text-base font-semibold text-gray-800 uppercase">
+    <div className="mb-8 w-full first:mt-0 [&:not(:first-child)]:mt-8">
+      <div className="relative text-base font-semibold text-gray-800 uppercase after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-10 after:bg-gray-600 after:content-['']">
         {title}
       </div>
-      <div className="flex-grow border-b border-gray-200"></div>
     </div>
   );
 };
-
 Paper.Title = PaperTitle;
 Paper.BigTitle = PaperBigTitle;

@@ -83,7 +83,7 @@ const InputBorder = ({
 }: InputBorderProps): JSX.Element => {
   return (
     <div
-      className={`flex h-8 w-full rounded-lg border bg-white ${
+      className={`flex h-8 w-full rounded-lg border border-gray-400 bg-white ${
         showErrorMessage && 'mb-5'
       } ${hasError ? 'border-error' : 'border-light-grey'} ${className}`}
       onClick={onClick}

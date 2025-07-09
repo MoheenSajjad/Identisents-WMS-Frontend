@@ -13,7 +13,8 @@ import { IBinLocation } from '@/types/bin-location';
 import { BinLocationService } from '@/services/bin-location-services/bin-location-services';
 import { getColumns } from './columns';
 import { ApiResponse } from '@/types/api';
-import { CreateBinLocation } from '@/components/parts/modals/create-bin-location';
+// import { CreateBinLocation } from '@/components/parts/modals/create-bin-location';
+import { useNavigate } from 'react-router-dom';
 
 export const BinLocation = () => {
   const [selectedBinLocation, setSelectedBinLocation] = useState<IBinLocation | null>(null);
@@ -25,6 +26,7 @@ export const BinLocation = () => {
     toggleOff: closeDeleteModal,
     isToggled: isDeleteModalOpen,
   } = useToggle();
+  const navigate = useNavigate();
 
   const { submit: deleteBinLocation, isSubmitting: isDeleting } = useFormSubmit(
     (params: { id: string; isDelete: boolean }, signal: AbortSignal) =>
@@ -82,13 +84,13 @@ export const BinLocation = () => {
           <DataTable table={table} isLoading={isLoading}>
             <DataTableToolbar table={table}>
               <ReloadButton onClick={refetch} />
-              <AddNewButton onClick={toggleOn} />
+              <AddNewButton onClick={() => navigate('/bin-location/create')} />
             </DataTableToolbar>
           </DataTable>
         </Paper>
       </PageTransition>
 
-      {isToggled && (
+      {/* {isToggled && (
         <CreateBinLocation
           mode={!!selectedBinLocation ? 'edit' : 'create'}
           binLocation={selectedBinLocation}
@@ -101,7 +103,7 @@ export const BinLocation = () => {
             toggleOff();
           }}
         />
-      )}
+      )} */}
 
       {isDeleteModalOpen && (
         <DeleteConfirmationModal

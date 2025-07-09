@@ -16,6 +16,7 @@ import { TextFormField } from '@/components/ui/formField';
 interface IAssignJobModalProps {
   onCancel: () => void;
   onSubmit: (data: IJobAssignment) => void;
+  jobId: string;
 }
 
 const formSchema = z.object({
@@ -25,7 +26,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-const AssignJobModal: React.FC<IAssignJobModalProps> = ({ onCancel, onSubmit }) => {
+const AssignJobModal: React.FC<IAssignJobModalProps> = ({ onCancel, onSubmit, jobId }) => {
   const {
     control,
     handleSubmit,
@@ -41,7 +42,7 @@ const AssignJobModal: React.FC<IAssignJobModalProps> = ({ onCancel, onSubmit }) 
 
   const { submit, isSubmitting } = useFormSubmit(
     (formData: FormData, signal: AbortSignal) => {
-      return JobAssignmentService.assignJob(formData.employeeId, signal);
+      return JobAssignmentService.assignJob({ data: formData, jobId }, signal);
     },
     {
       onSuccess: res => {
@@ -93,7 +94,7 @@ const AssignJobModal: React.FC<IAssignJobModalProps> = ({ onCancel, onSubmit }) 
           </ModalContent>
         </OpacityWrapper>
         <ModalFooter>
-          <SubmitButton isLoading={isSubmitting} isDisabled={isSubmitting} />
+          <SubmitButton isLoading={isSubmitting} isDisabled={isSubmitting} label="Assign" />
           <CancelButton
             onClick={() => {
               reset();

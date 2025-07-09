@@ -35,6 +35,24 @@ export interface ICreateBinLocation {
   isActive: boolean;
 }
 
+export interface IGenerateBinLocationCodesProps {
+  warehouse: string;
+  fromBinSubLevel1: string;
+  fromBinSubLevel2: string;
+  fromBinSubLevel3: string;
+  fromBinSubLevel4: string;
+  toBinSubLevel1: string;
+  toBinSubLevel2: string;
+  toBinSubLevel3: string;
+  toBinSubLevel4: string;
+  capacity: number;
+  itemGroup: string;
+  itemCode: string;
+  itemName: string;
+  uom: string;
+  isActive: boolean;
+}
+
 interface binSubLevel {
   _id: string;
   rows: {

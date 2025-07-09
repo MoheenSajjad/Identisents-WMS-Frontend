@@ -6,6 +6,8 @@ import { Warehouses } from '@/pages/warehouses';
 import { BinSubLevels } from '@/pages/bin-sub-levels';
 import { BinLocation } from '@/pages/bin-locations';
 import { JobAssignment } from '@/pages/job-assignement';
+import { JobDetail } from '@/pages/job-detail/JobDetail';
+import { CreateBinLocation } from '@/pages/create-bin-location';
 
 export const Main = () => {
   return (
@@ -17,7 +19,9 @@ export const Main = () => {
           <Route path="/warehouses" element={<Warehouses />} />
           <Route path="/bin-sub-levels" element={<BinSubLevels />} />
           <Route path="/bin-locations" element={<BinLocation />} />
+          <Route path="/bin-location/create" element={<CreateBinLocation />} />
           <Route path="/jobs" element={<JobAssignment />} />
+          <Route path="/job/:id" element={<JobDetail />} />
           <Route index element={<Dashboard />} />
         </Route>
       </Routes>

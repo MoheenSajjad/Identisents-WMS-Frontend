@@ -55,6 +55,20 @@ export const EditIconButton = ({ onClick, isDisabled }: IButtonBaseProps) => {
   );
 };
 
+export const ViewIconButton = ({ onClick, isDisabled }: IButtonBaseProps) => {
+  return (
+    <Button
+      size={Button.Size.ICON}
+      icon={<Icons.Eye className="!h-4 !w-4" />}
+      disabled={isDisabled}
+      variant={Button.Variant.GHOST}
+      color={Button.Color.PRIMARY}
+      roundness={Button.Roundness.FULL}
+      onClick={onClick}
+    />
+  );
+};
+
 export const AddIconButton = ({ onClick, isDisabled }: IButtonBaseProps) => {
   return (
     <Button
@@ -85,7 +99,7 @@ export const ReloadButton = ({ onClick }: IButtonBaseProps) => {
   );
 };
 
-export const SubmitButton = ({ isDisabled, isLoading }: IButtonBaseProps) => {
+export const SubmitButton = ({ isDisabled, isLoading, label = 'Submit' }: IButtonBaseProps) => {
   return (
     <Button
       variant={Button.Variant.PRIMARY}
@@ -94,7 +108,7 @@ export const SubmitButton = ({ isDisabled, isLoading }: IButtonBaseProps) => {
       disabled={isDisabled}
       type="submit"
     >
-      Submit
+      {label}
     </Button>
   );
 };

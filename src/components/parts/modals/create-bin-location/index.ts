@@ -1,1 +1,1 @@
-export * from './CreateBinLocation';
+// export * from './CreateBinLocation';

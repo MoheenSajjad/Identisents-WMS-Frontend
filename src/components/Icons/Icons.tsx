@@ -52,6 +52,15 @@ export const Icons = {
       <path d="m4.9 4.9 2.9 2.9" />
     </SvgIcon>
   ),
+  Eye: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+        <circle cx="12" cy="12" r="3" />
+      </SvgIcon>
+    );
+  },
+
   Check: ({ className }: IconProps) => {
     return (
       <SvgIcon className={className} strokeWidth={2}>
@@ -122,6 +131,28 @@ export const Icons = {
     <SvgIcon className={className}>
       <path d="m21 21-4.34-4.34" />
       <circle cx="11" cy="11" r="8" />
+    </SvgIcon>
+  ),
+  User: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </SvgIcon>
+  ),
+  ClockFading: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M12 2a10 10 0 0 1 7.38 16.75" />
+      <path d="M12 6v6l4 2" />
+      <path d="M2.5 8.875a10 10 0 0 0-.5 3" />
+      <path d="M2.83 16a10 10 0 0 0 2.43 3.4" />
+      <path d="M4.636 5.235a10 10 0 0 1 .891-.857" />
+      <path d="M8.644 21.42a10 10 0 0 0 7.631-.38" />
+    </SvgIcon>
+  ),
+  CheckCheck: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M18 6 7 17l-5-5" />
+      <path d="m22 10-7.5 7.5L13 16" />
     </SvgIcon>
   ),
 
