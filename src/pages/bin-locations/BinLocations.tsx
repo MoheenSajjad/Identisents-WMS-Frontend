@@ -90,21 +90,6 @@ export const BinLocation = () => {
         </Paper>
       </PageTransition>
 
-      {/* {isToggled && (
-        <CreateBinLocation
-          mode={!!selectedBinLocation ? 'edit' : 'create'}
-          binLocation={selectedBinLocation}
-          onSubmit={() => {
-            toggleOff();
-            refetch();
-          }}
-          onCancel={() => {
-            setSelectedBinLocation(null);
-            toggleOff();
-          }}
-        />
-      )} */}
-
       {isDeleteModalOpen && (
         <DeleteConfirmationModal
           open={isDeleteModalOpen}

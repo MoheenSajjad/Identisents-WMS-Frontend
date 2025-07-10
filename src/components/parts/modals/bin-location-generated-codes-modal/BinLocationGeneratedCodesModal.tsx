@@ -7,6 +7,7 @@ import { DataTable } from '../../Datatable';
 import { useFormSubmit } from '@/hooks/use-form-submit';
 import { BinLocationService } from '@/services/bin-location-services/bin-location-services';
 import { OpacityWrapper } from '../../opacity-wrapper';
+import { GearLoading } from '@/components/ui/Loading/GearLoading';
 
 interface GeneratedCodesModalProps {
   data: IGeneratedBinLocation[];
@@ -36,7 +37,6 @@ export const GeneratedCodesModal: React.FC<GeneratedCodesModalProps> = ({
     },
     {
       onSuccess: data => {
-        // Close the modal on success
         onSubmit();
       },
       onError: error => {
@@ -52,7 +52,7 @@ export const GeneratedCodesModal: React.FC<GeneratedCodesModalProps> = ({
   return (
     <Modal size={Modal.Size.XXLARGE} onClose={onCancel}>
       <ModalHeader onClose={onCancel}>Generated Bin Location Codes</ModalHeader>
-      <OpacityWrapper disabled={isSubmitting} opacity={isSubmitting ? 0.5 : 1}>
+      <GearLoading isLoading={isSubmitting} text="Generating Bin Locations">
         <ModalContent className="flex h-[calc(100vh-120px)] flex-col overflow-hidden">
           <div className="mb-4 flex flex-shrink-0 items-center justify-between">
             <div className="flex-1">{/* Empty div to push content to the right */}</div>
@@ -73,7 +73,7 @@ export const GeneratedCodesModal: React.FC<GeneratedCodesModalProps> = ({
             <DataTable table={table} isLoading={false} />
           </div>
         </ModalContent>
-      </OpacityWrapper>
+      </GearLoading>
       <ModalFooter>
         <Button variant={Button.Variant.OUTLINE} onClick={onCancel} disabled={isSubmitting}>
           Cancel
@@ -81,7 +81,7 @@ export const GeneratedCodesModal: React.FC<GeneratedCodesModalProps> = ({
         <Button
           variant={Button.Variant.PRIMARY}
           onClick={handleSubmit}
-          disabled={isSubmitting || errorCount > 0}
+          disabled={isSubmitting}
           loading={isSubmitting}
         >
           {isSubmitting ? 'Creating...' : 'Create Bin Locations'}

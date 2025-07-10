@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { apiUrl } from '@/config';
-import { store } from '@/redux/store';
 
 interface RequestOptions {
   signal?: AbortSignal;
@@ -37,7 +36,6 @@ abstract class BaseApiClient {
       error => {
         const { status } = error.response || {};
         if (status === 401) {
-          store.dispatch({ type: 'auth/logoutUser/fulfilled' });
           sessionStorage.removeItem('authData');
           sessionStorage.removeItem('token');
           window.location.href = '/login';

@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { NumberFormField, TextFormField } from '@/components/ui/formField';
 import { FormSwitch } from '@/components/ui/form-switch';
 import { ApiResponse } from '@/types/api';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IBinSubLevels } from '@/types/bin-sub-levels';
 import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { BinSubLevelService } from '@/services/bin-sub-level-services';
@@ -25,6 +25,7 @@ import { BinLocationService } from '@/services/bin-location-services/bin-locatio
 import { IGeneratedBinLocation } from '@/components/parts/modals/bin-location-generated-codes-modal/columns';
 import { useToggle } from '@/hooks/use-toggle';
 import { GeneratedCodesModal } from '@/components/parts/modals/bin-location-generated-codes-modal';
+import { GearLoading } from '@/components/ui/Loading/GearLoading';
 
 const createFormSchema = (levels: IBinSubLevels[]) => {
   // const dynamicFields: Record<string, any> = {};
@@ -60,6 +61,7 @@ const createFormSchema = (levels: IBinSubLevels[]) => {
 
 export const CreateBinLocation = () => {
   const [generatedCode, setGeneratedCodes] = useState<IGeneratedBinLocation[] | null>(null);
+  const [showLoading, setShowLoading] = useState(false);
 
   const navigate = useNavigate();
   const { toggleOff, toggleOn, isToggled } = useToggle();
@@ -163,10 +165,8 @@ export const CreateBinLocation = () => {
     },
     {
       onSuccess: data => {
-        // reset();
         setGeneratedCodes(data.data);
-        toggleOn();
-        // onSubmit(warehouse.data);
+        setTimeout(() => toggleOn(), 2000);
       },
       onError: error => {
         console.error(`Error`, error);
@@ -195,201 +195,216 @@ export const CreateBinLocation = () => {
     submit(data);
     // reset();/
   };
-  console.log(errors, getValues());
+
+  useEffect(() => {
+    if (isSubmitting) {
+      setShowLoading(true);
+    } else if (showLoading) {
+      const timeout = setTimeout(() => {
+        setShowLoading(false);
+      }, 2000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [isSubmitting]);
 
   return (
     <>
-      <Paper>
-        <Form onSubmit={handleSubmit(handleFormSubmit)}>
-          <Paper.BigTitle title="Create Bin Location">
-            <div className="flex items-center justify-center gap-2">
-              <Button
-                variant={Button.Variant.OUTLINE}
-                icon={<ArrowLeftCircle />}
-                onClick={() => navigate('/bin-locations')}
-              >
-                Back
-              </Button>
-              <SubmitButton />
-            </div>
-          </Paper.BigTitle>
-
-          <Card className="border border-gray-200">
-            <Paper.Title title="Bin Location Properties" />
-
-            <OpacityWrapper opacity={1} disabled={false}>
-              <Grid className="gap-y-4">
-                <GridCell size={Grid.CellSize.S3}>
-                  <Controller
-                    name="warehouse"
-                    control={control}
-                    render={({ field, fieldState }) => (
-                      <WarehouseDropdown
-                        value={field.value}
-                        onSelect={w => field.onChange(w._id)}
-                        hasError={!!fieldState.error}
-                        isRequired
-                      />
-                    )}
-                  />
-                </GridCell>
-
-                <GridCell size={Grid.CellSize.S3}>
-                  <NumberFormField
-                    label="Capacity"
-                    name="capacity"
-                    control={control}
-                    placeholder="Capacity"
-                    hasError={control.getFieldState('capacity').invalid}
-                    isRequired
-                  />
-                </GridCell>
-
-                <GridCell size={Grid.CellSize.S3}>
-                  <TextFormField
-                    label="Item Group"
-                    name="itemGroup"
-                    control={control}
-                    placeholder="Item Group"
-                    hasError={control.getFieldState('itemGroup').invalid}
-                    isRequired
-                  />
-                </GridCell>
-
-                <GridCell size={Grid.CellSize.S3}>
-                  <TextFormField
-                    label="Item Code"
-                    name="itemCode"
-                    control={control}
-                    placeholder="Item Code"
-                    hasError={control.getFieldState('itemCode').invalid}
-                    isRequired
-                  />
-                </GridCell>
-
-                <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
-                  <TextFormField
-                    label="Item Name"
-                    name="itemName"
-                    control={control}
-                    placeholder="Item Name"
-                    hasError={control.getFieldState('itemName').invalid}
-                    isRequired
-                  />
-                </GridCell>
-
-                <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
-                  <TextFormField
-                    label="UOM"
-                    name="uom"
-                    control={control}
-                    placeholder="UOM"
-                    hasError={control.getFieldState('uom').invalid}
-                    isRequired
-                  />
-                </GridCell>
-
-                <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
-                  <FormSwitch label="Active" name="isActive" control={control} />
-                </GridCell>
-              </Grid>
-            </OpacityWrapper>
-
-            <Paper.Title title="Bin Location Codes" />
-
-            <div className="mt-4 space-y-4">
-              <Grid>
-                <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
-                  <h3 className="text-sm font-semibold text-gray-900">Bin Level</h3>
-                </GridCell>
-                <GridCell className="text-left">
-                  <h3 className="text-sm font-semibold text-gray-900">From</h3>
-                </GridCell>
-                <GridCell className="text-left">
-                  <h3 className="text-sm font-semibold text-gray-900">To</h3>
-                </GridCell>
-              </Grid>
-
-              <div className="space-y-4">
-                {sortedLevels.map(level => {
-                  const levelKey = level.binLocationSubLevel.subLevel;
-                  const fromFieldName = `fromBinSubLevel${levelKey}` as keyof FormData;
-                  const toFieldName = `toBinSubLevel${levelKey}` as keyof FormData;
-                  const fromValue = watchedValues[fromFieldName] as string;
-                  const toValue = watchedValues[toFieldName] as string;
-
-                  return (
-                    <Grid key={level._id}>
-                      <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
-                        <span className="text-sm font-medium">
-                          {level.binLocationSubLevel.name}
-                        </span>
-                      </GridCell>
-                      <GridCell>
-                        <Controller
-                          name={fromFieldName}
-                          control={control}
-                          render={({ field, fieldState }) => (
-                            <BinSubLevelRowsDropdown
-                              value={field.value as string}
-                              onSelect={row => field.onChange(row.code)}
-                              hasError={
-                                !!fieldState.error ||
-                                !isSelectionValid(field.value as string, toValue, level)
-                              }
-                              showLabel={false}
-                              options={level.rows}
-                              isRequired
-                              placeholder={`Select from ${level.binLocationSubLevel.name.toLowerCase()}...`}
-                              error={
-                                fieldState.error?.message ||
-                                getValidationErrorMessage(field.value as string, toValue, level)
-                              }
-                            />
-                          )}
-                        />
-                      </GridCell>
-
-                      <GridCell>
-                        <Controller
-                          name={toFieldName}
-                          control={control}
-                          render={({ field, fieldState }) => (
-                            <BinSubLevelRowsDropdown
-                              value={field.value as string}
-                              onSelect={row => field.onChange(row.code)}
-                              hasError={
-                                !!fieldState.error ||
-                                !isSelectionValid(fromValue, field.value as string, level)
-                              }
-                              showLabel={false}
-                              options={level.rows}
-                              isRequired
-                              placeholder={`Select to ${level.binLocationSubLevel.name.toLowerCase()}...`}
-                              error={
-                                fieldState.error?.message ||
-                                getValidationErrorMessage(fromValue, field.value as string, level)
-                              }
-                            />
-                          )}
-                        />
-                      </GridCell>
-                    </Grid>
-                  );
-                })}
-              </div>
-            </div>
-          </Card>
-        </Form>
-      </Paper>
       {isToggled && generatedCode && (
         <GeneratedCodesModal
           data={generatedCode}
-          onSubmit={() => {}}
+          onSubmit={() => {
+            toggleOff();
+            navigate('/bin-locations');
+          }}
           onCancel={toggleOff}
-          // isSubmitting={isSubmitting}
         />
       )}
+      <Paper>
+        <GearLoading isLoading={showLoading && !isToggled} text="Generating Codes...">
+          <Form onSubmit={handleSubmit(handleFormSubmit)}>
+            <Paper.BigTitle title="Create Bin Location">
+              <div className="flex items-center justify-center gap-2">
+                <Button
+                  variant={Button.Variant.OUTLINE}
+                  icon={<ArrowLeftCircle />}
+                  onClick={() => navigate('/bin-locations')}
+                >
+                  Back
+                </Button>
+                <SubmitButton />
+              </div>
+            </Paper.BigTitle>
+
+            <Card className="border border-gray-200">
+              <Paper.Title title="Bin Location Properties" />
+
+              <OpacityWrapper opacity={1} disabled={false}>
+                <Grid className="gap-y-4">
+                  <GridCell size={Grid.CellSize.S3}>
+                    <Controller
+                      name="warehouse"
+                      control={control}
+                      render={({ field, fieldState }) => (
+                        <WarehouseDropdown
+                          value={field.value}
+                          onSelect={w => field.onChange(w._id)}
+                          hasError={!!fieldState.error}
+                          isRequired
+                        />
+                      )}
+                    />
+                  </GridCell>
+
+                  <GridCell size={Grid.CellSize.S3}>
+                    <NumberFormField
+                      label="Capacity"
+                      name="capacity"
+                      control={control}
+                      placeholder="Capacity"
+                      hasError={control.getFieldState('capacity').invalid}
+                      isRequired
+                    />
+                  </GridCell>
+
+                  <GridCell size={Grid.CellSize.S3}>
+                    <TextFormField
+                      label="Item Group"
+                      name="itemGroup"
+                      control={control}
+                      placeholder="Item Group"
+                      hasError={control.getFieldState('itemGroup').invalid}
+                      isRequired
+                    />
+                  </GridCell>
+
+                  <GridCell size={Grid.CellSize.S3}>
+                    <TextFormField
+                      label="Item Code"
+                      name="itemCode"
+                      control={control}
+                      placeholder="Item Code"
+                      hasError={control.getFieldState('itemCode').invalid}
+                      isRequired
+                    />
+                  </GridCell>
+
+                  <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
+                    <TextFormField
+                      label="Item Name"
+                      name="itemName"
+                      control={control}
+                      placeholder="Item Name"
+                      hasError={control.getFieldState('itemName').invalid}
+                      isRequired
+                    />
+                  </GridCell>
+
+                  <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
+                    <TextFormField
+                      label="UOM"
+                      name="uom"
+                      control={control}
+                      placeholder="UOM"
+                      hasError={control.getFieldState('uom').invalid}
+                      isRequired
+                    />
+                  </GridCell>
+
+                  <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
+                    <FormSwitch label="Active" name="isActive" control={control} />
+                  </GridCell>
+                </Grid>
+              </OpacityWrapper>
+
+              <Paper.Title title="Bin Location Codes" />
+
+              <div className="mt-4 space-y-4">
+                <Grid>
+                  <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
+                    <h3 className="text-sm font-semibold text-gray-900">Bin Level</h3>
+                  </GridCell>
+                  <GridCell className="text-left">
+                    <h3 className="text-sm font-semibold text-gray-900">From</h3>
+                  </GridCell>
+                  <GridCell className="text-left">
+                    <h3 className="text-sm font-semibold text-gray-900">To</h3>
+                  </GridCell>
+                </Grid>
+
+                <div className="space-y-4">
+                  {sortedLevels.map(level => {
+                    const levelKey = level.binLocationSubLevel.subLevel;
+                    const fromFieldName = `fromBinSubLevel${levelKey}` as keyof FormData;
+                    const toFieldName = `toBinSubLevel${levelKey}` as keyof FormData;
+                    const fromValue = watchedValues[fromFieldName] as string;
+                    const toValue = watchedValues[toFieldName] as string;
+
+                    return (
+                      <Grid key={level._id}>
+                        <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
+                          <span className="text-sm font-medium">
+                            {level.binLocationSubLevel.name}
+                          </span>
+                        </GridCell>
+                        <GridCell>
+                          <Controller
+                            name={fromFieldName}
+                            control={control}
+                            render={({ field, fieldState }) => (
+                              <BinSubLevelRowsDropdown
+                                value={field.value as string}
+                                onSelect={row => field.onChange(row.code)}
+                                hasError={
+                                  !!fieldState.error ||
+                                  !isSelectionValid(field.value as string, toValue, level)
+                                }
+                                showLabel={false}
+                                options={level.rows}
+                                isRequired
+                                placeholder={`Select from ${level.binLocationSubLevel.name.toLowerCase()}...`}
+                                error={
+                                  fieldState.error?.message ||
+                                  getValidationErrorMessage(field.value as string, toValue, level)
+                                }
+                              />
+                            )}
+                          />
+                        </GridCell>
+
+                        <GridCell>
+                          <Controller
+                            name={toFieldName}
+                            control={control}
+                            render={({ field, fieldState }) => (
+                              <BinSubLevelRowsDropdown
+                                value={field.value as string}
+                                onSelect={row => field.onChange(row.code)}
+                                hasError={
+                                  !!fieldState.error ||
+                                  !isSelectionValid(fromValue, field.value as string, level)
+                                }
+                                showLabel={false}
+                                options={level.rows}
+                                isRequired
+                                placeholder={`Select to ${level.binLocationSubLevel.name.toLowerCase()}...`}
+                                error={
+                                  fieldState.error?.message ||
+                                  getValidationErrorMessage(fromValue, field.value as string, level)
+                                }
+                              />
+                            )}
+                          />
+                        </GridCell>
+                      </Grid>
+                    );
+                  })}
+                </div>
+              </div>
+            </Card>
+          </Form>
+        </GearLoading>
+      </Paper>
     </>
   );
 };
