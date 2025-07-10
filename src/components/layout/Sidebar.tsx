@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Building2, Package, Users2Icon } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Building2,
+  Package,
+  Users2Icon,
+  Boxes,
+  FileBox,
+  BookText,
+} from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/helpers';
 import logoimg from '@/assets/id_logo.png';
@@ -199,7 +207,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
     {
       id: 'warehouses',
       label: 'Warehouses',
-      icon: Package,
+      icon: Boxes,
       path: '/warehouses',
     },
     {
@@ -211,13 +219,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
     {
       id: 'binLocations',
       label: 'Bin Locations',
-      icon: Package,
+      icon: FileBox,
       path: '/bin-locations',
     },
     {
       id: 'jobs',
       label: 'Jobs',
-      icon: Package,
+      icon: BookText,
       path: '/jobs',
     },
   ];

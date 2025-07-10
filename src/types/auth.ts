@@ -12,6 +12,27 @@ export interface LoginCredentials {
 }
 
 export interface LoginResponse {
-  success: boolean;
-  id: string;
+  data: {
+    token: string;
+    user: {
+      _id: string;
+      employeeCode: string;
+      employeeName: string;
+      email: string;
+      isMobileUser: true;
+      isPortalUser: false;
+      companies: [
+        {
+          isDefault: true;
+          _id: string;
+          name: string;
+        },
+        {
+          isDefault: false;
+          _id: string;
+          name: string;
+        },
+      ];
+    };
+  };
 }

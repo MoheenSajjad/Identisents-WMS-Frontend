@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import LogoImg from '@/assets/id_logo.png';
-import { TextFormField } from '@/components/ui/formField';
+import { PasswordFormField, TextFormField } from '@/components/ui/formField';
 import { Button } from '@/components/ui/Button';
 import z from 'zod';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -50,7 +50,7 @@ export const Login = () => {
 
       reset();
     } catch (err) {
-      console.log('error');
+      console.log('error', err);
     }
   };
 
@@ -62,25 +62,26 @@ export const Login = () => {
         </div>
 
         <Form onSubmit={handleSubmit(SubmitData)}>
-          <OpacityWrapper disabled={isLoading} opacity={isLoading ? 0.5 : 1}>
-            <TextFormField
-              label="Username"
-              name="username"
-              control={control}
-              placeholder="username"
-              hasError={control.getFieldState('username').invalid}
-              isRequired
-              className="mb-3"
-            />
-            <TextFormField
-              label="Password"
-              name="password"
-              control={control}
-              placeholder="password"
-              hasError={control.getFieldState('password').invalid}
-              isRequired
-            />
-          </OpacityWrapper>
+          <TextFormField
+            label="Username"
+            name="username"
+            control={control}
+            placeholder="username"
+            hasError={control.getFieldState('username').invalid}
+            isDisabled={isLoading}
+            isRequired
+            className="mb-3"
+          />
+          <PasswordFormField
+            label="Password"
+            name="password"
+            control={control}
+            placeholder="password"
+            hasError={control.getFieldState('password').invalid}
+            isDisabled={isLoading}
+            isRequired
+          />
+
           <Button
             variant={Button.Variant.PRIMARY}
             className="my-5 w-full"

@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios, { AxiosError } from 'axios';
 import { AuthState, LoginCredentials, LoginResponse } from '@/types/auth';
 import { apiUrl } from '@/config';
+import { ApiResponse } from '@/types/api';
+import { apiClient } from '@/utils/apiClient';
 
 export const loginUser = createAsyncThunk<
   { username: string; password: string; userId: string },
@@ -9,7 +11,7 @@ export const loginUser = createAsyncThunk<
   { rejectValue: string }
 >('auth/loginUser', async ({ username, password }, { rejectWithValue }) => {
   try {
-    const response = await axios.post<LoginResponse>(
+    const response = await apiClient.post<ApiResponse<LoginResponse>>(
       `${apiUrl}/api/auth/login`,
       {
         username,
@@ -24,21 +26,23 @@ export const loginUser = createAsyncThunk<
 
     console.log(response, 'response');
 
-    if (response.data.success) {
+    if (response.success) {
       const authData = {
-        username,
-        password,
-        userId: response.data.id,
-        isAuthenticated: true,
+        employeeCode: response.data.data.user.employeeCode,
+        employeeName: response.data.data.user.employeeName,
+        email: response.data.data.user.email,
       };
 
-      // sessionStorage.setItem('authData', JSON.stringify(authData));
+      sessionStorage.setItem('authData', JSON.stringify(authData));
+      sessionStorage.setItem('token', response.data.data.token);
 
-      return { username, password, userId: response.data.id };
+      return { username, password, userId: response.data.data.user._id };
     } else {
       return rejectWithValue('Login failed');
     }
   } catch (error) {
+    console.log(error);
+
     const axiosError = error as AxiosError<{ message?: string }>;
     return rejectWithValue(axiosError.response?.data?.message || 'Login failed');
   }
@@ -65,6 +69,7 @@ const loadAuthFromStorage = (): Partial<AuthState> => {
     return {};
   } catch (error) {
     sessionStorage.removeItem('authData');
+    sessionStorage.removeItem('token');
     return {};
   }
 };

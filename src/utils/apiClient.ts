@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { apiUrl } from '@/config';
+import { store } from '@/redux/store';
 
 interface RequestOptions {
   signal?: AbortSignal;
@@ -24,7 +25,7 @@ abstract class BaseApiClient {
 
   protected setupInterceptors(): void {
     this.instance.interceptors.request.use(config => {
-      const token = localStorage.getItem('authToken');
+      const token = sessionStorage.getItem('token');
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -34,6 +35,13 @@ abstract class BaseApiClient {
     this.instance.interceptors.response.use(
       response => response,
       error => {
+        const { status } = error.response || {};
+        if (status === 401) {
+          store.dispatch({ type: 'auth/logoutUser/fulfilled' });
+          sessionStorage.removeItem('authData');
+          sessionStorage.removeItem('token');
+          window.location.href = '/login';
+        }
         if (axios.isCancel(error)) {
           return Promise.reject({ name: 'AbortError', message: 'Request was cancelled' });
         }
