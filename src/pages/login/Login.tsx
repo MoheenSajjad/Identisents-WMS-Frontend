@@ -2,14 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import LogoImg from '@/assets/id_logo.png';
 import { TextFormField } from '@/components/ui/formField';
-import {
-  AddIconButton,
-  CancelButton,
-  DeleteIconButton,
-  HeaderButton,
-  SubmitButton,
-} from '../../Buttons';
 import { Button } from '@/components/ui/Button';
+import GifTest from '@/assets/setting_asset.gif';
 
 export const Login = () => {
   const { control } = useForm();
@@ -19,6 +13,8 @@ export const Login = () => {
         <div className="mb-16">
           <img src={LogoImg} className="w-[180px]" />
         </div>
+
+        <img src={GifTest} className="w-[200px]" />
         <TextFormField
           label="Username"
           name="Username"
