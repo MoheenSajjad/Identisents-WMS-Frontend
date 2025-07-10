@@ -298,17 +298,17 @@ export const CreateBinLocation = () => {
             <Paper.Title title="Bin Location Codes" />
 
             <div className="mt-4 space-y-4">
-              <div className="grid grid-cols-3 gap-6">
-                <div className="text-center">
+              <Grid>
+                <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
                   <h3 className="text-sm font-semibold text-gray-900">Bin Level</h3>
-                </div>
-                <div className="text-center">
+                </GridCell>
+                <GridCell className="text-left">
                   <h3 className="text-sm font-semibold text-gray-900">From</h3>
-                </div>
-                <div className="text-center">
+                </GridCell>
+                <GridCell className="text-left">
                   <h3 className="text-sm font-semibold text-gray-900">To</h3>
-                </div>
-              </div>
+                </GridCell>
+              </Grid>
 
               <div className="space-y-4">
                 {sortedLevels.map(level => {
@@ -319,13 +319,13 @@ export const CreateBinLocation = () => {
                   const toValue = watchedValues[toFieldName] as string;
 
                   return (
-                    <div key={level._id} className="grid grid-cols-3 items-center gap-6">
-                      <div className="flex items-center justify-center space-x-3">
+                    <Grid key={level._id}>
+                      <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
                         <span className="text-sm font-medium">
                           {level.binLocationSubLevel.name}
                         </span>
-                      </div>
-                      <div>
+                      </GridCell>
+                      <GridCell>
                         <Controller
                           name={fromFieldName}
                           control={control}
@@ -348,9 +348,9 @@ export const CreateBinLocation = () => {
                             />
                           )}
                         />
-                      </div>
+                      </GridCell>
 
-                      <div>
+                      <GridCell>
                         <Controller
                           name={toFieldName}
                           control={control}
@@ -373,8 +373,8 @@ export const CreateBinLocation = () => {
                             />
                           )}
                         />
-                      </div>
-                    </div>
+                      </GridCell>
+                    </Grid>
                   );
                 })}
               </div>
