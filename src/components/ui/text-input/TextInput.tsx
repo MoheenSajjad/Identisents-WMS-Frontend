@@ -79,7 +79,7 @@ export const TextInput: React.FC<TextInputProps> = ({
       isDisabled={isDisabled}
     >
       <Shake shouldShake={!!hasError}>
-        {label && <Input.Label value={label} hasError={!!error} isRequired={isRequired} />}
+        {label && <Input.Label value={label} hasError={hasError} isRequired={isRequired} />}
         <Input.Border
           className={borderClassName}
           hasError={hasError}
