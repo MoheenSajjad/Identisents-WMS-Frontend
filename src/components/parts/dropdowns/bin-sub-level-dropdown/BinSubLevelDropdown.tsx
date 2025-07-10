@@ -22,6 +22,7 @@ interface IBinSubLevelDropdownProps extends IDropdownOption<IBinSubLevels, strin
   label?: string;
   options?: IBinSubLevels[];
   isLoading?: boolean;
+  showLabel?: boolean;
 }
 
 export const BinSubLevelDropdown: React.FC<IBinSubLevelDropdownProps> = ({
@@ -34,6 +35,7 @@ export const BinSubLevelDropdown: React.FC<IBinSubLevelDropdownProps> = ({
   error,
   className,
   options,
+  showLabel = true,
   isRequired = false,
   isLoading = false,
 }) => {
@@ -84,6 +86,7 @@ export const BinSubLevelDropdown: React.FC<IBinSubLevelDropdownProps> = ({
         toggleDropdown={handleToggleDropdown}
         renderSelected={() => selectedBinSubLevel?.binLocationSubLevel?.name || ''}
         isLoading={isLoading}
+        showLabel={showLabel}
         isDisabled={isDisabled || isLoading}
         hasError={hasError}
         error={error}

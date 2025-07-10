@@ -9,7 +9,6 @@ import { ImageUploader } from '@/components/ui/image-uploader/ImageUploader';
 import { useFormSubmit } from '@/hooks/use-form-submit';
 import { CompanyService } from '@/services/company-services';
 import { ICompany } from '@/types/company';
-import { Loading } from '@/components/ui/Loading';
 import { Form } from '@/components/ui/form';
 import { OpacityWrapper } from '../../opacity-wrapper';
 

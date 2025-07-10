@@ -5,9 +5,7 @@ import {
   DropdownEmpty,
   DropdownInput,
   DropdownItem,
-  DropdownItemImage,
   DropdownItemName,
-  DropdownLabel,
   DropdownList,
   DropdownTrigger,
 } from '../../dropdown/Dropdown';

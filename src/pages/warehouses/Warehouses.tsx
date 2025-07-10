@@ -117,6 +117,7 @@ export const Warehouses = () => {
           handleWarehouseDelete();
         }}
         isLoading={isDeleting}
+        isRestore={false}
         deleteHeader="Delete Warehouse"
         deleteMessage="Are you sure you want to delete this warehouse?"
       />

@@ -1,6 +1,5 @@
 import { Icons } from '@/components/Icons';
-import { Button } from '@/components/ui/Button';
-import { CheckIcon, ChevronsUpDown, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import React, { useState, useRef, ReactNode, forwardRef, useEffect } from 'react';
 import { Shake } from '../animations';
 
@@ -45,19 +44,20 @@ export const Dropdown: React.FC<DropdownProps> = ({ children }) => (
   <div className="w-full">{children}</div>
 );
 
-export const DropdownLabel = forwardRef<HTMLDivElement, { label: string; isRequired?: boolean }>(
-  ({ label, isRequired = false }, ref) => {
-    return (
-      <label
-        className={`text-darker-grey mb-1 block text-xs font-medium transition-colors duration-150 ${
-          isRequired && "relative after:ml-1 after:text-red-500 after:content-['*']"
-        }`}
-      >
-        {label}
-      </label>
-    );
-  }
-);
+export const DropdownLabel = forwardRef<
+  HTMLDivElement,
+  { label: string; isRequired?: boolean; hasError?: boolean }
+>(({ label, isRequired = false, hasError = false }, ref) => {
+  return (
+    <label
+      className={`text-darker-grey ${hasError && 'text-red-600'} mb-1 block text-xs font-medium transition-colors duration-150 ${
+        isRequired && "relative after:ml-1 after:text-red-500 after:content-['*']"
+      }`}
+    >
+      {label}
+    </label>
+  );
+});
 
 export const DropdownDialog = forwardRef<
   HTMLDivElement,
@@ -184,10 +184,10 @@ export const DropdownTrigger = ({
 
   return (
     <Shake shouldShake={hasError}>
-      {showLabel && <DropdownLabel label={label!} isRequired={isRequired} />}
+      {showLabel && <DropdownLabel label={label!} isRequired={isRequired} hasError={hasError} />}
       <button
         type="button"
-        className={`hover:border-primary-orange/55 relative min-h-8 w-full min-w-52 cursor-default rounded-lg border py-1.5 pr-10 pl-3 text-left text-gray-500 transition-all duration-300 hover:text-gray-700 focus:outline-none sm:text-xs ${isError ? 'border-red-600 hover:border-red-600' : ''} ${isDisabled ? 'bg-gray-100' : 'cursor-pointer bg-white'} ${className} `}
+        className={`hover:border-primary-orange/55 relative min-h-8 w-full min-w-52 cursor-default rounded-lg border py-1.5 pr-10 pl-3 text-left text-gray-500 transition-all duration-300 hover:text-gray-700 focus:outline-none sm:text-xs ${hasError ? 'border-error' : 'border-gray-400'} ${isDisabled ? 'bg-gray-100' : 'cursor-pointer bg-white'} ${className} `}
         onClick={onClick}
       >
         <div className="flex min-h-5 items-center">{getDisplayContent()}</div>

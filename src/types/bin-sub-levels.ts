@@ -18,6 +18,7 @@ export interface IBinLocationSubLevel {
 export interface IBinSubLevelRows {
   code: string;
   name: string;
+  serialNumber?: number;
 }
 
 export type ICreateBinSubLevel = Omit<

@@ -1,5 +1,10 @@
+import { IGeneratedBinLocation } from '@/components/parts/modals/bin-location-generated-codes-modal/columns';
 import { ApiResponse } from '@/types/api';
-import { IBinLocation, ICreateBinLocation } from '@/types/bin-location';
+import {
+  IBinLocation,
+  ICreateBinLocation,
+  IGenerateBinLocationCodesProps,
+} from '@/types/bin-location';
 import { apiClient } from '@/utils/apiClient';
 
 class BinLocationServices {
@@ -7,11 +12,30 @@ class BinLocationServices {
     return apiClient.get<ApiResponse<IBinLocation[]>>('api/binLocation', { signal });
   }
 
-  static async createBinLocation(
-    data: ICreateBinLocation,
+  static async createBulkBinLocations(
+    data: IGeneratedBinLocation[],
     signal: AbortSignal
-  ): Promise<ApiResponse<IBinLocation>> {
-    return apiClient.post<ApiResponse<IBinLocation>>('api/binLocation/create', data, { signal });
+  ): Promise<ApiResponse<IBinLocation[]>> {
+    return apiClient.post<ApiResponse<IBinLocation[]>>(
+      'api/binLocation/bulk-create',
+      { binLocations: data },
+      {
+        signal,
+      }
+    );
+  }
+
+  static async generateCodes(
+    data: IGenerateBinLocationCodesProps,
+    signal: AbortSignal
+  ): Promise<ApiResponse<IGeneratedBinLocation[]>> {
+    return apiClient.post<ApiResponse<IGeneratedBinLocation[]>>(
+      'api/binLocation/generate-codes',
+      data,
+      {
+        signal,
+      }
+    );
   }
 
   static async updateBinLocation(

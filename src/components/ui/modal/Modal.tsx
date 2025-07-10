@@ -38,7 +38,7 @@ interface ModalFooterProps {
 
 export const ModalHeader = ({ onClose, children }: ModalHeaderProps) => {
   return (
-    <div className="flex items-center justify-between rounded-t-md border-b border-gray-200 bg-neutral-50 px-4 py-4">
+    <div className="flex items-center justify-between rounded-none border-b border-gray-200 bg-neutral-50 px-4 py-4">
       <h3 className="text-primary font-semibold" id="modal-title">
         {children && children}
       </h3>
@@ -55,7 +55,7 @@ export const ModalContent = ({ children, className }: ModalContentProps) => {
 
 export const ModalFooter = ({ children }: ModalFooterProps) => {
   return (
-    <div className="gap-2 rounded-br-md rounded-bl-md border-t-[1px] border-gray-200 bg-neutral-50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6">
+    <div className="gap-2 rounded-none border-t-[1px] border-gray-200 bg-neutral-50 px-4 py-4 sm:flex sm:flex-row-reverse sm:px-6">
       {children}
     </div>
   );
@@ -67,7 +67,7 @@ export const Modal = ({ onClose, Icon, children, size = ModalSize.MEDIUM }: Moda
     md: 'sm:max-w-4xl w-[50%]',
     lg: 'sm:max-w-screen-lg w-[70%]',
     xl: 'sm:max-w-screen-xl w-[85%]',
-    xxl: 'max-w-screen-xl',
+    xxl: 'w-full h-full max-w-none max-h-none', // Full screen
   };
 
   return (
@@ -77,17 +77,18 @@ export const Modal = ({ onClose, Icon, children, size = ModalSize.MEDIUM }: Moda
           className="fixed inset-0 bg-gray-500/75 transition-opacity duration-1000 ease-in-out"
           aria-hidden="true"
         ></div>
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="fixed inset-0 z-10 w-screen overflow-hidden">
+          <div className="flex min-h-full items-center justify-center p-0 text-center sm:items-center sm:p-0">
             <div
-              className={`transform rounded-md bg-white text-left shadow-xl transition-all ${sizeClasses[size]}`}
+              className={`transform rounded-none bg-white text-left shadow-xl transition-all ${sizeClasses[size]}`}
             >
-              {/* removed overflow hidden class on this */}
-              <div className="rounded-md bg-white">
-                <div className="sm:flex sm:items-start">
+              <div className="h-full rounded-none bg-white">
+                <div className="h-full sm:flex sm:items-start">
                   {Icon && Icon}
 
-                  <div className="mt-1 w-full text-center sm:mt-0 sm:text-left">{children}</div>
+                  <div className="mt-1 h-full w-full text-center sm:mt-0 sm:text-left">
+                    {children}
+                  </div>
                 </div>
               </div>
             </div>

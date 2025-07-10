@@ -13,9 +13,14 @@ import { IJobAssignment } from '@/types/job-assignment';
 import { JobAssignmentService } from '@/services/job-assignment-service';
 import { getColumns } from './columns';
 import { ApiResponse } from '@/types/api';
+import AssignJobModal from '@/components/parts/modals/assign-job-modal/AssignJobModal';
+import { Outlet } from 'react-router-dom';
 
 export const JobAssignment = () => {
   const [jobToDelete, setJobToDelete] = useState<IJobAssignment | null>(null);
+  const [assignJobId, setAssignJobId] = useState<string | null>(null);
+
+  const { toggleOn, toggleOff, isToggled } = useToggle();
 
   const {
     toggleOn: openDeleteModal,
@@ -40,12 +45,20 @@ export const JobAssignment = () => {
     await deleteJob({ id: jobToDelete._id, isDelete: jobToDelete.isDeleted });
   };
 
+  const handleAssignClicked = (id: string) => {
+    setAssignJobId(id);
+    toggleOn();
+  };
+
   const columns = useMemo(
     () =>
-      getColumns(job => {
-        setJobToDelete(job);
-        openDeleteModal();
-      }),
+      getColumns(
+        id => handleAssignClicked(id),
+        job => {
+          setJobToDelete(job);
+          openDeleteModal();
+        }
+      ),
     []
   );
 
@@ -92,6 +105,12 @@ export const JobAssignment = () => {
           restoreMessage="Are you sure you want to restore this job assignment?"
         />
       )}
+
+      {isToggled && assignJobId && (
+        <AssignJobModal onCancel={toggleOff} onSubmit={() => {}} jobId={assignJobId} />
+      )}
+
+      <Outlet />
     </>
   );
 };

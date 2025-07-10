@@ -2,9 +2,9 @@ import { DataTable } from '@/components/parts/Datatable';
 import { Paper } from '@/components/ui/Paper';
 import { useDataTable } from '@/hooks/use-data-tabel';
 import { getColumns } from './columns';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { DataTableToolbar } from '@/components/parts/Datatable/DatatableToolbar';
-import { ApiResponse, PaginatedResponse } from '@/types/api';
+import { ApiResponse } from '@/types/api';
 import { AddNewButton, ReloadButton } from '@/components/parts/Buttons';
 import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { PageTransition } from '@/components/parts/animations';
@@ -96,6 +96,7 @@ export const BinSubLevels = () => {
         <CreateBinSubLevel
           mode={!!selectedSubLevel ? 'edit' : 'create'}
           onSubmit={() => {
+            setSelectedSubLevel(null);
             toggleOff();
             refetch();
           }}

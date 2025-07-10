@@ -100,7 +100,7 @@ export const Tag: TagComponent = ({
 
   return (
     <div
-      className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-sm font-medium ${type} ${className} ${
+      className={`inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-medium ${type} ${className} ${
         onClick ? 'cursor-pointer transition-opacity hover:opacity-80' : ''
       }`}
       onClick={onClick}
