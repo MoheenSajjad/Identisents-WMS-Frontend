@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/helpers';
-import logo from '@/assets/logo.avif';
+import logoimg from '@/assets/id_logo.png';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -255,10 +255,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
         <motion.div className="flex items-center justify-between pt-4" variants={logoVariants}>
           <div className="flex w-full items-start justify-start px-2">
             <motion.img
-              src={logo}
-              className="w-[110px] cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              src={logoimg}
+              className="ms-4 w-[110px] cursor-pointer"
+              // whileHover={{ scale: 1.05 }}
+              // whileTap={{ scale: 0.95 }}
             />
           </div>
         </motion.div>
