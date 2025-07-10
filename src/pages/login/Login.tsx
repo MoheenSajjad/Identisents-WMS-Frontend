@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { Form } from '@/components/ui/form';
 import { OpacityWrapper } from '@/components/parts/opacity-wrapper';
+import { useNotification } from '@/context/NotificationContext';
 
 const loginSchema = z.object({
   username: z.string().min(1),

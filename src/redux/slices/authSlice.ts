@@ -22,6 +22,8 @@ export const loginUser = createAsyncThunk<
       }
     );
 
+    console.log(response, 'response');
+
     if (response.data.success) {
       const authData = {
         username,
@@ -30,7 +32,7 @@ export const loginUser = createAsyncThunk<
         isAuthenticated: true,
       };
 
-      sessionStorage.setItem('authData', JSON.stringify(authData));
+      // sessionStorage.setItem('authData', JSON.stringify(authData));
 
       return { username, password, userId: response.data.id };
     } else {
