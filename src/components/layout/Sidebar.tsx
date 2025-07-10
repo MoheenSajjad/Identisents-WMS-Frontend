@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Building2, Package } from 'lucide-react';
+import { LayoutDashboard, Building2, Package, Users2Icon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/helpers';
 import logo from '@/assets/logo.avif';
@@ -189,6 +189,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
       label: 'Companies',
       icon: Building2,
       path: '/companies',
+    },
+    {
+      id: 'employees',
+      label: 'Employees',
+      icon: Users2Icon,
+      path: '/employees',
     },
     {
       id: 'warehouses',

@@ -8,6 +8,7 @@ import { BinLocation } from '@/pages/bin-locations';
 import { JobAssignment } from '@/pages/job-assignement';
 import { JobDetail } from '@/pages/job-detail/JobDetail';
 import { CreateBinLocation } from '@/pages/create-bin-location';
+import { Employees } from '@/pages/employees';
 
 export const Main = () => {
   return (
@@ -16,6 +17,7 @@ export const Main = () => {
         <Route path="/" element={<Layout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/companies" element={<Companies />} />
+          <Route path="/employees" element={<Employees />} />
           <Route path="/warehouses" element={<Warehouses />} />
           <Route path="/bin-sub-levels" element={<BinSubLevels />} />
           <Route path="/bin-locations" element={<BinLocation />} />

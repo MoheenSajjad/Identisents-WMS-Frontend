@@ -9,22 +9,35 @@ import {
   DropdownList,
   DropdownTrigger,
 } from '../../dropdown/Dropdown';
-import { useCallback, useState, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { useOnClickOutside } from '@/hooks/use-click-outside';
 import { ICompanyDropdown } from '@/types/company';
 import { CompanyService } from '@/services/company-services';
 import { ApiResponse } from '@/types/api';
-import { IDropdownOption } from '@/types/dropdown';
+import { Checkbox } from '@/components/ui/checkbox';
 
-interface ICompanyDropdownProps extends IDropdownOption<ICompanyDropdown, string> {
+interface IAssignedCompany {
+  id: string;
+  isDefault: boolean;
+}
+
+interface IAssignCompanyDropdownProps {
+  value: IAssignedCompany[];
+  onChange: (companies: IAssignedCompany[]) => void;
+  placeholder?: string;
+  isDisabled?: boolean;
+  hasError?: boolean;
+  error?: string;
+  className?: string;
+  isRequired?: boolean;
   showLabel?: boolean;
 }
 
-export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
+export const EmployeeAssignCompanyDropdown: React.FC<IAssignCompanyDropdownProps> = ({
   value,
-  onSelect,
-  placeholder = 'Select company...',
+  onChange,
+  placeholder = 'Select companies...',
   isDisabled = false,
   hasError = false,
   error,
@@ -48,18 +61,29 @@ export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
 
   const filteredCompanies = useMemo(() => {
     if (!searchTerm.trim()) return companies;
-
     const searchLower = searchTerm.toLowerCase();
     return companies.filter(company => company.name.toLowerCase().includes(searchLower));
   }, [companies, searchTerm]);
 
-  const selectedCompany = useMemo(() => {
-    return companies.find(c => c._id === value);
-  }, [value, companies]);
+  const isSelected = (id: string) => value.some(item => item.id === id);
+  const isDefault = (id: string) => value.find(item => item.id === id)?.isDefault;
 
-  const handleSelectCompany = (company: ICompanyDropdown) => {
-    onSelect?.(company);
-    toggleOff();
+  const handleSelect = (company: ICompanyDropdown) => {
+    if (isSelected(company._id)) {
+      const updated = value.filter(item => item.id !== company._id);
+      onChange(updated);
+    } else {
+      onChange([...value, { id: company._id, isDefault: false }]);
+    }
+  };
+
+  const handleDefaultChange = (id: string) => {
+    onChange(value.map(item => ({ ...item, isDefault: item.id === id })));
+  };
+
+  const renderSelected = () => {
+    if (value.length === 0) return '';
+    return `${value.length} compan${value.length === 1 ? 'y' : 'ies'} selected`;
   };
 
   const handleToggleDropdown = () => {
@@ -78,18 +102,18 @@ export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
   return (
     <DropdownDialog isOpen={isToggled} className={className} ref={dialogRef}>
       <DropdownTrigger
-        selectedItems={value ? [value] : []}
+        selectedItems={value.map(v => v.id)}
         placeholder={placeholder}
-        label="Company"
+        label="Assigned Companies"
         isRequired={isRequired}
         showLabel={showLabel}
         toggleDropdown={handleToggleDropdown}
-        renderSelected={() => (selectedCompany ? selectedCompany.name : '')}
+        renderSelected={renderSelected}
         isLoading={isLoading}
         isDisabled={isDisabled || isLoading}
         hasError={hasError}
         error={error}
-        isMultiple={false}
+        isMultiple={true}
       />
 
       <DropdownContent isOpen={isToggled}>
@@ -107,10 +131,20 @@ export const CompanyDropdown: React.FC<ICompanyDropdownProps> = ({
           {filteredCompanies.map(company => (
             <DropdownItem
               key={company._id}
-              onClick={() => handleSelectCompany(company)}
-              isSelected={company._id === value}
+              onClick={() => handleSelect(company)}
+              isSelected={isSelected(company._id)}
+              showCheckMark={false}
             >
               <DropdownItemName>{company.name}</DropdownItemName>
+              {isSelected(company._id) && (
+                <div className="absolute right-3">
+                  <Checkbox
+                    checked={isDefault(company._id)}
+                    onChange={() => handleDefaultChange(company._id)}
+                    className="h-4 w-4 rounded-full border-gray-400"
+                  />
+                </div>
+              )}
             </DropdownItem>
           ))}
         </DropdownList>
