@@ -186,12 +186,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
   });
 
   const navigationItems: NavItem[] = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      path: '/dashboard',
-    },
+    // {
+    //   id: 'dashboard',
+    //   label: 'Dashboard',
+    //   icon: LayoutDashboard,
+    //   path: '/dashboard',
+    // },
     {
       id: 'companies',
       label: 'Companies',
@@ -271,7 +271,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
           </motion.ul>
         </motion.nav>
 
-        {isOpen && (
+        {/* {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -294,7 +294,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
               </div>
             </motion.div>
           </motion.div>
-        )}
+        )} */}
       </motion.aside>
     </AnimatePresence>
   );
