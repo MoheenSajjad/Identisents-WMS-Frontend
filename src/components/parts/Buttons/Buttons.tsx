@@ -9,7 +9,12 @@ interface IButtonBaseProps {
   isLoading?: boolean;
   label?: string;
 }
-export const DeleteIconButton = ({ onClick, isDisabled, isLoading }: IButtonBaseProps) => {
+export const DeleteIconButton = ({
+  onClick,
+  isDisabled,
+  isLoading,
+  className,
+}: IButtonBaseProps) => {
   return (
     <Button
       size={Button.Size.ICON}
@@ -18,7 +23,7 @@ export const DeleteIconButton = ({ onClick, isDisabled, isLoading }: IButtonBase
       variant={Button.Variant.GHOST}
       color={Button.Color.DANGER}
       roundness={Button.Roundness.FULL}
-      className="ml-1"
+      className={`ml-1 ${className}`}
       onClick={onClick}
       loading={isLoading}
     />

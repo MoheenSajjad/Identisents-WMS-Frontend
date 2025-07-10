@@ -1,10 +1,14 @@
-import { NotificationProvider } from "@/context/NotificationContext";
-import { Router } from "./router";
+import { NotificationProvider } from '@/context/NotificationContext';
+import { Router } from './router';
+import { Provider } from 'react-redux';
+import { store } from '@/redux/store';
 
 export const App = () => {
   return (
     <NotificationProvider>
-      <Router />
+      <Provider store={store}>
+        <Router />
+      </Provider>
     </NotificationProvider>
   );
 };
