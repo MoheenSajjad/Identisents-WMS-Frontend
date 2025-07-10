@@ -105,12 +105,12 @@ export const Button: ButtonComponent = ({
 
   const variantClasses = {
     [ButtonVariant.PRIMARY]:
-      'bg-blue-500 text-white hover:bg-orange-600 focus-visible:ring-orange-500',
+      'bg-linear-to-r from-black via-gray-[#333333] to-gray-[#333333] text-white hover:bg-linear-to-l from-black via-gray-[#333333] to-gray-600 focus-visible:ring-gray-500 transition delay-150 duration-300 ease-in-out',
     [ButtonVariant.DEFAULT]: 'bg-gray-900 text-white hover:bg-gray-800 focus-visible:ring-gray-500',
     [ButtonVariant.SECONDARY]:
       'bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-500',
     [ButtonVariant.OUTLINE]:
-      'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 hover:border-orange-500 hover:text-orange-600 focus-visible:ring-orange-500',
+      'border border-gray-800 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-500 hover:text-black focus-visible:ring-gray-500',
     [ButtonVariant.GHOST]: 'text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-500',
     [ButtonVariant.LINK]:
       'text-orange-600 underline-offset-4 hover:underline focus-visible:ring-orange-500',
@@ -122,7 +122,7 @@ export const Button: ButtonComponent = ({
 
   const sizeClasses = {
     [ButtonSize.SMALL]: 'h-8 px-3 text-sm',
-    [ButtonSize.DEFAULT]: 'h-10 px-4 text-sm',
+    [ButtonSize.DEFAULT]: 'h-9 px-4 text-xs',
     [ButtonSize.LARGE]: 'h-11 px-8 text-base',
     [ButtonSize.ICON]: 'h-8 w-8 p-0',
   };
@@ -135,7 +135,7 @@ export const Button: ButtonComponent = ({
     },
     [ButtonColor.DANGER]: {
       [ButtonVariant.OUTLINE]: 'hover:border-red-500 hover:text-red-600',
-      [ButtonVariant.GHOST]: 'text-red-600 hover:bg-red-500 hover:text-white',
+      [ButtonVariant.GHOST]: 'text-red-600 hover:bg-red-400 hover:text-white',
       [ButtonVariant.LINK]: 'text-red-600',
     },
     [ButtonColor.SUCCESS]: {
@@ -180,7 +180,7 @@ export const Button: ButtonComponent = ({
       className={classes}
       {...ariaProps}
     >
-      {loading ? <Icons.Spinner className="animate-spin" /> : icon && <span>{icon}</span>}
+      {loading ? <Icons.Loader className="animate-spin" /> : icon && <span>{icon}</span>}
 
       {children}
 

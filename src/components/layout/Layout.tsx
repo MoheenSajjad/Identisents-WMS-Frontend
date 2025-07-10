@@ -56,7 +56,7 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
   };
 
   return (
-    <div className="flex h-screen bg-[#f8f9fa] transition-colors">
+    <div className="flex h-screen bg-[#ffffff] transition-colors">
       {isMobile && sidebarOpen && (
         <div
           className="bg-opacity-75 fixed inset-0 z-20 bg-gray-600 lg:hidden"
@@ -70,9 +70,7 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
         <Navbar onMenuClick={toggleSidebar} sidebarOpen={sidebarOpen} />
 
         <main className="h-full flex-1 overflow-auto">
-          <div className="max-w-7xl">
-            <Outlet />
-          </div>
+          <Outlet />
         </main>
       </div>
 

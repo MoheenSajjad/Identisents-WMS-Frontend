@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Menu, Search, User, Settings, LogOut, Command } from 'lucide-react';
-import { cn } from '@/utils/helpers';
-import { IconButton } from '../ui/icon-button';
 import { Button } from '../ui/Button';
+import { CompanyDropdown } from '../parts/dropdowns/company-dropdown';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -13,7 +12,6 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ onMenuClick, sidebarOpen }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [searchFocused, setSearchFocused] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const searchRef = useRef<HTMLDivElement>(null);
@@ -37,24 +35,10 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, sidebarOpen }) => {
     return 'Overview';
   };
 
-  useEffect(() => {
-    const handleKeydown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
-        event.preventDefault();
-        setSearchFocused(true);
-        const searchInput = document.getElementById('global-search') as HTMLInputElement;
-        searchInput?.focus();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeydown);
-    return () => document.removeEventListener('keydown', handleKeydown);
-  }, []);
-
   return (
-    <header className="shadow-2xs transition-colors">
+    <header className="bg-[#ffffff]transition-colors border-b-[1px] border-l-[1px] border-gray-200">
       <div className="flex items-center justify-between px-4 py-2">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <Button
             icon={<Menu size={18} />}
             variant={Button.Variant.GHOST}
@@ -65,37 +49,17 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, sidebarOpen }) => {
             aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
           />
 
-          <div className="flex items-center space-x-1 text-sm text-gray-600 md:space-x-2">
-            <span className="text-gray-400">Pages</span>
-            <span className="text-gray-400">/</span>
-            <span className="cursor-pointer font-semibold text-gray-700">{getPageTitle()}</span>
+          <div className="flex items-center space-x-1 text-sm text-black md:space-x-2">
+            <span className="text-gray-500">Pages</span>
+            <span className="text-gray-500">/</span>
+            <span className="cursor-pointer font-semibold text-black">{getPageTitle()}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <div className="relative" ref={searchRef}>
             <div className="relative">
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <Search size={16} className="text-gray-400" />
-              </div>
-              <input
-                id="global-search"
-                type="search"
-                onFocus={() => setSearchFocused(true)}
-                className={cn(
-                  'border border-gray-300 bg-gray-50',
-                  'rounded-lg py-2 pr-12 pl-10 text-sm text-gray-900',
-                  'focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none',
-                  'transition-all duration-200',
-                  searchFocused ? 'w-80' : 'w-64'
-                )}
-                placeholder="Search companies, employees..."
-              />
-              <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                <kbd className="hidden items-center rounded border border-gray-200 px-2 py-0.5 text-xs text-gray-500 sm:inline-flex">
-                  <Command size={12} className="mr-1" />K
-                </kbd>
-              </div>
+              <CompanyDropdown showLabel={false} />
             </div>
           </div>
 

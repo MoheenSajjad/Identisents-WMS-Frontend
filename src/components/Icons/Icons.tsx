@@ -1,18 +1,14 @@
+import { SvgIcon } from '../ui/svg-icon';
+
+type IconProps = {
+  className?: string;
+  onClick?: () => void;
+};
+
 export const Icons = {
   Sun: (className: string) => {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        className={className}
-      >
+      <SvgIcon className={className}>
         <circle cx="12" cy="12" r="4" />
         <path d="M12 3v1" />
         <path d="M12 20v1" />
@@ -22,35 +18,18 @@ export const Icons = {
         <path d="m6.343 17.657-.707.707" />
         <path d="m5.636 5.636.707.707" />
         <path d="m17.657 17.657.707.707" />
-      </svg>
+      </SvgIcon>
     );
   },
   Moon: (className: string) => {
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={className}
-    >
-      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-    </svg>;
+    return (
+      <SvgIcon className={className}>
+        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </SvgIcon>
+    );
   },
-  Spinner: (props: { className?: string }) => (
-    <svg
-      aria-hidden="true"
-      width={28}
-      height={28}
-      className={`inline h-24 w-20 animate-spin fill-gray-600 text-gray-200 dark:fill-gray-300 dark:text-gray-600 ${props.className}`}
-      viewBox="0 0 100 101"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+  Spinner: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
       <path
         d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
         fill="currentColor"
@@ -59,35 +38,72 @@ export const Icons = {
         d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
         fill="currentFill"
       />
-    </svg>
+    </SvgIcon>
   ),
-  Edit: (props: { className?: string }) => (
-    <svg
-      viewBox="64 64 896 896"
-      focusable="false"
-      data-icon="edit"
-      width="1em"
-      height="1em"
-      fill="currentColor"
-      aria-hidden="true"
-      className={props.className}
-    >
-      <path d="M257.7 752c2 0 4-.2 6-.5L431.9 722c2-.4 3.9-1.3 5.3-2.8l423.9-423.9a9.96 9.96 0 000-14.1L694.9 114.9c-1.9-1.9-4.4-2.9-7.1-2.9s-5.2 1-7.1 2.9L256.8 538.8c-1.5 1.5-2.4 3.3-2.8 5.3l-29.5 168.2a33.5 33.5 0 009.4 29.8c6.6 6.4 14.9 9.9 23.8 9.9zm67.4-174.4L687.8 215l73.3 73.3-362.7 362.6-88.9 15.7 15.6-89zM880 836H144c-17.7 0-32 14.3-32 32v36c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-36c0-17.7-14.3-32-32-32z"></path>
-    </svg>
+  Loader: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M12 2v4" />
+      <path d="m16.2 7.8 2.9-2.9" />
+      <path d="M18 12h4" />
+      <path d="m16.2 16.2 2.9 2.9" />
+      <path d="M12 18v4" />
+      <path d="m4.9 19.1 2.9-2.9" />
+      <path d="M2 12h4" />
+      <path d="m4.9 4.9 2.9 2.9" />
+    </SvgIcon>
   ),
-  Calender: (props: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={props.className}
-    >
+  Eye: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+        <circle cx="12" cy="12" r="3" />
+      </SvgIcon>
+    );
+  },
+  EyeOff: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49" />
+        <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242" />
+        <path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143" />
+        <path d="m2 2 20 20" />
+      </SvgIcon>
+    );
+  },
+
+  Check: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M20 6 9 17l-5-5" />
+      </SvgIcon>
+    );
+  },
+
+  Plus: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M5 12h14" />
+        <path d="M12 5v14" />
+      </SvgIcon>
+    );
+  },
+
+  CheckCircle: ({ className }: IconProps) => {
+    return (
+      <SvgIcon className={className} strokeWidth={2}>
+        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+        <path d="m9 11 3 3L22 4" />
+      </SvgIcon>
+    );
+  },
+  Edit: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+      <path d="m15 5 4 4" />
+    </SvgIcon>
+  ),
+  Calender: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
       <path d="M8 2v4" />
       <path d="M16 2v4" />
       <rect width="18" height="18" x="3" y="4" rx="2" />
@@ -98,127 +114,102 @@ export const Icons = {
       <path d="M8 18h.01" />
       <path d="M12 18h.01" />
       <path d="M16 18h.01" />
-    </svg>
+    </SvgIcon>
   ),
 
-  Trash: (props: { className?: string }) => (
-    <svg
-      stroke="currentColor"
-      fill="currentColor"
-      strokeWidth="0"
-      viewBox="0 0 448 512"
-      height="1em"
-      width="1em"
-      className={props.className}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M268 416h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12zM432 80h-82.41l-34-56.7A48 48 0 0 0 274.41 0H173.59a48 48 0 0 0-41.16 23.3L98.41 80H16A16 16 0 0 0 0 96v16a16 16 0 0 0 16 16h16v336a48 48 0 0 0 48 48h288a48 48 0 0 0 48-48V128h16a16 16 0 0 0 16-16V96a16 16 0 0 0-16-16zM171.84 50.91A6 6 0 0 1 177 48h94a6 6 0 0 1 5.15 2.91L293.61 80H154.39zM368 464H80V128h288zm-212-48h24a12 12 0 0 0 12-12V188a12 12 0 0 0-12-12h-24a12 12 0 0 0-12 12v216a12 12 0 0 0 12 12z"></path>
-    </svg>
+  Trash: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M3 6h18" />
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+      <line x1="10" x2="10" y1="11" y2="17" />
+      <line x1="14" x2="14" y1="11" y2="17" />
+    </SvgIcon>
   ),
 
-  Search: (props: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={props.className}
-    >
+  RestoreArchive: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <rect width="20" height="5" x="2" y="3" rx="1" />
+      <path d="M4 8v11a2 2 0 0 0 2 2h2" />
+      <path d="M20 8v11a2 2 0 0 1-2 2h-2" />
+      <path d="m9 15 3-3 3 3" />
+      <path d="M12 12v9" />
+    </SvgIcon>
+  ),
+
+  Search: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
       <path d="m21 21-4.34-4.34" />
       <circle cx="11" cy="11" r="8" />
-    </svg>
+    </SvgIcon>
+  ),
+  User: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </SvgIcon>
+  ),
+  ClockFading: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M12 2a10 10 0 0 1 7.38 16.75" />
+      <path d="M12 6v6l4 2" />
+      <path d="M2.5 8.875a10 10 0 0 0-.5 3" />
+      <path d="M2.83 16a10 10 0 0 0 2.43 3.4" />
+      <path d="M4.636 5.235a10 10 0 0 1 .891-.857" />
+      <path d="M8.644 21.42a10 10 0 0 0 7.631-.38" />
+    </SvgIcon>
+  ),
+  CheckCheck: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M18 6 7 17l-5-5" />
+      <path d="m22 10-7.5 7.5L13 16" />
+    </SvgIcon>
   ),
 
-  ChevronsLeft: (props: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={props.className}
-    >
+  ChevronsLeft: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
       <path d="m11 17-5-5 5-5" />
       <path d="m18 17-5-5 5-5" />
-    </svg>
+    </SvgIcon>
   ),
-  ChevronLeft: (props: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={props.className}
-    >
+  ChevronLeft: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
       <path d="m15 18-6-6 6-6" />
-    </svg>
+    </SvgIcon>
   ),
-  ChevronsRight: (props: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={props.className}
-    >
+  ChevronsRight: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
       <path d="m6 17 5-5-5-5" />
       <path d="m13 17 5-5-5-5" />
-    </svg>
+    </SvgIcon>
   ),
-  ChevronRight: (props: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      className={props.className}
-    >
+  ChevronRight: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
       <path d="m9 18 6-6-6-6" />
-    </svg>
+    </SvgIcon>
   ),
-  ArrowUpDown: (props: { className?: string }) => {
+  ChevronUpDown: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="m7 15 5 5 5-5" />
+      <path d="m7 9 5-5 5 5" />
+    </SvgIcon>
+  ),
+  ArrowUpDown: ({ className }: IconProps) => {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        className={props.className}
-      >
+      <SvgIcon className={className}>
         <path d="m21 16-4 4-4-4" />
         <path d="M17 20V4" />
         <path d="m3 8 4-4 4 4" />
         <path d="M7 4v16" />
-      </svg>
+      </SvgIcon>
     );
   },
+
+  CircleX: ({ className, onClick }: IconProps) => (
+    <SvgIcon className={className}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="m15 9-6 6" />
+      <path d="m9 9 6 6" />
+    </SvgIcon>
+  ),
 };

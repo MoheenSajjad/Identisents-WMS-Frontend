@@ -1,5 +1,16 @@
 import React from 'react';
 import { Input, InputSize } from '../input';
+import { Shake } from '@/components/parts/animations';
+
+export enum TextInputType {
+  TEXT = 'text',
+  PASSWORD = 'password',
+  DATE = 'date',
+  TIME = 'time',
+  TEXTAREA = 'text-area',
+  NUMBER = 'number',
+  DATETIME = 'datetime-local',
+}
 
 type TextInputProps = {
   label?: string;
@@ -12,13 +23,14 @@ type TextInputProps = {
   suffixIcon?: React.ReactNode;
   error?: string;
   showErrorMessage?: boolean;
-  required?: boolean;
-  disabled?: boolean;
+  isRequired?: boolean;
+  isDisabled?: boolean;
   size?: InputSize;
   className?: string;
   borderClassName?: string;
   maxLength?: number;
-  type?: 'text' | 'email' | 'password' | 'url' | 'tel';
+  hasError?: boolean;
+  type?: TextInputType;
 };
 
 export const TextInput: React.FC<TextInputProps> = ({
@@ -32,13 +44,14 @@ export const TextInput: React.FC<TextInputProps> = ({
   suffixIcon,
   error,
   showErrorMessage = false,
-  required = false,
-  disabled = false,
+  isRequired = false,
+  isDisabled = false,
   size = InputSize.DEFAULT,
   className,
   borderClassName,
   maxLength,
-  type = 'text',
+  type = TextInputType.TEXT,
+  hasError,
 }) => {
   const [isFocused, setIsFocused] = React.useState(false);
 
@@ -60,33 +73,35 @@ export const TextInput: React.FC<TextInputProps> = ({
     <Input
       size={size}
       className={className}
-      isRequired={required}
+      isRequired={isRequired}
       hasFocus={isFocused}
       hasError={!!error}
-      isDisabled={disabled}
+      isDisabled={isDisabled}
     >
-      {label && <Input.Label value={label} hasError={!!error} isRequired={required} />}
-      <Input.Border
-        className={borderClassName}
-        hasError={!!error}
-        showErrorMessage={showErrorMessage}
-      >
-        {icon && <Input.Icon>{icon}</Input.Icon>}
-        <Input.Control className={`${!icon && 'px-3'}`}>
-          <input
-            type={type}
-            value={value}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            placeholder={placeholder}
-            disabled={disabled}
-            maxLength={maxLength}
-            className="h-full w-full border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
-          />
-        </Input.Control>
-        {suffixIcon && <Input.Handler>{suffixIcon}</Input.Handler>}
-      </Input.Border>
+      <Shake shouldShake={!!hasError}>
+        {label && <Input.Label value={label} hasError={hasError} isRequired={isRequired} />}
+        <Input.Border
+          className={borderClassName}
+          hasError={hasError}
+          showErrorMessage={showErrorMessage}
+        >
+          {icon && <Input.Icon>{icon}</Input.Icon>}
+          <Input.Control className={`${!icon && 'px-3'}`}>
+            <input
+              type={type}
+              value={value}
+              onChange={handleChange}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              placeholder={placeholder}
+              disabled={isDisabled}
+              maxLength={maxLength}
+              className="h-full w-full border-none bg-transparent text-sm outline-none placeholder:text-gray-400"
+            />
+          </Input.Control>
+          {suffixIcon && <Input.Handler>{suffixIcon}</Input.Handler>}
+        </Input.Border>
+      </Shake>
       {error && showErrorMessage && <Input.Feedback value={error} />}
     </Input>
   );
