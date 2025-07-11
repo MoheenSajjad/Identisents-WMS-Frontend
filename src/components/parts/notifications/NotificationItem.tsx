@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle, AlertTriangle, XCircle, Info, Sparkles, AlertCircle } from 'lucide-react';
+import { X, CheckCircle, XCircle, Info, AlertCircle } from 'lucide-react';
 import { Notification, NotificationConfig } from './notification.types';
-
-interface NotificationItemProps {
-  notification: Notification;
-  onRemove: (id: string) => void;
-}
 
 export const NotificationItem: React.FC<{
   notification: Notification;

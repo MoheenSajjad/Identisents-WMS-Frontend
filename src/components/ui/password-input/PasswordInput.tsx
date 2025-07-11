@@ -27,7 +27,6 @@ export const PasswordInput = ({
   icon,
   value,
   placeholder,
-  tabIndex,
   error,
   showErrorMessage,
   className,

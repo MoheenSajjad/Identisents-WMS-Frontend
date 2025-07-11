@@ -61,7 +61,7 @@ export const ModalFooter = ({ children }: ModalFooterProps) => {
   );
 };
 
-export const Modal = ({ onClose, Icon, children, size = ModalSize.MEDIUM }: ModalProps) => {
+export const Modal = ({ Icon, children, size = ModalSize.MEDIUM }: ModalProps) => {
   const sizeClasses = {
     sm: 'sm:max-w-sm',
     md: 'sm:max-w-4xl w-[50%]',

@@ -17,7 +17,6 @@ export const FormSwitch = <T extends Record<string, any>>({
   label,
   disabled = false,
   tooltip,
-  direction = 'vertical',
 }: ControlledSwitchProps<T>) => {
   return (
     <Controller

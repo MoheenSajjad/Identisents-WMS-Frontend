@@ -1,14 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  Building2,
-  Package,
-  Users2Icon,
-  Boxes,
-  FileBox,
-  BookText,
-} from 'lucide-react';
+import { Building2, Package, Users2Icon, Boxes, FileBox, BookText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/helpers';
 import logoimg from '@/assets/id_logo.png';
@@ -104,7 +96,7 @@ const logoVariants = {
 };
 
 const NavItem: React.FC<NavItemProps> = ({ item, isActive, onItemClick }) => {
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     onItemClick(item);
   };
 
@@ -178,13 +170,6 @@ const NavItemComponent: React.FC<
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
-  const [user] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar: '/api/placeholder/32/32',
-    role: 'Administrator',
-  });
-
   const navigationItems: NavItem[] = [
     // {
     //   id: 'dashboard',
@@ -236,10 +221,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
     }
   };
 
-  const handleLogout = () => {
-    console.log('Logout clicked');
-  };
-
   return (
     <AnimatePresence mode="wait">
       <motion.aside
@@ -265,7 +246,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
 
         <motion.nav className="mt-2 flex-1 overflow-hidden py-4" variants={navItemVariants}>
           <motion.ul className="space-y-3 px-3 text-red-400" variants={navItemVariants}>
-            {navigationItems.map((item, index) => (
+            {navigationItems.map(item => (
               <NavItemComponent key={item.id} item={item} onItemClick={handleItemClick} />
             ))}
           </motion.ul>

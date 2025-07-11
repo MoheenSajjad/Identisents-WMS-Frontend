@@ -1,12 +1,12 @@
 import { ICompany } from '@/types/company';
 import { ColumnDef } from '@tanstack/react-table';
-import { DeleteIconButton, EditIconButton, HeaderButton } from '@/components/parts/Buttons';
+import { EditIconButton, HeaderButton } from '@/components/parts/Buttons';
 import { TableAlign } from '@/components/ui/Table';
 import { DateTime } from '@/utils/date-time';
 
 export function getColumns(
   onEdit?: (company: ICompany) => void,
-  onDelete?: (company: ICompany) => void
+  _onDelete?: (company: ICompany) => void
 ): ColumnDef<ICompany>[] {
   return [
     {
@@ -72,7 +72,6 @@ export function getColumns(
         return (
           <>
             <EditIconButton onClick={() => onEdit?.(row.original)} />
-            <DeleteIconButton onClick={() => onDelete?.(row.original)} />
           </>
         );
       },

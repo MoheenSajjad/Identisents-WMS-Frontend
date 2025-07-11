@@ -205,7 +205,7 @@ export const Icons = {
     );
   },
 
-  CircleX: ({ className, onClick }: IconProps) => (
+  CircleX: ({ className }: IconProps) => (
     <SvgIcon className={className}>
       <circle cx="12" cy="12" r="10" />
       <path d="m15 9-6 6" />

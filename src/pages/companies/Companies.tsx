@@ -19,17 +19,12 @@ export const Companies = () => {
 
   const columns = useMemo(
     () =>
-      getColumns(
-        company => {
-          setSelecetdcompany(company);
-          toggleOn();
-        },
-        company => handleDelete(company)
-      ),
+      getColumns(company => {
+        setSelecetdcompany(company);
+        toggleOn();
+      }),
     []
   );
-
-  function handleDelete(company: ICompany) {}
 
   const { isToggled, toggleOn, toggleOff } = useToggle();
 
@@ -58,6 +53,7 @@ export const Companies = () => {
 
   const handleOnSubmit = () => {
     toggleOff(), refetch();
+    setSelecetdcompany(null);
   };
   return (
     <>

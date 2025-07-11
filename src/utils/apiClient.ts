@@ -10,7 +10,7 @@ interface RequestOptions {
 abstract class BaseApiClient {
   protected instance: AxiosInstance;
 
-  constructor(baseURL: string, timeout: number = 10000) {
+  constructor(baseURL: string, timeout: number = 50000) {
     this.instance = axios.create({
       baseURL,
       timeout,

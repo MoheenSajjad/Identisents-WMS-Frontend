@@ -35,7 +35,7 @@ export const Employees = () => {
         closeDeleteModal();
         refetch();
       },
-      onError: error => {},
+      onError: () => {},
     }
   );
 

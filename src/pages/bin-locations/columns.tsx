@@ -1,17 +1,12 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { IBinLocation } from '@/types/bin-location';
 import { TableAlign } from '@/components/ui/Table';
-import {
-  HeaderButton,
-  EditIconButton,
-  DeleteIconButton,
-  RestoreIconButton,
-} from '@/components/parts/Buttons';
+import { HeaderButton, DeleteIconButton, RestoreIconButton } from '@/components/parts/Buttons';
 import { Tag } from '@/components/ui/Tag';
 import { DateTime } from '@/utils/date-time';
 
 export function getColumns(
-  onEdit?: (data: IBinLocation) => void,
+  _onEdit?: (data: IBinLocation) => void,
   onDelete?: (data: IBinLocation) => void
 ): ColumnDef<IBinLocation>[] {
   return [
@@ -82,7 +77,7 @@ export function getColumns(
       meta: { CellAlign: TableAlign.CENTER, HeadAlign: TableAlign.CENTER },
       cell: ({ row }) => (
         <>
-          <EditIconButton onClick={() => onEdit?.(row.original)} />
+          {/* <EditIconButton onClick={() => onEdit?.(row.original)} /> */}
           {row.original.isDeleted ? (
             <RestoreIconButton onClick={() => onDelete?.(row.original)} />
           ) : (

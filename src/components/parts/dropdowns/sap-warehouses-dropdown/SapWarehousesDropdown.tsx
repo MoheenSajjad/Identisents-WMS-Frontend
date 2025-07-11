@@ -6,7 +6,6 @@ import {
   DropdownInput,
   DropdownItem,
   DropdownItemName,
-  DropdownLabel,
   DropdownList,
   DropdownTrigger,
 } from '../../dropdown/Dropdown';
@@ -15,7 +14,6 @@ import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { ISAPWarehouses } from '@/types/warehouse';
 import { ApiResponse } from '@/types/api';
 import { SAPServices } from '@/services/sap-services';
-import { Input } from '@/components/ui/input';
 import { useOnClickOutside } from '@/hooks/use-click-outside';
 import { IDropdownOption } from '@/types/dropdown';
 

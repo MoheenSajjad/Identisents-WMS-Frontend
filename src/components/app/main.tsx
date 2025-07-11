@@ -1,4 +1,3 @@
-import { Dashboard } from '@/pages/dashboard';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Layout } from '../layout';
 import { Companies } from '@/pages/companies';
@@ -19,7 +18,7 @@ export const Main = () => {
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Layout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
             <Route path="/companies" element={<Companies />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/warehouses" element={<Warehouses />} />
@@ -29,7 +28,7 @@ export const Main = () => {
             <Route path="/jobs" element={<JobAssignment />} />
             <Route path="/job/:id" element={<JobDetail />} />
 
-            <Route index element={<Dashboard />} />
+            <Route index element={<Companies />} />
           </Route>
         </Route>
       </Routes>

@@ -43,16 +43,14 @@ export const Switch: SwicthComponenet = ({
   defaultChecked,
   onChange,
   disabled = false,
-  className = '',
   isRequired = true,
-  style,
+
   size = SwitchSize.MEDIUM,
   color = 'bg-blue-500',
   label,
   onLabel,
   offLabel,
   id,
-  name,
   ariaLabel,
   ariaLabelledBy,
   transitionDuration = 300,
@@ -61,7 +59,6 @@ export const Switch: SwicthComponenet = ({
   tabIndex = 0,
   role = 'switch',
   dataTestId,
-  tooltip,
 }) => {
   const sizeClasses = {
     small: 'w-10 h-6',

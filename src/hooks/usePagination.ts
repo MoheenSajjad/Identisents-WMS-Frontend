@@ -18,7 +18,7 @@ export function usePagination<T>(initialFilters: PaginationFilters) {
       const response = await apiCall(filters);
 
       if (response.success) {
-        setData(response.data.records);
+        // setData(response.data.records);
         setPagination(response.data.pagination);
       } else {
         setError(response.message);

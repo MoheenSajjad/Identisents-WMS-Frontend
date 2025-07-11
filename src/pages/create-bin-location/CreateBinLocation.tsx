@@ -28,7 +28,7 @@ import { GeneratedCodesModal } from '@/components/parts/modals/bin-location-gene
 import { GearLoading } from '@/components/ui/Loading/GearLoading';
 import { PageTransition } from '@/components/parts/animations';
 
-const createFormSchema = (levels: IBinSubLevels[]) => {
+const createFormSchema = () => {
   // const dynamicFields: Record<string, any> = {};
 
   // levels.forEach(level => {
@@ -105,17 +105,10 @@ export const CreateBinLocation = () => {
     return defaultValues;
   }, [sortedLevels]);
 
-  const formSchema = useMemo(() => createFormSchema(sortedLevels), [sortedLevels]);
+  const formSchema = useMemo(() => createFormSchema(), [sortedLevels]);
   type FormData = z.infer<typeof formSchema>;
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    watch,
-    getValues,
-    formState: { errors },
-  } = useForm<FormData>({
+  const { control, handleSubmit, watch } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: createDefaultValues,
   });

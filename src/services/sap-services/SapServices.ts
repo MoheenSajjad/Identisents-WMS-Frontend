@@ -1,6 +1,6 @@
 import { apiClient } from '@/utils/apiClient';
-import { ApiResponse, PaginatedResponse } from '@/types/api';
-import { ISAPWarehouses, IWarehouse } from '@/types/warehouse';
+import { ApiResponse } from '@/types/api';
+import { ISAPWarehouses } from '@/types/warehouse';
 
 class SAPServices {
   static async getSAPWarehouses(

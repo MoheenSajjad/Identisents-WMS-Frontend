@@ -1,8 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Menu, LogOut } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { CompanyDropdown } from '../parts/dropdowns/company-dropdown';
 import { useAuth } from '@/hooks/use-auth';
 
 interface NavbarProps {

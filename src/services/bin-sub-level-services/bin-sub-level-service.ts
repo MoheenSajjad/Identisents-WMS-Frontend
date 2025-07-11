@@ -1,17 +1,43 @@
 import { ApiResponse } from '@/types/api';
 import { IBinSubLevels, ICreateBinSubLevel } from '@/types/bin-sub-levels';
 import { apiClient } from '@/utils/apiClient';
+import { successHandlers } from '@/utils/handlers/successHandler';
+import { errorHandler } from '@/utils/handlers/errorHandler';
+
+const ENTITY = 'Bin Sub Level';
 
 class BinSubLevelServices {
   static async getBinSubLevels(signal: AbortSignal): Promise<ApiResponse<IBinSubLevels[]>> {
-    return apiClient.get<ApiResponse<IBinSubLevels[]>>(`api/binLocSubLev`, { signal });
+    try {
+      const response = await apiClient.get<ApiResponse<IBinSubLevels[]>>(`api/binLocSubLev`, {
+        signal,
+      });
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 
   static async createBinSubLevel(
     data: ICreateBinSubLevel,
     signal: AbortSignal
   ): Promise<ApiResponse<IBinSubLevels>> {
-    return apiClient.post<ApiResponse<IBinSubLevels>>('api/binLocSubLev/create', data, { signal });
+    try {
+      const response = await apiClient.post<ApiResponse<IBinSubLevels>>(
+        'api/binLocSubLev/create',
+        data,
+        { signal }
+      );
+
+      if (!response.success) throw response;
+
+      successHandlers.create(response, ENTITY);
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 
   static async updateBinSubLevel(
@@ -19,7 +45,21 @@ class BinSubLevelServices {
     data: ICreateBinSubLevel,
     signal: AbortSignal
   ): Promise<ApiResponse<IBinSubLevels>> {
-    return apiClient.put<ApiResponse<IBinSubLevels>>(`api/binLocSubLev/${id}`, data, { signal });
+    try {
+      const response = await apiClient.put<ApiResponse<IBinSubLevels>>(
+        `api/binLocSubLev/${id}`,
+        data,
+        { signal }
+      );
+
+      if (!response.success) throw response;
+
+      successHandlers.update(response, ENTITY);
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 
   static async deleteBinSubLevel(
@@ -27,9 +67,20 @@ class BinSubLevelServices {
     isDeleted: boolean,
     signal: AbortSignal
   ): Promise<ApiResponse<void>> {
-    return apiClient.delete<ApiResponse<void>>(`api/binLocSubLev/${id}?isDelete=${!isDeleted}`, {
-      signal,
-    });
+    try {
+      const response = await apiClient.delete<ApiResponse<void>>(
+        `api/binLocSubLev/${id}?isDelete=${!isDeleted}`,
+        { signal }
+      );
+
+      if (!response.success) throw response;
+
+      successHandlers.delete(response, ENTITY);
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 }
 

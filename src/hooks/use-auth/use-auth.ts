@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loginUser, logoutUser, restoreAuth, clearError } from '@/redux/slices/authSlice';
-import { RootState, AppDispatch } from '@/redux/store';
-import { useAppDispatch, useTSelector } from '../use-redux';
+import { RootState } from '@/redux/store';
+import { useAppDispatch } from '../use-redux';
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();

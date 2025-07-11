@@ -81,6 +81,7 @@ export const getColumns = (
         }
         size={Button.Size.SMALL}
         onClick={() => onAssign(row.original._id)}
+        disabled={row.original.status != 'Pending'}
       >
         {row.original.status === 'Assigned' ? 'Assigned' : 'Assign'}
       </Button>

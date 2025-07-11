@@ -28,7 +28,6 @@ type InputComponent = {
 };
 
 export const Input: InputComponent = ({
-  size = InputSize.DEFAULT,
   children,
   className,
   isRequired = false,

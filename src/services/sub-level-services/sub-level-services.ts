@@ -1,10 +1,19 @@
 import { ApiResponse } from '@/types/api';
 import { ISubLevels } from '@/types/sub-levels';
 import { apiClient } from '@/utils/apiClient';
+import { errorHandler } from '@/utils/handlers/errorHandler';
 
 class SubLevelServices {
   static async getSubLevels(signal: AbortSignal): Promise<ApiResponse<ISubLevels[]>> {
-    return apiClient.get<ApiResponse<ISubLevels[]>>(`api/binLocAct`, { signal });
+    try {
+      const response = await apiClient.get<ApiResponse<ISubLevels[]>>(`api/binLocAct`, {
+        signal,
+      });
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 }
 

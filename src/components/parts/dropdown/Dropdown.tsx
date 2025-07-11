@@ -47,7 +47,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ children }) => (
 export const DropdownLabel = forwardRef<
   HTMLDivElement,
   { label: string; isRequired?: boolean; hasError?: boolean }
->(({ label, isRequired = false, hasError = false }, ref) => {
+>(({ label, isRequired = false, hasError = false }) => {
   return (
     <label
       className={`text-darker-grey ${hasError && 'text-red-600'} mb-1 block text-xs font-medium transition-colors duration-150 ${
@@ -93,7 +93,6 @@ export const DropdownDialog = forwardRef<
 export const DropdownTrigger = ({
   selectedItems = [],
   placeholder,
-  error,
   toggleDropdown,
   className,
   isLoading = false,
@@ -128,7 +127,6 @@ export const DropdownTrigger = ({
   onRemoveItem?: (item: any) => void;
 }) => {
   const onClick = !isDisabled ? toggleDropdown : () => {};
-  const isError = (error && selectedItems.length === 0) || hasError;
 
   const getDisplayContent = () => {
     if (selectedItems.length === 0) {
@@ -320,7 +318,7 @@ export const DropdownItem: React.FC<{
 export const DropdownItemName: React.FC<{
   children: React.ReactNode;
   className?: string;
-}> = ({ children, className }) => (
+}> = ({ children }) => (
   <div className="flex items-center">
     <span className="ml-3 block font-normal">{children}</span>
   </div>

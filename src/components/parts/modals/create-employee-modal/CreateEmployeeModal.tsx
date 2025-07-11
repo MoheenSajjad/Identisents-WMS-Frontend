@@ -1,7 +1,7 @@
 import { Modal, ModalContent, ModalFooter, ModalHeader } from '@/components/ui/modal';
 import { CancelButton, SubmitButton } from '../../Buttons';
 import { Grid, GridCell } from '@/components/ui/grid';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useFormSubmit } from '@/hooks/use-form-submit';
@@ -11,6 +11,8 @@ import { IEmployee } from '@/types/employee';
 import { EmployeeService } from '@/services/employee-services';
 import { PasswordFormField, TextFormField } from '@/components/ui/formField';
 import { EmployeeAssignCompanyDropdown } from '../../dropdowns/employee-assign-companies-dropdown';
+import { FormSwitch } from '@/components/ui/form-switch';
+import { useEffect } from 'react';
 
 const formSchema = z
   .object({
@@ -20,7 +22,7 @@ const formSchema = z
     mobilePhone: z.string().min(1),
     isMobileUser: z.boolean(),
     isPortalUser: z.boolean(),
-    password: z.string().min(6),
+    password: z.string().min(6).optional(),
     companies: z
       .array(
         z.object({
@@ -40,7 +42,7 @@ type FormData = z.infer<typeof formSchema>;
 interface CreateEmployeeProps {
   mode: 'edit' | 'create';
   employee: IEmployee | null;
-  onSubmit: (employee: IEmployee) => void;
+  onSubmit: () => void;
   onCancel: () => void;
 }
 
@@ -66,10 +68,8 @@ export const CreateEmployeeModal = ({
       employeeName: employee?.employeeName || '',
       email: employee?.email || '',
       mobilePhone: employee?.mobilePhone || '',
-      isMobileUser: employee?.isMobileUser || false,
-      isPortalUser: employee?.isPortalUser || false,
-
-      password: employee?.password,
+      isMobileUser: employee?.isMobileUser ?? true,
+      isPortalUser: employee?.isPortalUser ?? false,
       companies:
         employee?.companies?.map(c => ({
           id: c.id,
@@ -86,9 +86,9 @@ export const CreateEmployeeModal = ({
       return EmployeeService.create(formData, signal);
     },
     {
-      onSuccess: created => {
-        // reset();
-        // onSubmit(created);
+      onSuccess: () => {
+        reset();
+        onSubmit();
       },
       onError: err => console.error(err),
     }
@@ -96,6 +96,20 @@ export const CreateEmployeeModal = ({
 
   console.log(errors, getValues());
 
+  const isMobileUser = useWatch({ control, name: 'isMobileUser' });
+  const isPortalUser = useWatch({ control, name: 'isPortalUser' });
+
+  useEffect(() => {
+    if (isMobileUser && isPortalUser) {
+      setValue('isPortalUser', false);
+    }
+  }, [isMobileUser]);
+
+  useEffect(() => {
+    if (isPortalUser && isMobileUser) {
+      setValue('isMobileUser', false);
+    }
+  }, [isPortalUser]);
   return (
     <Modal size={Modal.Size.LARGE}>
       <ModalHeader onClose={onCancel}>
@@ -111,6 +125,7 @@ export const CreateEmployeeModal = ({
                   name="employeeCode"
                   label="Employee Code"
                   placeholder="employee code"
+                  isDisabled={isEditMode}
                   hasError={control.getFieldState('employeeCode').invalid}
                   isRequired
                 />
@@ -167,7 +182,26 @@ export const CreateEmployeeModal = ({
                   label="Password"
                   placeholder="password"
                   hasError={control.getFieldState('password').invalid}
-                  isRequired
+                  isRequired={!isEditMode}
+                />
+              </GridCell>
+              <GridCell size={Grid.CellSize.S4} className="flex-grow-0">
+                <Controller
+                  name="isMobileUser"
+                  control={control}
+                  render={({}) => (
+                    <FormSwitch label="Mobile User" name="isMobileUser" control={control} />
+                  )}
+                />
+              </GridCell>
+
+              <GridCell size={Grid.CellSize.S4} className="flex-grow-0">
+                <Controller
+                  name="isPortalUser"
+                  control={control}
+                  render={({}) => (
+                    <FormSwitch label="Portal User" name="isPortalUser" control={control} />
+                  )}
                 />
               </GridCell>
             </Grid>

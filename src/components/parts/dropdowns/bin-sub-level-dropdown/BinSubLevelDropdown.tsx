@@ -6,16 +6,12 @@ import {
   DropdownInput,
   DropdownItem,
   DropdownItemName,
-  DropdownLabel,
   DropdownList,
   DropdownTrigger,
 } from '../../dropdown/Dropdown';
-import { useCallback, useMemo, useRef, useState } from 'react';
-import { useFetch } from '@/hooks/use-fetch/use-fetch';
+import { useMemo, useRef, useState } from 'react';
 import { useOnClickOutside } from '@/hooks/use-click-outside';
-import { ApiResponse } from '@/types/api';
 import { IDropdownOption } from '@/types/dropdown';
-import { BinSubLevelService } from '@/services/bin-sub-level-services';
 import { IBinSubLevels } from '@/types/bin-sub-levels';
 
 interface IBinSubLevelDropdownProps extends IDropdownOption<IBinSubLevels, string> {

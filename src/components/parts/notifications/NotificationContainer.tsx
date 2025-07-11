@@ -2,11 +2,6 @@ import React from 'react';
 import { Notification, NotificationConfig } from './notification.types';
 import { NotificationItem } from './NotificationItem';
 
-interface NotificationContainerProps {
-  notifications: Notification[];
-  onRemove: (id: string) => void;
-}
-
 export const NotificationContainer: React.FC<{
   notifications: Notification[];
   onRemove: (id: string) => void;

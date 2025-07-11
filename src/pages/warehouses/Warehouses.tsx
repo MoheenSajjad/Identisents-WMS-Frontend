@@ -37,7 +37,7 @@ export const Warehouses = () => {
         closeDeleteModal();
         refetch();
       },
-      onError: error => {},
+      onError: () => {},
     }
   );
 

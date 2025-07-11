@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/Button';
 import { DataTable } from '../../Datatable';
 import { useFormSubmit } from '@/hooks/use-form-submit';
 import { BinLocationService } from '@/services/bin-location-services/bin-location-services';
-import { OpacityWrapper } from '../../opacity-wrapper';
 import { GearLoading } from '@/components/ui/Loading/GearLoading';
 
 interface GeneratedCodesModalProps {
@@ -32,11 +31,11 @@ export const GeneratedCodesModal: React.FC<GeneratedCodesModalProps> = ({
   const successCount = data.length - errorCount;
 
   const { submit, isSubmitting } = useFormSubmit(
-    (formData: IGeneratedBinLocation[], signal: AbortSignal) => {
+    (_formData: IGeneratedBinLocation[], signal: AbortSignal) => {
       return BinLocationService.createBulkBinLocations(data, signal);
     },
     {
-      onSuccess: data => {
+      onSuccess: () => {
         onSubmit();
       },
       onError: error => {

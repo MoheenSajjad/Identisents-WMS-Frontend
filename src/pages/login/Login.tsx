@@ -15,17 +15,12 @@ const loginSchema = z.object({
 });
 
 export const Login = () => {
-  const { login, isLoading, error, isAuthenticated } = useAuth();
+  const { login, isLoading, isAuthenticated } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       username: '',

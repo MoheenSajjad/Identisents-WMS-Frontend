@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { ChevronDown, ChevronRight, Package, MapPin, ArrowLeftCircle } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PageTransition } from '@/components/parts/animations';
@@ -207,7 +207,7 @@ export const JobDetail = () => {
                         {/* Transaction Content */}
                         {expandedTransactions.has(transaction._id) && (
                           <div className="space-y-4 p-4">
-                            {transaction.lineItems.map((lineItem, lineIndex) => (
+                            {transaction.lineItems.map(lineItem => (
                               <div key={lineItem._id} className="rounded border border-gray-200">
                                 {/* Line Item Header */}
                                 <div
@@ -277,7 +277,7 @@ export const JobDetail = () => {
                                     </div>
 
                                     {/* Bin Locations */}
-                                    {lineItem.binLocations.map((binLocation, binIndex) => (
+                                    {lineItem.binLocations.map(binLocation => (
                                       <div
                                         key={binLocation._id}
                                         className="rounded border border-gray-100"
@@ -312,7 +312,7 @@ export const JobDetail = () => {
 
                                             {/* Batches */}
                                             <div className="space-y-2">
-                                              {binLocation.batches.map((batch, batchIndex) => (
+                                              {binLocation.batches.map(batch => (
                                                 <div
                                                   key={batch._id}
                                                   className="rounded bg-gray-50 p-2 text-xs"
