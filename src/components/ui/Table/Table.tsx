@@ -149,7 +149,7 @@ const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement> & { dragDropConfig?: DragDropConfig }
 >(({ className, dragDropConfig, children, ...props }, ref) => {
-  const [activeId, setActiveId] = React.useState<string | null>(null);
+  const [_activeId, setActiveId] = React.useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

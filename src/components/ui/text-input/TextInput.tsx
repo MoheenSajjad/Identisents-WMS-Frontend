@@ -86,7 +86,9 @@ export const TextInput: React.FC<TextInputProps> = ({
           showErrorMessage={showErrorMessage}
         >
           {icon && <Input.Icon>{icon}</Input.Icon>}
-          <Input.Control className={`${!icon && 'px-3'}`}>
+          <Input.Control
+            className={`${!icon && 'px-3'} ${isDisabled && 'rounded-lg bg-[#f3f0f0]'} `}
+          >
             <input
               type={type}
               value={value}

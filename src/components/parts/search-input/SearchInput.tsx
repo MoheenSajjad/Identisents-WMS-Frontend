@@ -21,7 +21,7 @@ export const TableSearchInput = ({
       value={value}
       icon={<Icons.Search className="text-gray-400" />}
       placeholder={placeholder}
-      disabled={isDisabled}
+      isDisabled={isDisabled}
     />
   );
 };

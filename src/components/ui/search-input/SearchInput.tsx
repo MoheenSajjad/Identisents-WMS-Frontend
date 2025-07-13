@@ -23,22 +23,19 @@ type SearchInputProps = {
 };
 
 export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
-  (
-    {
-      label,
-      icon,
-      value,
-      placeholder,
-      className,
-      isRequired,
-      hasError,
-      isDisabled,
-      onChange,
-      onFocus,
-      type = 'text',
-    },
-    ref
-  ) => {
+  ({
+    label,
+    icon,
+    value,
+    placeholder,
+    className,
+    isRequired,
+    hasError,
+    isDisabled,
+    onChange,
+    onFocus,
+    type = 'text',
+  }) => {
     const [hasFocus, setHasFocus] = React.useState<boolean>(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

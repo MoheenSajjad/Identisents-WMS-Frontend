@@ -35,7 +35,7 @@ export const BinSubLevels = () => {
         closeDeleteModal();
         refetch();
       },
-      onError: error => {},
+      onError: () => {},
     }
   );
 

@@ -8,14 +8,13 @@ import { SubmitButton, CancelButton } from '@/components/parts/Buttons';
 import { OpacityWrapper } from '@/components/parts/opacity-wrapper';
 import { useFormSubmit } from '@/hooks/use-form-submit';
 import { JobAssignmentService } from '@/services/job-assignment-service';
-import { IJobAssignment } from '@/types/job-assignment';
 import { Grid } from '@/components/ui/grid';
 import { EmployeeDropdown } from '../../dropdowns/employee-dropdown';
 import { TextFormField } from '@/components/ui/formField';
 
 interface IAssignJobModalProps {
   onCancel: () => void;
-  onSubmit: (data: IJobAssignment) => void;
+  onSubmit: () => void;
   jobId: string;
 }
 
@@ -27,12 +26,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const AssignJobModal: React.FC<IAssignJobModalProps> = ({ onCancel, onSubmit, jobId }) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({
+  const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       employeeId: '',
@@ -45,9 +39,9 @@ const AssignJobModal: React.FC<IAssignJobModalProps> = ({ onCancel, onSubmit, jo
       return JobAssignmentService.assignJob({ data: formData, jobId }, signal);
     },
     {
-      onSuccess: res => {
+      onSuccess: () => {
         reset();
-        // onSubmit(res.data);
+        onSubmit();
       },
       onError: err => {
         console.error('Error assigning job:', err);

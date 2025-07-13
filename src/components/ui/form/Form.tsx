@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 type FormProps = {
   children?: React.ReactNode;
@@ -6,14 +6,10 @@ type FormProps = {
   onSubmit?: () => void;
 };
 
-export const Form = ({
-  children,
-  className,
-  onSubmit,
-}: FormProps): JSX.Element => {
+export const Form = ({ children, className, onSubmit }: FormProps): React.JSX.Element => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    if (typeof onSubmit !== "undefined") {
+    if (typeof onSubmit !== 'undefined') {
       onSubmit();
     }
   };

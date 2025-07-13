@@ -1,7 +1,6 @@
 import { Form } from '@/components/ui/form';
 import { TextFormField } from '@/components/ui/formField';
 import { Grid, GridCell } from '@/components/ui/grid';
-import { Loading } from '@/components/ui/Loading';
 import { Modal, ModalContent, ModalFooter, ModalHeader } from '@/components/ui/modal';
 import { IWarehouse } from '@/types/warehouse';
 import { zodResolver } from '@hookform/resolvers/zod';

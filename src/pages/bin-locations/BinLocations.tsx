@@ -17,10 +17,9 @@ import { ApiResponse } from '@/types/api';
 import { useNavigate } from 'react-router-dom';
 
 export const BinLocation = () => {
-  const [selectedBinLocation, setSelectedBinLocation] = useState<IBinLocation | null>(null);
+  const [_selectedBinLocation, setSelectedBinLocation] = useState<IBinLocation | null>(null);
   const [binLocationDelete, setBinLocationDelete] = useState<IBinLocation | null>(null);
 
-  const { toggleOn, toggleOff, isToggled } = useToggle();
   const {
     toggleOn: openDeleteModal,
     toggleOff: closeDeleteModal,
@@ -42,7 +41,6 @@ export const BinLocation = () => {
 
   function handleSelection(location: IBinLocation | null) {
     setSelectedBinLocation(location);
-    toggleOn();
   }
 
   async function handleDelete() {
@@ -89,21 +87,6 @@ export const BinLocation = () => {
           </DataTable>
         </Paper>
       </PageTransition>
-
-      {/* {isToggled && (
-        <CreateBinLocation
-          mode={!!selectedBinLocation ? 'edit' : 'create'}
-          binLocation={selectedBinLocation}
-          onSubmit={() => {
-            toggleOff();
-            refetch();
-          }}
-          onCancel={() => {
-            setSelectedBinLocation(null);
-            toggleOff();
-          }}
-        />
-      )} */}
 
       {isDeleteModalOpen && (
         <DeleteConfirmationModal

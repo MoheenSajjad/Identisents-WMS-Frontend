@@ -6,36 +6,61 @@ import {
   IGenerateBinLocationCodesProps,
 } from '@/types/bin-location';
 import { apiClient } from '@/utils/apiClient';
+import { successHandler, successHandlers } from '@/utils/handlers/successHandler';
+import { errorHandler } from '@/utils/handlers/errorHandler';
+
+const ENTITY = 'Bin Location';
 
 class BinLocationServices {
   static async getBinLocations(signal: AbortSignal): Promise<ApiResponse<IBinLocation[]>> {
-    return apiClient.get<ApiResponse<IBinLocation[]>>('api/binLocation', { signal });
+    try {
+      const response = await apiClient.get<ApiResponse<IBinLocation[]>>('api/binLocation', {
+        signal,
+      });
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 
   static async createBulkBinLocations(
     data: IGeneratedBinLocation[],
     signal: AbortSignal
   ): Promise<ApiResponse<IBinLocation[]>> {
-    return apiClient.post<ApiResponse<IBinLocation[]>>(
-      'api/binLocation/bulk-create',
-      { binLocations: data },
-      {
-        signal,
-      }
-    );
+    try {
+      const response = await apiClient.post<ApiResponse<IBinLocation[]>>(
+        'api/binLocation/bulk-create',
+        { binLocations: data },
+        { signal }
+      );
+
+      if (!response.success) throw response;
+
+      successHandlers.create(response, ENTITY);
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 
   static async generateCodes(
     data: IGenerateBinLocationCodesProps,
     signal: AbortSignal
   ): Promise<ApiResponse<IGeneratedBinLocation[]>> {
-    return apiClient.post<ApiResponse<IGeneratedBinLocation[]>>(
-      'api/binLocation/generate-codes',
-      data,
-      {
-        signal,
-      }
-    );
+    try {
+      const response = await apiClient.post<ApiResponse<IGeneratedBinLocation[]>>(
+        'api/binLocation/generate-codes',
+        data,
+        { signal }
+      );
+      successHandler(response);
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 
   static async updateBinLocation(
@@ -43,7 +68,21 @@ class BinLocationServices {
     data: ICreateBinLocation,
     signal: AbortSignal
   ): Promise<ApiResponse<IBinLocation>> {
-    return apiClient.put<ApiResponse<IBinLocation>>(`api/binLocation/${id}`, data, { signal });
+    try {
+      const response = await apiClient.put<ApiResponse<IBinLocation>>(
+        `api/binLocation/${id}`,
+        data,
+        { signal }
+      );
+
+      if (!response.success) throw response;
+
+      successHandlers.update(response, ENTITY);
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 
   static async deleteBinLocation(
@@ -51,9 +90,20 @@ class BinLocationServices {
     isDelete: boolean,
     signal: AbortSignal
   ): Promise<ApiResponse<void>> {
-    return apiClient.delete<ApiResponse<void>>(`api/binLocation/${id}?isDelete=${!isDelete}`, {
-      signal,
-    });
+    try {
+      const response = await apiClient.delete<ApiResponse<void>>(
+        `api/binLocation/${id}?isDelete=${!isDelete}`,
+        { signal }
+      );
+
+      if (!response.success) throw response;
+
+      successHandlers.delete(response, ENTITY);
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
   }
 }
 

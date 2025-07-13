@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Building2, Package, Users2Icon } from 'lucide-react';
+import { Building2, Package, Users2Icon, Boxes, FileBox, BookText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/utils/helpers';
-import logo from '@/assets/logo.avif';
+import logoimg from '@/assets/id_logo.png';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -96,7 +96,7 @@ const logoVariants = {
 };
 
 const NavItem: React.FC<NavItemProps> = ({ item, isActive, onItemClick }) => {
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     onItemClick(item);
   };
 
@@ -170,20 +170,13 @@ const NavItemComponent: React.FC<
 };
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
-  const [user] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar: '/api/placeholder/32/32',
-    role: 'Administrator',
-  });
-
   const navigationItems: NavItem[] = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: LayoutDashboard,
-      path: '/dashboard',
-    },
+    // {
+    //   id: 'dashboard',
+    //   label: 'Dashboard',
+    //   icon: LayoutDashboard,
+    //   path: '/dashboard',
+    // },
     {
       id: 'companies',
       label: 'Companies',
@@ -199,7 +192,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
     {
       id: 'warehouses',
       label: 'Warehouses',
-      icon: Package,
+      icon: Boxes,
       path: '/warehouses',
     },
     {
@@ -211,13 +204,13 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
     {
       id: 'binLocations',
       label: 'Bin Locations',
-      icon: Package,
+      icon: FileBox,
       path: '/bin-locations',
     },
     {
       id: 'jobs',
       label: 'Jobs',
-      icon: Package,
+      icon: BookText,
       path: '/jobs',
     },
   ];
@@ -226,10 +219,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
     if (isMobile && item.path) {
       onClose();
     }
-  };
-
-  const handleLogout = () => {
-    console.log('Logout clicked');
   };
 
   return (
@@ -247,23 +236,23 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
         <motion.div className="flex items-center justify-between pt-4" variants={logoVariants}>
           <div className="flex w-full items-start justify-start px-2">
             <motion.img
-              src={logo}
-              className="w-[110px] cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              src={logoimg}
+              className="ms-4 w-[110px] cursor-pointer"
+              // whileHover={{ scale: 1.05 }}
+              // whileTap={{ scale: 0.95 }}
             />
           </div>
         </motion.div>
 
         <motion.nav className="mt-2 flex-1 overflow-hidden py-4" variants={navItemVariants}>
           <motion.ul className="space-y-3 px-3 text-red-400" variants={navItemVariants}>
-            {navigationItems.map((item, index) => (
+            {navigationItems.map(item => (
               <NavItemComponent key={item.id} item={item} onItemClick={handleItemClick} />
             ))}
           </motion.ul>
         </motion.nav>
 
-        {isOpen && (
+        {/* {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -286,7 +275,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile, onClose }) => {
               </div>
             </motion.div>
           </motion.div>
-        )}
+        )} */}
       </motion.aside>
     </AnimatePresence>
   );

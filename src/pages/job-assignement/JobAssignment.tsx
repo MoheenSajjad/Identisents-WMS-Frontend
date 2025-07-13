@@ -107,7 +107,15 @@ export const JobAssignment = () => {
       )}
 
       {isToggled && assignJobId && (
-        <AssignJobModal onCancel={toggleOff} onSubmit={() => {}} jobId={assignJobId} />
+        <AssignJobModal
+          onCancel={toggleOff}
+          onSubmit={() => {
+            setAssignJobId(null);
+            toggleOff();
+            refetch();
+          }}
+          jobId={assignJobId}
+        />
       )}
 
       <Outlet />

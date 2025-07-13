@@ -6,11 +6,10 @@ import {
   DropdownInput,
   DropdownItem,
   DropdownItemName,
-  DropdownLabel,
   DropdownList,
   DropdownTrigger,
 } from '../../dropdown/Dropdown';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useOnClickOutside } from '@/hooks/use-click-outside';
 import { IDropdownOption } from '@/types/dropdown';
 import { IBinSubLevelRows } from '@/types/bin-sub-levels';

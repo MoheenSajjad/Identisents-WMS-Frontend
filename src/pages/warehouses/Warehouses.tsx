@@ -14,6 +14,7 @@ import { useToggle } from '@/hooks/use-toggle';
 import { CreateWarehouse } from '@/components/parts/modals/create-warehouse';
 import DeleteConfirmationModal from '@/components/parts/delete-confirmation/DeleteConfirmation';
 import { useFormSubmit } from '@/hooks/use-form-submit';
+import { GearLoading } from '@/components/ui/Loading/GearLoading';
 
 export const Warehouses = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,7 +37,7 @@ export const Warehouses = () => {
         closeDeleteModal();
         refetch();
       },
-      onError: error => {},
+      onError: () => {},
     }
   );
 
@@ -87,12 +88,14 @@ export const Warehouses = () => {
       <PageTransition>
         <Paper>
           <Paper.BigTitle title="Warehouse" />
-          <DataTable table={table} isLoading={isLoading}>
-            <DataTableToolbar table={table}>
-              <ReloadButton onClick={refetch} />
-              <AddNewButton onClick={toggleOn} />
-            </DataTableToolbar>
-          </DataTable>
+          <GearLoading isLoading={false}>
+            <DataTable table={table} isLoading={isLoading}>
+              <DataTableToolbar table={table}>
+                <ReloadButton onClick={refetch} />
+                <AddNewButton onClick={toggleOn} />
+              </DataTableToolbar>
+            </DataTable>
+          </GearLoading>
         </Paper>
       </PageTransition>
       {isToggled && (

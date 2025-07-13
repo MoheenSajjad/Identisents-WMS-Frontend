@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { useNotification } from '@/context/NotificationContext';
+// import { useNotification } from '@/context/NotificationContext';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
-import { Toast } from '../ui/Toast';
+// import { Toast } from '../ui/Toast';
 
 interface LayoutProps {}
 
@@ -17,7 +17,7 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
   });
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
-  const { notifications, removeNotification } = useNotification();
+  // const { notifications, removeNotification } = useNotification();
 
   const location = useLocation();
 
@@ -72,20 +72,6 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
         <main className="h-full flex-1 overflow-auto">
           <Outlet />
         </main>
-      </div>
-
-      <div className="fixed top-4 right-4 z-50 space-y-2">
-        {notifications.map(notification => (
-          <Toast
-            key={notification.id}
-            type={notification.type}
-            title={notification.title}
-            message={notification.message}
-            action={notification.action}
-            duration={notification.duration}
-            onClose={() => removeNotification(notification.id)}
-          />
-        ))}
       </div>
     </div>
   );

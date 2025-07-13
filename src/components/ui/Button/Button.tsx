@@ -1,6 +1,5 @@
 import { Icons } from '@/components/Icons';
 import * as React from 'react';
-import { TableCell } from '../Table';
 
 type ButtonComponent = {
   (props: ButtonProps): React.JSX.Element;

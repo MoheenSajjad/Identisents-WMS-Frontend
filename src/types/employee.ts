@@ -35,7 +35,7 @@ export interface ICreateEmployee {
   mobilePhone: string;
   isMobileUser: boolean;
   isPortalUser: boolean;
-  password: string;
+  password?: string;
   companies: {
     id: string;
     isDefault: boolean;
