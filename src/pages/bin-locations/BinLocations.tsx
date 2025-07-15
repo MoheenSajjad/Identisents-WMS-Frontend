@@ -1,7 +1,7 @@
 import { DataTable } from '@/components/parts/Datatable';
 import { Paper } from '@/components/ui/Paper';
 import { useDataTable } from '@/hooks/use-data-tabel';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DataTableToolbar } from '@/components/parts/Datatable/DatatableToolbar';
 import { AddNewButton, ReloadButton } from '@/components/parts/Buttons';
 import { useFetch } from '@/hooks/use-fetch/use-fetch';
@@ -12,11 +12,11 @@ import { useFormSubmit } from '@/hooks/use-form-submit';
 import { IBinLocation } from '@/types/bin-location';
 import { BinLocationService } from '@/services/bin-location-services/bin-location-services';
 import { getColumns } from './columns';
-import { ApiResponse } from '@/types/api';
-// import { CreateBinLocation } from '@/components/parts/modals/create-bin-location';
+import { ApiResponse, PaginatedResponse } from '@/types/api';
 import { useNavigate } from 'react-router-dom';
 
 export const BinLocation = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [_selectedBinLocation, setSelectedBinLocation] = useState<IBinLocation | null>(null);
   const [binLocationDelete, setBinLocationDelete] = useState<IBinLocation | null>(null);
 
@@ -25,6 +25,7 @@ export const BinLocation = () => {
     toggleOff: closeDeleteModal,
     isToggled: isDeleteModalOpen,
   } = useToggle();
+
   const navigate = useNavigate();
 
   const { submit: deleteBinLocation, isSubmitting: isDeleting } = useFormSubmit(
@@ -58,21 +59,27 @@ export const BinLocation = () => {
   );
 
   const fetchBinLocations = useCallback(
-    (signal: AbortSignal) => BinLocationService.getBinLocations(signal),
-    []
+    (signal: AbortSignal) => BinLocationService.getBinLocations(currentPage, signal),
+    [currentPage]
   );
 
   const {
     data: locations,
     isLoading,
     refetch,
-  } = useFetch<ApiResponse<IBinLocation[]>>(fetchBinLocations);
+  } = useFetch<ApiResponse<PaginatedResponse<IBinLocation[]>>>(fetchBinLocations);
 
-  const { table } = useDataTable({
-    data: locations?.data ?? [],
+  const { table, page } = useDataTable({
+    data: locations?.data.records ?? [],
     columns,
-    pageCount: -1,
+    pageCount: locations?.data.pagination.totalPages || 1,
   });
+
+  useEffect(() => {
+    if (page !== currentPage) {
+      setCurrentPage(page);
+    }
+  }, [page]);
 
   return (
     <>

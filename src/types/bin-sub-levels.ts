@@ -1,12 +1,15 @@
 export interface IBinSubLevels {
   _id: string;
-  binLocationSubLevel: IBinLocationSubLevel;
+  level: number;
+  name: string;
   rows: IBinSubLevelRows[];
   isActive: boolean;
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;
 }
+
+export type IAllBinSubLevels = Omit<IBinSubLevels, 'createdAt' | 'updatedAt' | 'isDeleted'>;
 
 export interface IBinLocationSubLevel {
   _id: string;
@@ -23,9 +26,9 @@ export interface IBinSubLevelRows {
 
 export type ICreateBinSubLevel = Omit<
   IBinSubLevels,
-  'createdAt' | 'updatedAt' | '_id' | 'isDeleted' | 'binLocationSubLevel'
+  'createdAt' | 'updatedAt' | '_id' | 'isDeleted'
 > & {
-  binLocationSubLevel: string;
+  name: string;
 };
 
 export interface ISubLevelDropdown {

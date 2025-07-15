@@ -1,22 +1,27 @@
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  DeleteIconButton,
-  EditIconButton,
-  HeaderButton,
-  RestoreIconButton,
-} from '@/components/parts/Buttons';
+import { EditIconButton, HeaderButton } from '@/components/parts/Buttons';
 import { TableAlign } from '@/components/ui/Table';
 import { Tag } from '@/components/ui/Tag';
 import { IBinSubLevels } from '@/types/bin-sub-levels';
 import { DateTime } from '@/utils/date-time';
 
 export function getColumns(
-  onEdit?: (warehouse: IBinSubLevels) => void,
-  onDelete?: (warehouse: IBinSubLevels) => void
+  onEdit?: (warehouse: IBinSubLevels) => void
 ): ColumnDef<IBinSubLevels>[] {
   return [
     {
-      accessorKey: 'binLocationSubLevel.name',
+      accessorKey: 'level',
+      header: ({ column }) => (
+        <HeaderButton
+          label="Level"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        />
+      ),
+      enableSorting: true,
+      cell: ({ row }) => `Level ${row.original.level}`,
+    },
+    {
+      accessorKey: 'name',
       header: ({ column }) => (
         <HeaderButton
           label="Sub Level Name"
@@ -61,11 +66,6 @@ export function getColumns(
         return (
           <>
             <EditIconButton onClick={() => onEdit?.(row.original)} />
-            {row.original.isDeleted ? (
-              <RestoreIconButton onClick={() => onDelete?.(row.original)} />
-            ) : (
-              <DeleteIconButton onClick={() => onDelete?.(row.original)} />
-            )}
           </>
         );
       },

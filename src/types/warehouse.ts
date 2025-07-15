@@ -28,4 +28,5 @@ export interface IWarehouseDropdown {
   _id: string;
   code: string;
   name: string;
+  companyId: string;
 }

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { DataTable } from '@/components/parts/Datatable';
 import { DataTableToolbar } from '@/components/parts/Datatable/DatatableToolbar';
 import { ReloadButton } from '@/components/parts/Buttons';
@@ -12,11 +12,12 @@ import DeleteConfirmationModal from '@/components/parts/delete-confirmation/Dele
 import { IJobAssignment } from '@/types/job-assignment';
 import { JobAssignmentService } from '@/services/job-assignment-service';
 import { getColumns } from './columns';
-import { ApiResponse } from '@/types/api';
+import { ApiResponse, PaginatedResponse } from '@/types/api';
 import AssignJobModal from '@/components/parts/modals/assign-job-modal/AssignJobModal';
 import { Outlet } from 'react-router-dom';
 
 export const JobAssignment = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [jobToDelete, setJobToDelete] = useState<IJobAssignment | null>(null);
   const [assignJobId, setAssignJobId] = useState<string | null>(null);
 
@@ -63,21 +64,27 @@ export const JobAssignment = () => {
   );
 
   const fetchJobAssignments = useCallback(
-    (signal: AbortSignal) => JobAssignmentService.getJobs(signal),
-    []
+    (signal: AbortSignal) => JobAssignmentService.getJobs(currentPage, signal),
+    [currentPage]
   );
 
   const {
     data: jobs,
     isLoading,
     refetch,
-  } = useFetch<ApiResponse<IJobAssignment[]>>(fetchJobAssignments);
+  } = useFetch<ApiResponse<PaginatedResponse<IJobAssignment[]>>>(fetchJobAssignments);
 
-  const { table } = useDataTable({
-    data: jobs?.data ?? [],
+  const { table, page } = useDataTable({
+    data: jobs?.data.records ?? [],
     columns,
-    pageCount: -1,
+    pageCount: jobs?.data.pagination.totalPages || 1,
   });
+
+  useEffect(() => {
+    if (page !== currentPage) {
+      setCurrentPage(page);
+    }
+  }, [page]);
 
   return (
     <>

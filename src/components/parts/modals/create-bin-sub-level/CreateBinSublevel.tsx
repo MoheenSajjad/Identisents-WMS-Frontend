@@ -10,9 +10,8 @@ import {
 } from '../../Buttons';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { FormSwitch } from '@/components/ui/form-switch';
-import { SubLevelDropdown } from '../../dropdowns/sub-level-dropdown';
 import {
   Table,
   TableHeader,
@@ -35,7 +34,8 @@ interface ICreateBinSubLevelModalProps {
 }
 
 const formSchema = z.object({
-  binLocationSubLevel: z.string().min(1, 'Sub level is required'),
+  name: z.string().min(1, 'Sub level is required'),
+  level: z.number(),
   isActive: z.boolean(),
   rows: z
     .array(
@@ -61,11 +61,13 @@ export const CreateBinSubLevel: React.FC<ICreateBinSubLevelModalProps> = ({
     control,
     handleSubmit,
     formState: { errors },
+    getValues,
     reset,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      binLocationSubLevel: binSubLevel?.binLocationSubLevel?._id || '',
+      level: binSubLevel?.level,
+      name: binSubLevel?.name || '',
       isActive: binSubLevel?.isActive ?? true,
       rows: binSubLevel?.rows ?? [{ code: '', name: '' }],
     },
@@ -77,13 +79,9 @@ export const CreateBinSubLevel: React.FC<ICreateBinSubLevelModalProps> = ({
   });
 
   const { submit, isSubmitting } = useFormSubmit(
-    (formData: FormData, signal: AbortSignal) => {
-      if (isEditMode) {
-        return BinSubLevelService.updateBinSubLevel(binSubLevel!._id, formData, signal);
-      } else {
-        return BinSubLevelService.createBinSubLevel(formData, signal);
-      }
-    },
+    (formData: FormData, signal: AbortSignal) =>
+      BinSubLevelService.updateBinSubLevel(binSubLevel!._id, formData, signal),
+
     {
       onSuccess: warehouse => {
         reset();
@@ -103,27 +101,13 @@ export const CreateBinSubLevel: React.FC<ICreateBinSubLevelModalProps> = ({
 
   return (
     <Modal size={Modal.Size.LARGE}>
-      <ModalHeader onClose={onCancel}>
-        {isEditMode ? 'Edit Bin Sub Level' : 'Create Bin Sub Level'}
-      </ModalHeader>
+      <ModalHeader onClose={onCancel}>Edit Bin Sub Level {getValues('level')}</ModalHeader>
       <Form onSubmit={handleSubmit(handleFormSubmit)}>
         <OpacityWrapper opacity={isSubmitting ? 0.5 : 1} disabled={isSubmitting}>
           <ModalContent>
             <Grid className="gap-y-4.5">
-              <GridCell size={Grid.CellSize.S6}>
-                <Controller
-                  name="binLocationSubLevel"
-                  control={control}
-                  render={({ field, fieldState }) => (
-                    <SubLevelDropdown
-                      className="w-full"
-                      value={field.value}
-                      onSelect={sub => field.onChange(sub._id)}
-                      hasError={!!fieldState.error}
-                      isRequired
-                    />
-                  )}
-                />
+              <GridCell>
+                <TextFormField name="name" control={control} label="Name" isRequired />
               </GridCell>
               <GridCell>
                 <FormSwitch label="Active" name="isActive" control={control} />

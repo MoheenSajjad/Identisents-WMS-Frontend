@@ -1,5 +1,5 @@
 import { ApiResponse } from '@/types/api';
-import { IBinSubLevels, ICreateBinSubLevel } from '@/types/bin-sub-levels';
+import { IAllBinSubLevels, IBinSubLevels, ICreateBinSubLevel } from '@/types/bin-sub-levels';
 import { apiClient } from '@/utils/apiClient';
 import { successHandlers } from '@/utils/handlers/successHandler';
 import { errorHandler } from '@/utils/handlers/errorHandler';
@@ -12,6 +12,21 @@ class BinSubLevelServices {
       const response = await apiClient.get<ApiResponse<IBinSubLevels[]>>(`api/binLocSubLev`, {
         signal,
       });
+      return response;
+    } catch (error) {
+      errorHandler(error);
+      throw error;
+    }
+  }
+
+  static async getAll(signal: AbortSignal): Promise<ApiResponse<IAllBinSubLevels[]>> {
+    try {
+      const response = await apiClient.get<ApiResponse<IAllBinSubLevels[]>>(
+        `api/binLocSubLev/all`,
+        {
+          signal,
+        }
+      );
       return response;
     } catch (error) {
       errorHandler(error);

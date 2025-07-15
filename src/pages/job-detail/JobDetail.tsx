@@ -12,6 +12,8 @@ import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { JobAssignmentService } from '@/services/job-assignment-service';
 import { ApiResponse } from '@/types/api';
 import { formatDate } from '@/utils/helpers';
+import { Tag } from '@/components/ui/Tag';
+import { ObjectType } from '@/types/job-assignment';
 
 // Interfaces
 export interface Batch {
@@ -35,6 +37,11 @@ export interface BinLocation {
   direction: string;
   batches: Batch[];
   _id: string;
+}
+
+export enum Direction {
+  IN = 'I',
+  OUT = 'O',
 }
 
 export interface Warehouse {
@@ -238,10 +245,8 @@ export const JobDetail = () => {
                                   </div>
                                 </div>
 
-                                {/* Line Item Content */}
                                 {expandedLineItems.has(lineItem._id) && (
                                   <div className="space-y-3 p-3">
-                                    {/* Quantity Summary */}
                                     <div className="grid grid-cols-2 gap-4 text-sm md:grid-cols-4">
                                       <div>
                                         <div className="text-gray-600">Warehouse</div>
@@ -298,6 +303,20 @@ export const JobDetail = () => {
                                             <span className="text-sm font-medium">
                                               {binLocation.binLocationId.code}
                                             </span>
+                                            {job.objType === ObjectType.STOCK_TRANSFER && (
+                                              <Tag
+                                                type={
+                                                  binLocation.direction === 'I'
+                                                    ? Tag.type.INFO
+                                                    : Tag.type.ON_TRACK
+                                                }
+                                                label={
+                                                  binLocation.direction === 'I'
+                                                    ? 'Source'
+                                                    : 'Target'
+                                                }
+                                              />
+                                            )}
                                           </div>
                                           <div className="text-sm text-gray-600">
                                             Qty: {binLocation.quantity}

@@ -1,5 +1,5 @@
 import { IGeneratedBinLocation } from '@/components/parts/modals/bin-location-generated-codes-modal/columns';
-import { ApiResponse } from '@/types/api';
+import { ApiResponse, PaginatedResponse } from '@/types/api';
 import {
   IBinLocation,
   ICreateBinLocation,
@@ -12,11 +12,17 @@ import { errorHandler } from '@/utils/handlers/errorHandler';
 const ENTITY = 'Bin Location';
 
 class BinLocationServices {
-  static async getBinLocations(signal: AbortSignal): Promise<ApiResponse<IBinLocation[]>> {
+  static async getBinLocations(
+    page: number,
+    signal: AbortSignal
+  ): Promise<ApiResponse<PaginatedResponse<IBinLocation[]>>> {
     try {
-      const response = await apiClient.get<ApiResponse<IBinLocation[]>>('api/binLocation', {
-        signal,
-      });
+      const response = await apiClient.get<ApiResponse<PaginatedResponse<IBinLocation[]>>>(
+        `api/binLocation?page=${page}`,
+        {
+          signal,
+        }
+      );
       return response;
     } catch (error) {
       errorHandler(error);
