@@ -21,6 +21,18 @@ export function getColumns(
       enableSorting: true,
     },
     {
+      accessorKey: 'warehouse',
+      header: ({ column }) => (
+        <HeaderButton
+          label="Warehouse"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        />
+      ),
+      enableSorting: true,
+      cell: ({ row }) =>
+        `${row.original.warehouse?.name ?? '-'} (${row.original.warehouse?.code ?? '-'})`,
+    },
+    {
       accessorKey: 'itemGroup',
       header: ({ column }) => (
         <HeaderButton
