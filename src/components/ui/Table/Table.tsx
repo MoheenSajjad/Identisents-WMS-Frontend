@@ -405,7 +405,7 @@ export const TablePagination = <TData,>({
   const totalPages = table.getPageCount();
 
   const getVisiblePages = () => {
-    const pages = [];
+    const pages: number[] = [];
     const maxVisiblePages = 5;
 
     if (totalPages <= maxVisiblePages) {
@@ -413,8 +413,18 @@ export const TablePagination = <TData,>({
         pages.push(i);
       }
     } else {
-      const start = Math.max(1, currentPage - 2);
-      const end = Math.min(totalPages, currentPage + 2);
+      let start = currentPage - 2;
+      let end = currentPage + 2;
+
+      if (start < 1) {
+        start = 1;
+        end = maxVisiblePages;
+      }
+
+      if (end > totalPages) {
+        end = totalPages;
+        start = totalPages - maxVisiblePages + 1;
+      }
 
       for (let i = start; i <= end; i++) {
         pages.push(i);
@@ -425,6 +435,7 @@ export const TablePagination = <TData,>({
   };
 
   const visiblePages = getVisiblePages();
+  console.log('visibl pages', visiblePages);
 
   if (totalPages <= 1) {
     return null;

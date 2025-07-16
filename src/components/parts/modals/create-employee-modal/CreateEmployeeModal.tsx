@@ -1,7 +1,7 @@
 import { Modal, ModalContent, ModalFooter, ModalHeader } from '@/components/ui/modal';
 import { CancelButton, SubmitButton } from '../../Buttons';
 import { Grid, GridCell } from '@/components/ui/grid';
-import { Controller, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useFormSubmit } from '@/hooks/use-form-submit';
@@ -12,7 +12,6 @@ import { EmployeeService } from '@/services/employee-services';
 import { PasswordFormField, TextFormField } from '@/components/ui/formField';
 import { EmployeeAssignCompanyDropdown } from '../../dropdowns/employee-assign-companies-dropdown';
 import { FormSwitch } from '@/components/ui/form-switch';
-import { useEffect } from 'react';
 
 const formSchema = z
   .object({
@@ -54,14 +53,7 @@ export const CreateEmployeeModal = ({
 }: CreateEmployeeProps) => {
   const isEditMode = mode === 'edit';
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useForm<FormData>({
+  const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       employeeCode: employee?.employeeCode || '',
@@ -94,22 +86,6 @@ export const CreateEmployeeModal = ({
     }
   );
 
-  console.log(errors, getValues());
-
-  const isMobileUser = useWatch({ control, name: 'isMobileUser' });
-  const isPortalUser = useWatch({ control, name: 'isPortalUser' });
-
-  useEffect(() => {
-    if (isMobileUser && isPortalUser) {
-      setValue('isPortalUser', false);
-    }
-  }, [isMobileUser]);
-
-  useEffect(() => {
-    if (isPortalUser && isMobileUser) {
-      setValue('isMobileUser', false);
-    }
-  }, [isPortalUser]);
   return (
     <Modal size={Modal.Size.LARGE}>
       <ModalHeader onClose={onCancel}>

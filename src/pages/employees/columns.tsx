@@ -37,11 +37,11 @@ export function getColumns(
     },
     {
       accessorKey: 'email',
-      header: () => <HeaderButton label="Email" />, // No sorting
+      header: () => <HeaderButton label="Email" />,
     },
     {
       accessorKey: 'mobilePhone',
-      header: () => <HeaderButton label="Phone" />, // No sorting
+      header: () => <HeaderButton label="Phone" />,
     },
     {
       accessorKey: 'isPortalUser',
@@ -51,6 +51,17 @@ export function getColumns(
         <Tag
           type={row.original.isPortalUser ? Tag.type.ACTIVE : Tag.type.INACTIVE}
           label={row.original.isPortalUser ? 'Yes' : 'No'}
+        />
+      ),
+    },
+    {
+      accessorKey: 'isMobileUser',
+      meta: { CellAlign: TableAlign.CENTER, HeadAlign: TableAlign.CENTER },
+      header: () => <HeaderButton label="Mobile User" />,
+      cell: ({ row }) => (
+        <Tag
+          type={row.original.isMobileUser ? Tag.type.ACTIVE : Tag.type.INACTIVE}
+          label={row.original.isMobileUser ? 'Yes' : 'No'}
         />
       ),
     },

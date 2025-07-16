@@ -10,7 +10,7 @@ interface RequestOptions {
 abstract class BaseApiClient {
   protected instance: AxiosInstance;
 
-  constructor(baseURL: string, timeout: number = 50000) {
+  constructor(baseURL: string, timeout: number = 60000) {
     this.instance = axios.create({
       baseURL,
       timeout,
@@ -35,7 +35,7 @@ abstract class BaseApiClient {
       response => response,
       error => {
         const { status } = error.response || {};
-        if (status === 401) {
+        if (status === 401 || status === 403) {
           sessionStorage.removeItem('authData');
           sessionStorage.removeItem('token');
           window.location.href = '/login';
@@ -70,7 +70,7 @@ abstract class BaseApiClient {
 
 class ApiClient extends BaseApiClient {
   constructor() {
-    super(apiUrl || '', 10000);
+    super(apiUrl || '', 60000);
   }
 
   async get<T>(url: string, options?: RequestOptions): Promise<T> {

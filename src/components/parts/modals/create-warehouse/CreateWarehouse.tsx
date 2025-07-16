@@ -22,6 +22,7 @@ interface ICreateWarehouseModalProps {
 }
 
 const formSchema = z.object({
+  code: z.string().min(1),
   name: z.string().min(1),
   companyId: z.string().min(1),
   sapWarehouses: z.array(z.string()).min(1),
@@ -47,6 +48,7 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      code: isEditMode ? existingWarehouse?.code || '' : '',
       name: isEditMode ? existingWarehouse?.name || '' : '',
       companyId: isEditMode ? existingWarehouse?.companyId || '' : '',
       sapWarehouses: isEditMode ? existingWarehouse?.sapWarehouses || [] : [],
@@ -87,6 +89,15 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
         <OpacityWrapper opacity={isSubmitting ? 0.5 : 1} disabled={isSubmitting}>
           <ModalContent>
             <Grid className="gap-y-4.5">
+              <GridCell>
+                <TextFormField
+                  label="Warehouse Code"
+                  name="code"
+                  isRequired
+                  control={control}
+                  error={errors.code}
+                />
+              </GridCell>
               <GridCell>
                 <TextFormField
                   label="Warehouse Name"

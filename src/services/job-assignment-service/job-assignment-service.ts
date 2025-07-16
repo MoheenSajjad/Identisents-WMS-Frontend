@@ -1,4 +1,4 @@
-import { ApiResponse } from '@/types/api';
+import { ApiResponse, PaginatedResponse } from '@/types/api';
 import { IJobAssignment, IJobAssignmentDetail } from '@/types/job-assignment';
 import { apiClient } from '@/utils/apiClient';
 import { successHandler, successHandlers } from '@/utils/handlers/successHandler';
@@ -7,11 +7,17 @@ import { errorHandler } from '@/utils/handlers/errorHandler';
 const ENTITY = 'Job Assignment';
 
 class JobAssignmentServices {
-  static async getJobs(signal: AbortSignal): Promise<ApiResponse<IJobAssignment[]>> {
+  static async getJobs(
+    page: number,
+    signal: AbortSignal
+  ): Promise<ApiResponse<PaginatedResponse<IJobAssignment[]>>> {
     try {
-      const response = await apiClient.get<ApiResponse<IJobAssignment[]>>(`api/jobAssignment`, {
-        signal,
-      });
+      const response = await apiClient.get<ApiResponse<PaginatedResponse<IJobAssignment[]>>>(
+        `api/jobAssignment?page=${page}`,
+        {
+          signal,
+        }
+      );
       return response;
     } catch (error) {
       errorHandler(error);

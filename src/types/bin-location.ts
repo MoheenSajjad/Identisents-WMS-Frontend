@@ -1,4 +1,6 @@
+import { ISAPItemGroup } from '@/components/parts/dropdowns/sap-item-group-dropdown';
 import { IWarehouseDropdown } from './warehouse';
+import { ISAPItem } from '@/components/parts/dropdowns/sap-items-dropdown';
 
 export interface IBinLocation {
   _id: string;
@@ -46,9 +48,8 @@ export interface IGenerateBinLocationCodesProps {
   toBinSubLevel3: string;
   toBinSubLevel4: string;
   capacity: number;
-  itemGroup: string;
-  itemCode: string;
-  itemName: string;
+  itemGroup: ISAPItemGroup;
+  itemName: ISAPItem;
   uom: string;
   isActive: boolean;
 }

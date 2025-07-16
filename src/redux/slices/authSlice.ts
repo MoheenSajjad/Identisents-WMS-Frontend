@@ -4,6 +4,8 @@ import { AuthState, LoginCredentials, LoginResponse } from '@/types/auth';
 import { apiUrl } from '@/config';
 import { ApiResponse } from '@/types/api';
 import { apiClient } from '@/utils/apiClient';
+import { errorHandler } from '@/utils/handlers/errorHandler';
+import { notify } from '@/utils/notify/notify';
 
 export const loginUser = createAsyncThunk<
   { username: string; password: string; userId: string },
@@ -16,6 +18,7 @@ export const loginUser = createAsyncThunk<
       {
         username,
         password,
+        isPortalUser: true,
       },
       {
         headers: {
@@ -35,14 +38,15 @@ export const loginUser = createAsyncThunk<
 
       sessionStorage.setItem('authData', JSON.stringify(authData));
       sessionStorage.setItem('token', response.data.data.token);
-
+      notify.success('Login Successfull');
+      // successHandler(response);
       return { username, password, userId: response.data.data.user._id };
     } else {
+      errorHandler(response);
       return rejectWithValue('Login failed');
     }
   } catch (error) {
-    console.log(error);
-
+    errorHandler(error);
     const axiosError = error as AxiosError<{ message?: string }>;
     return rejectWithValue(axiosError.response?.data?.message || 'Login failed');
   }

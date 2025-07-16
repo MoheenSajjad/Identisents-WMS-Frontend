@@ -121,7 +121,7 @@ export function DataTable<TData>({
               </>
             ) : (
               <>
-                {Array.from({ length: 6 }).map((_, index) => (
+                {Array.from({ length: 9 }).map((_, index) => (
                   <TableSkeletonRow key={index}>
                     <TableSkeleton />
                   </TableSkeletonRow>

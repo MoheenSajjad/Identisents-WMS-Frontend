@@ -7,7 +7,7 @@ import { NumberFormField, TextFormField } from '@/components/ui/formField';
 import { FormSwitch } from '@/components/ui/form-switch';
 import { ApiResponse } from '@/types/api';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { IBinSubLevels } from '@/types/bin-sub-levels';
+import { IAllBinSubLevels } from '@/types/bin-sub-levels';
 import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { BinSubLevelService } from '@/services/bin-sub-level-services';
 import { OpacityWrapper } from '@/components/parts/opacity-wrapper';
@@ -27,20 +27,11 @@ import { useToggle } from '@/hooks/use-toggle';
 import { GeneratedCodesModal } from '@/components/parts/modals/bin-location-generated-codes-modal';
 import { GearLoading } from '@/components/ui/Loading/GearLoading';
 import { PageTransition } from '@/components/parts/animations';
+import { SAPItemGroupsDropdown } from '@/components/parts/dropdowns/sap-item-group-dropdown';
+import { SapItemsDropdown } from '@/components/parts/dropdowns/sap-items-dropdown';
+import { TextInput } from '@/components/ui/text-input';
 
 const createFormSchema = () => {
-  // const dynamicFields: Record<string, any> = {};
-
-  // levels.forEach(level => {
-  //   const levelKey = level.binLocationSubLevel.subLevel;
-  //   dynamicFields[`fromBinSubLevel${levelKey}`] = z
-  //     .string()
-  //     .min(1, `From ${level.binLocationSubLevel.name} is required`);
-  //   dynamicFields[`toBinSubLevel${levelKey}`] = z
-  //     .string()
-  //     .min(1, `To ${level.binLocationSubLevel.name} is required`);
-  // });
-
   return z.object({
     warehouse: z.string().min(1, 'Warehouse is required'),
     fromBinSubLevel1: z.string().min(1, 'From Sub level 1 is required'),
@@ -52,9 +43,17 @@ const createFormSchema = () => {
     toBinSubLevel3: z.string().min(1, 'To Sub level 3 is required'),
     toBinSubLevel4: z.string().min(1, 'To Sub level 4 is required'),
     capacity: z.coerce.number().gt(0).min(1, 'Capacity is required'),
-    itemGroup: z.string().min(1, 'Item Group is required'),
-    itemCode: z.string().min(1, 'Item Code is required'),
-    itemName: z.string().min(1, 'Item Name is required'),
+
+    itemGroup: z.object({
+      Number: z.string().min(1, 'Group Number is required'),
+      GroupName: z.string().min(1, 'Group Name is required'),
+    }),
+
+    itemName: z.object({
+      ItemCode: z.string().min(1, 'Item Code is required'),
+      ItemName: z.string().min(1, 'Item Name is required'),
+    }),
+
     uom: z.string().min(1, 'UOM is required'),
     isActive: z.boolean(),
   });
@@ -62,17 +61,19 @@ const createFormSchema = () => {
 
 export const CreateBinLocation = () => {
   const [generatedCode, setGeneratedCodes] = useState<IGeneratedBinLocation[] | null>(null);
+  const [companyId, setCompanyId] = useState<string | null>(null);
   const [showLoading, setShowLoading] = useState(false);
 
   const navigate = useNavigate();
   const { toggleOff, toggleOn, isToggled } = useToggle();
 
   const fetchBinSubLevels = useCallback(
-    (signal: AbortSignal) => BinSubLevelService.getBinSubLevels(signal),
+    (signal: AbortSignal) => BinSubLevelService.getAll(signal),
     []
   );
 
-  const { data: binSubLevelsResponse } = useFetch<ApiResponse<IBinSubLevels[]>>(fetchBinSubLevels);
+  const { data: binSubLevelsResponse } =
+    useFetch<ApiResponse<IAllBinSubLevels[]>>(fetchBinSubLevels);
 
   const binSubLevelOptions = useMemo(
     () => binSubLevelsResponse?.data ?? [],
@@ -80,24 +81,30 @@ export const CreateBinLocation = () => {
   );
 
   const sortedLevels = useMemo(() => {
-    return [...binSubLevelOptions].sort(
-      (a, b) => a.binLocationSubLevel.subLevel - b.binLocationSubLevel.subLevel
-    );
+    return [...binSubLevelOptions].sort((a, b) => a.level - b.level);
   }, [binSubLevelOptions]);
+  console.log('sorted values', sortedLevels);
 
   const createDefaultValues = useMemo(() => {
     const defaultValues: Record<string, any> = {
       warehouse: '',
       capacity: 0,
-      itemGroup: '',
-      itemCode: '',
-      itemName: '',
+      itemGroup: {
+        Number: '',
+        GroupName: '',
+      },
+
+      itemName: {
+        ItemCode: '',
+        ItemName: '',
+      },
+
       uom: '',
       isActive: true,
     };
 
     sortedLevels.forEach(level => {
-      const levelKey = level.binLocationSubLevel.subLevel;
+      const levelKey = level.level;
       defaultValues[`fromBinSubLevel${levelKey}`] = '';
       defaultValues[`toBinSubLevel${levelKey}`] = '';
     });
@@ -108,7 +115,13 @@ export const CreateBinLocation = () => {
   const formSchema = useMemo(() => createFormSchema(), [sortedLevels]);
   type FormData = z.infer<typeof formSchema>;
 
-  const { control, handleSubmit, watch } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    getValues,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: createDefaultValues,
   });
@@ -116,7 +129,7 @@ export const CreateBinLocation = () => {
   const watchedValues = watch();
 
   const isSelectionValid = useCallback(
-    (fromValue: string, toValue: string, level: IBinSubLevels) => {
+    (fromValue: string, toValue: string, level: IAllBinSubLevels) => {
       if (!fromValue || !toValue) {
         return true;
       }
@@ -134,7 +147,7 @@ export const CreateBinLocation = () => {
   );
 
   const getValidationErrorMessage = useCallback(
-    (fromValue: string, toValue: string, level: IBinSubLevels) => {
+    (fromValue: string, toValue: string, level: IAllBinSubLevels) => {
       if (!fromValue || !toValue) {
         return undefined;
       }
@@ -171,7 +184,7 @@ export const CreateBinLocation = () => {
     let hasValidationErrors = false;
 
     sortedLevels.forEach(level => {
-      const levelKey = level.binLocationSubLevel.subLevel;
+      const levelKey = level.level;
       const fromValue = data[`fromBinSubLevel${levelKey}` as keyof FormData] as string;
       const toValue = data[`toBinSubLevel${levelKey}` as keyof FormData] as string;
 
@@ -201,6 +214,8 @@ export const CreateBinLocation = () => {
       return () => clearTimeout(timeout);
     }
   }, [isSubmitting]);
+
+  console.log(getValues(), errors);
 
   return (
     <>
@@ -243,7 +258,10 @@ export const CreateBinLocation = () => {
                         render={({ field, fieldState }) => (
                           <WarehouseDropdown
                             value={field.value}
-                            onSelect={w => field.onChange(w._id)}
+                            onSelect={w => {
+                              field.onChange(w._id);
+                              setCompanyId(w.companyId);
+                            }}
                             hasError={!!fieldState.error}
                             isRequired
                           />
@@ -262,36 +280,67 @@ export const CreateBinLocation = () => {
                       />
                     </GridCell>
 
-                    <GridCell size={Grid.CellSize.S3}>
-                      <TextFormField
-                        label="Item Group"
+                    <GridCell>
+                      <Controller
                         name="itemGroup"
                         control={control}
-                        placeholder="Item Group"
-                        hasError={control.getFieldState('itemGroup').invalid}
-                        isRequired
+                        render={({ field, fieldState }) => (
+                          <SAPItemGroupsDropdown
+                            value={field.value.Number}
+                            className="w-full"
+                            onSelect={value =>
+                              field.onChange({
+                                Number: value.Number,
+                                GroupName: value.GroupName,
+                              })
+                            }
+                            hasError={!!fieldState.error}
+                            isRequired={true}
+                            isDisabled={!companyId}
+                            companyId={companyId}
+                          />
+                        )}
+                      />
+                    </GridCell>
+
+                    <GridCell>
+                      <Controller
+                        name="itemName"
+                        control={control}
+                        render={({ field, fieldState }) => (
+                          <SapItemsDropdown
+                            value={field.value.ItemCode}
+                            className="w-full"
+                            onSelect={value =>
+                              field.onChange({
+                                ItemCode: value.ItemCode,
+                                ItemName: value.ItemName,
+                              })
+                            }
+                            hasError={!!fieldState.error}
+                            isRequired={true}
+                            groupCode={watch('itemGroup')?.Number}
+                            isDisabled={!watch('itemGroup')?.Number}
+                            companyId={companyId}
+                          />
+                        )}
                       />
                     </GridCell>
 
                     <GridCell size={Grid.CellSize.S3}>
-                      <TextFormField
-                        label="Item Code"
-                        name="itemCode"
-                        control={control}
-                        placeholder="Item Code"
-                        hasError={control.getFieldState('itemCode').invalid}
-                        isRequired
-                      />
-                    </GridCell>
-
-                    <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
-                      <TextFormField
-                        label="Item Name"
+                      <Controller
                         name="itemName"
                         control={control}
-                        placeholder="Item Name"
-                        hasError={control.getFieldState('itemName').invalid}
-                        isRequired
+                        render={({ field, fieldState }) => (
+                          <TextInput
+                            label="Item Code"
+                            value={field.value.ItemCode}
+                            hasError={fieldState.invalid}
+                            className="w-full"
+                            isRequired
+                            isDisabled
+                          />
+                        )}
                       />
                     </GridCell>
 
@@ -329,7 +378,7 @@ export const CreateBinLocation = () => {
 
                   <div className="space-y-4">
                     {sortedLevels.map(level => {
-                      const levelKey = level.binLocationSubLevel.subLevel;
+                      const levelKey = level.level;
                       const fromFieldName = `fromBinSubLevel${levelKey}` as keyof FormData;
                       const toFieldName = `toBinSubLevel${levelKey}` as keyof FormData;
                       const fromValue = watchedValues[fromFieldName] as string;
@@ -338,9 +387,7 @@ export const CreateBinLocation = () => {
                       return (
                         <Grid key={level._id}>
                           <GridCell size={Grid.CellSize.S3} className="flex-grow-0">
-                            <span className="text-sm font-medium">
-                              {level.binLocationSubLevel.name}
-                            </span>
+                            <span className="text-sm font-medium">{level.name}</span>
                           </GridCell>
                           <GridCell>
                             <Controller
@@ -357,7 +404,7 @@ export const CreateBinLocation = () => {
                                   showLabel={false}
                                   options={level.rows}
                                   isRequired
-                                  placeholder={`Select from ${level.binLocationSubLevel.name.toLowerCase()}...`}
+                                  placeholder={`Select from ${level.name.toLowerCase()}...`}
                                   error={
                                     fieldState.error?.message ||
                                     getValidationErrorMessage(field.value as string, toValue, level)
@@ -382,7 +429,7 @@ export const CreateBinLocation = () => {
                                   showLabel={false}
                                   options={level.rows}
                                   isRequired
-                                  placeholder={`Select to ${level.binLocationSubLevel.name.toLowerCase()}...`}
+                                  placeholder={`Select to ${level.name.toLowerCase()}...`}
                                   error={
                                     fieldState.error?.message ||
                                     getValidationErrorMessage(

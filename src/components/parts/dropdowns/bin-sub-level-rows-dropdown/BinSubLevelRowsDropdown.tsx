@@ -108,7 +108,7 @@ export const BinSubLevelRowsDropdown: React.FC<IBinSubLevelRowsDropdownProps> = 
         <DropdownInput
           value={searchTerm}
           onChange={handleSearchChange}
-          placeholder="Search by code, name, or serial number..."
+          placeholder="Search by code or name..."
         />
 
         <DropdownList>
@@ -120,7 +120,6 @@ export const BinSubLevelRowsDropdown: React.FC<IBinSubLevelRowsDropdownProps> = 
             const displayText = [];
             if (row.code) displayText.push(row.code);
             if (row.name) displayText.push(row.name);
-            if (row.serialNumber) displayText.push(`#${row.serialNumber}`);
 
             return (
               <DropdownItem
@@ -131,9 +130,6 @@ export const BinSubLevelRowsDropdown: React.FC<IBinSubLevelRowsDropdownProps> = 
                 <DropdownItemName>
                   <div className="flex flex-col">
                     <span className="font-medium">{displayText.join(' - ')}</span>
-                    {row.serialNumber && (
-                      <span className="text-xs text-gray-500">Serial: {row.serialNumber}</span>
-                    )}
                   </div>
                 </DropdownItemName>
               </DropdownItem>
