@@ -35,7 +35,7 @@ abstract class BaseApiClient {
       response => response,
       error => {
         const { status } = error.response || {};
-        if (status === 401) {
+        if (status === 401 || status === 403) {
           sessionStorage.removeItem('authData');
           sessionStorage.removeItem('token');
           window.location.href = '/login';
