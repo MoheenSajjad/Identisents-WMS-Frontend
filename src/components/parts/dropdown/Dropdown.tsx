@@ -151,7 +151,7 @@ export const DropdownTrigger = ({
           )}
           <span className="block truncate font-medium">
             {isLoading ? 'Loading...' : displayText}
-          </span>
+          </span>{' '}
         </span>
       );
     }
@@ -161,21 +161,6 @@ export const DropdownTrigger = ({
         <span className="truncate font-medium text-gray-700">
           {selectedItems.length} item{selectedItems.length === 1 ? '' : 's'} selected
         </span>
-        {onRemoveItem && (
-          <div className="ml-2 flex flex-shrink-0 items-center space-x-1">
-            <button
-              type="button"
-              className="p-0.5 text-gray-400 hover:text-gray-600"
-              onClick={e => {
-                e.stopPropagation();
-                selectedItems.forEach(item => onRemoveItem(item));
-              }}
-              title="Clear all selections"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          </div>
-        )}
       </div>
     );
   };
@@ -185,13 +170,28 @@ export const DropdownTrigger = ({
       {showLabel && <DropdownLabel label={label!} isRequired={isRequired} hasError={hasError} />}
       <button
         type="button"
-        className={`hover:border-primary-orange/55 relative min-h-8 w-full min-w-52 cursor-default rounded-lg border py-1.5 pr-10 pl-3 text-left text-gray-500 transition-all duration-300 hover:text-gray-700 focus:outline-none sm:text-xs ${hasError ? 'border-error' : 'border-gray-400'} ${isDisabled ? 'bg-gray-100' : 'cursor-pointer bg-white'} ${className} `}
+        className={`hover:border-primary-orange/55 relative min-h-8 w-full min-w-52 cursor-default rounded-lg border py-1.5 pr-10 pl-3 text-left text-gray-500 transition-all duration-300 hover:text-gray-700 focus:outline-none sm:text-xs ${
+          hasError ? 'border-error' : 'border-gray-400'
+        } ${isDisabled ? 'bg-gray-100' : 'cursor-pointer bg-white'} ${className}`}
         onClick={onClick}
       >
         <div className="flex min-h-5 items-center">{getDisplayContent()}</div>
-        <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
+
+        <span className="absolute inset-y-0 right-0 flex items-center pr-2">
           {isLoading ? (
             <Icons.Loader className="h-5 w-5 animate-spin" />
+          ) : onRemoveItem && selectedItems.length > 0 ? (
+            <button
+              type="button"
+              className="p-0.5 text-gray-400 hover:cursor-pointer hover:text-gray-600"
+              onClick={e => {
+                e.stopPropagation();
+                selectedItems.forEach(item => onRemoveItem(item));
+              }}
+              title="Clear selection"
+            >
+              <X className="h-4 w-4" />
+            </button>
           ) : Icon ? (
             Icon
           ) : (

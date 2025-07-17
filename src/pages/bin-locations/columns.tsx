@@ -1,12 +1,17 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { IBinLocation } from '@/types/bin-location';
 import { TableAlign } from '@/components/ui/Table';
-import { HeaderButton, DeleteIconButton, RestoreIconButton } from '@/components/parts/Buttons';
+import {
+  HeaderButton,
+  DeleteIconButton,
+  RestoreIconButton,
+  EditIconButton,
+} from '@/components/parts/Buttons';
 import { Tag } from '@/components/ui/Tag';
 import { DateTime } from '@/utils/date-time';
 
 export function getColumns(
-  _onEdit?: (data: IBinLocation) => void,
+  onEdit?: (data: IBinLocation) => void,
   onDelete?: (data: IBinLocation) => void
 ): ColumnDef<IBinLocation>[] {
   return [
@@ -41,6 +46,7 @@ export function getColumns(
         />
       ),
       enableSorting: true,
+      cell: ({ row }) => `${row.original.itemGroup} (${row.original.itemGroupCode ?? '-'})`,
     },
     {
       accessorKey: 'itemName',
@@ -51,6 +57,8 @@ export function getColumns(
         />
       ),
       enableSorting: true,
+      cell: ({ row }) =>
+        `${row.original.itemName ? row.original.itemName : '-'} (${row.original.itemCode ? row.original.itemCode : '-'})`,
     },
     {
       accessorKey: 'capacity',
@@ -89,7 +97,7 @@ export function getColumns(
       meta: { CellAlign: TableAlign.CENTER, HeadAlign: TableAlign.CENTER },
       cell: ({ row }) => (
         <>
-          {/* <EditIconButton onClick={() => onEdit?.(row.original)} /> */}
+          {row.original.canUpdate && <EditIconButton onClick={() => onEdit?.(row.original)} />}
           {row.original.isDeleted ? (
             <RestoreIconButton onClick={() => onDelete?.(row.original)} />
           ) : (

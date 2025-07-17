@@ -13,11 +13,13 @@ export interface IBinLocation {
   binSubLevel5: binSubLevel;
   capacity: number;
   itemGroup: string;
-  itemCode: string;
-  itemName: string;
+  itemGroupCode: string;
+  itemCode?: string;
+  itemName?: string;
   uom: string;
   isActive: boolean;
   isDeleted: boolean;
+  canUpdate: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -34,6 +36,16 @@ export interface ICreateBinLocation {
   itemCode: string;
   itemName: string;
   uom: string;
+  isActive: boolean;
+}
+
+export interface IUpdateBinLocation {
+  itemGroup: string;
+  itemGroupCode: string;
+  itemCode: string;
+  itemName: string;
+  uom: string;
+  capacity: number;
   isActive: boolean;
 }
 

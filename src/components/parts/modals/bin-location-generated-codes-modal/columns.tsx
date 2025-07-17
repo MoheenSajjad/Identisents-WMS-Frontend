@@ -13,11 +13,12 @@ export interface IGeneratedBinLocation {
   hasError: boolean;
   message?: string;
   capacity: number;
-  itemCode: string;
+  itemCode?: string;
   warehouse: string;
   isActive: boolean;
-  itemGroup: string;
-  itemName: string;
+  itemGroup?: string;
+  itemGroupCode?: string;
+  itemName?: string;
   uom: string;
 }
 
@@ -71,25 +72,18 @@ export function getGeneratedCodesColumns(): ColumnDef<IGeneratedBinLocation>[] {
         </span>
       ),
     },
-    {
-      accessorKey: 'itemCode',
-      header: ({ column }) => (
-        <HeaderButton
-          label="Item Code"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        />
-      ),
-      enableSorting: true,
-    },
+
     {
       accessorKey: 'itemName',
       header: ({ column }) => (
         <HeaderButton
-          label="Item Name"
+          label="Item"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         />
       ),
       enableSorting: true,
+      cell: ({ row }) =>
+        `${row.original.itemName ? row.original.itemName : '-'} (${row.original.itemCode ? row.original.itemCode : '-'})`,
     },
     {
       accessorKey: 'itemGroup',
@@ -100,6 +94,7 @@ export function getGeneratedCodesColumns(): ColumnDef<IGeneratedBinLocation>[] {
         />
       ),
       enableSorting: true,
+      cell: ({ row }) => `${row.original.itemGroup} (${row.original.itemGroupCode})`,
     },
     {
       accessorKey: 'capacity',

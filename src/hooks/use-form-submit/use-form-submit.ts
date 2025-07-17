@@ -1,6 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
 
-// Types
 type SubmitFunction<TData, TResponse> = (data: TData, signal: AbortSignal) => Promise<TResponse>;
 
 interface UseFormSubmitConfig<TResponse> {
@@ -42,12 +41,9 @@ export function useFormSubmit<TData = any, TResponse = any>(
 
   const submit = useCallback(
     async (formData: TData): Promise<TResponse | void> => {
-      // Cancel any previous submission
       if (controllerRef.current) {
         controllerRef.current.abort();
       }
-
-      // Create new controller
       controllerRef.current = new AbortController();
       const currentController = controllerRef.current;
 
@@ -55,23 +51,19 @@ export function useFormSubmit<TData = any, TResponse = any>(
         setIsSubmitting(true);
         setError(null);
 
-        // Call the submit function with form data and signal
         const result = await submitFunction(formData, currentController.signal);
 
-        // Only update state if not aborted
         if (!currentController.signal.aborted) {
           setData(result);
 
-          // Call success callback
           onSuccess?.(result);
 
-          // Reset state on success if configured
           if (resetOnSuccess) {
             setTimeout(() => {
               if (!currentController.signal.aborted) {
                 setData(null);
               }
-            }, 100); // Small delay to allow UI to show success state
+            }, 100);
           }
 
           return result;
@@ -80,16 +72,13 @@ export function useFormSubmit<TData = any, TResponse = any>(
         if (!currentController.signal.aborted && err.name !== 'AbortError') {
           setError(err);
 
-          // Handle error globally if enabled
           if (globalErrorHandling) {
-            // You can integrate with your global error handler here
             console.error('Form submission error:', err);
           }
 
-          // Call error callback
           onError?.(err);
 
-          throw err; // Re-throw so form can handle it if needed
+          throw err;
         }
       } finally {
         if (!currentController.signal.aborted) {
@@ -116,7 +105,6 @@ export function useFormSubmit<TData = any, TResponse = any>(
     }
   }, []);
 
-  // Computed values
   const isSuccess = !isSubmitting && !error && data !== null;
   const isError = !isSubmitting && error !== null;
   const isIdle = !isSubmitting && error === null && data === null;

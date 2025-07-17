@@ -313,8 +313,8 @@ export const CreateBinLocation = () => {
                             className="w-full"
                             onSelect={value =>
                               field.onChange({
-                                ItemCode: value.ItemCode,
-                                ItemName: value.ItemName,
+                                ItemCode: value?.ItemCode ?? '',
+                                ItemName: value?.ItemName ?? '',
                               })
                             }
                             hasError={!!fieldState.error}

@@ -8,6 +8,7 @@ import { useFetch } from '@/hooks/use-fetch/use-fetch';
 import { PageTransition } from '@/components/parts/animations';
 import { useToggle } from '@/hooks/use-toggle';
 import DeleteConfirmationModal from '@/components/parts/delete-confirmation/DeleteConfirmation';
+import { UpdateBinLocationModal } from '@/components/parts/modals/update-bin-location-modal';
 import { useFormSubmit } from '@/hooks/use-form-submit';
 import { IBinLocation } from '@/types/bin-location';
 import { BinLocationService } from '@/services/bin-location-services/bin-location-services';
@@ -17,13 +18,19 @@ import { useNavigate } from 'react-router-dom';
 
 export const BinLocation = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [_selectedBinLocation, setSelectedBinLocation] = useState<IBinLocation | null>(null);
+  const [selectedBinLocation, setSelectedBinLocation] = useState<IBinLocation | null>(null);
   const [binLocationDelete, setBinLocationDelete] = useState<IBinLocation | null>(null);
 
   const {
     toggleOn: openDeleteModal,
     toggleOff: closeDeleteModal,
     isToggled: isDeleteModalOpen,
+  } = useToggle();
+
+  const {
+    toggleOn: openUpdateModal,
+    toggleOff: closeUpdateModal,
+    isToggled: isUpdateModalOpen,
   } = useToggle();
 
   const navigate = useNavigate();
@@ -49,9 +56,20 @@ export const BinLocation = () => {
     await deleteBinLocation({ id: binLocationDelete._id, isDelete: binLocationDelete.isDeleted });
   }
 
+  function handleEdit(binLocation: IBinLocation) {
+    setSelectedBinLocation(binLocation);
+    openUpdateModal();
+  }
+
+  function handleUpdateSuccess() {
+    closeUpdateModal();
+    setSelectedBinLocation(null);
+    refetch();
+  }
+
   const columns = useMemo(
     () =>
-      getColumns(handleSelection, binLocation => {
+      getColumns(handleEdit, binLocation => {
         setBinLocationDelete(binLocation);
         openDeleteModal();
       }),
@@ -106,6 +124,16 @@ export const BinLocation = () => {
           deleteMessage="Are you sure you want to delete this bin location?"
           restoreHeader="Restore Bin Location"
           restoreMessage="Are you sure you want to restore this bin location?"
+        />
+      )}
+
+      {isUpdateModalOpen && selectedBinLocation && (
+        <UpdateBinLocationModal
+          open={isUpdateModalOpen}
+          onClose={closeUpdateModal}
+          binLocation={selectedBinLocation}
+          companyId={selectedBinLocation.warehouse.companyId ?? ''}
+          onSuccess={handleUpdateSuccess}
         />
       )}
     </>

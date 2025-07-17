@@ -1,0 +1,1 @@
+export { UpdateBinLocationModal } from './UpdateBinLocationModal';

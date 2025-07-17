@@ -21,7 +21,7 @@ export interface ISAPItem {
   ItemName: string;
 }
 
-interface ISapItemsDropdownProps extends IDropdownOption<ISAPItem, string> {
+interface ISapItemsDropdownProps extends IDropdownOption<ISAPItem | null, string> {
   groupCode: string | null;
   companyId: string | null;
 }
@@ -41,6 +41,8 @@ export const SapItemsDropdown: React.FC<ISapItemsDropdownProps> = ({
   const { isToggled, toggle, toggleOff } = useToggle();
   const [searchTerm, setSearchTerm] = useState('');
   const dialogRef = useRef<any>(null);
+
+  console.log('value is ', value);
 
   const fetchSAPItems = useCallback(
     (signal: AbortSignal) =>
@@ -109,6 +111,7 @@ export const SapItemsDropdown: React.FC<ISapItemsDropdownProps> = ({
         hasError={hasError}
         error={error}
         isMultiple={false}
+        onRemoveItem={() => onSelect!(null)}
       />
 
       <DropdownContent isOpen={isToggled}>

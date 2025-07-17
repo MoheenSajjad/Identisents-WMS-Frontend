@@ -138,7 +138,7 @@ export const CreateWarehouse = (props: ICreateWarehouseModalProps) => {
                     />
                   )}
                 />
-              </GridCell>{' '}
+              </GridCell>
               <GridCell>
                 <FormSwitch
                   label="Bin Location Enabled"

@@ -435,7 +435,6 @@ export const TablePagination = <TData,>({
   };
 
   const visiblePages = getVisiblePages();
-  console.log('visibl pages', visiblePages);
 
   if (totalPages <= 1) {
     return null;

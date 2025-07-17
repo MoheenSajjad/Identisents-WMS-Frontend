@@ -3,6 +3,7 @@ import { ApiResponse, PaginatedResponse } from '@/types/api';
 import {
   IBinLocation,
   ICreateBinLocation,
+  IUpdateBinLocation,
   IGenerateBinLocationCodesProps,
 } from '@/types/bin-location';
 import { apiClient } from '@/utils/apiClient';
@@ -71,7 +72,7 @@ class BinLocationServices {
 
   static async updateBinLocation(
     id: string,
-    data: ICreateBinLocation,
+    data: IUpdateBinLocation,
     signal: AbortSignal
   ): Promise<ApiResponse<IBinLocation>> {
     try {
