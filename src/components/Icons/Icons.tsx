@@ -212,4 +212,23 @@ export const Icons = {
       <path d="m9 9 6 6" />
     </SvgIcon>
   ),
+  
+  Table: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <path d="M3 6h18" />
+      <path d="M3 12h18" />
+      <path d="M3 18h18" />
+      <path d="M8 6v12" />
+      <path d="M16 6v12" />
+    </SvgIcon>
+  ),
+  
+  Grid: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <rect width="7" height="7" x="3" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="3" rx="1" />
+      <rect width="7" height="7" x="14" y="14" rx="1" />
+      <rect width="7" height="7" x="3" y="14" rx="1" />
+    </SvgIcon>
+  ),
 };

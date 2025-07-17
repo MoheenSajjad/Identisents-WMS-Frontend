@@ -21,7 +21,7 @@ export const Paper: PaperComponent = ({ className, header, children }: PaperProp
   return (
     <div className={rootCls}>
       {header && <div className="border-b border-gray-200">{header}</div>}
-      <div className="p-8">{children}</div>
+      <div className="p-4 sm:p-8">{children}</div>
     </div>
   );
 };

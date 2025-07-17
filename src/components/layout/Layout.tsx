@@ -69,7 +69,7 @@ export const Layout: React.FC<LayoutProps> = ({}) => {
       <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar onMenuClick={toggleSidebar} sidebarOpen={sidebarOpen} />
 
-        <main className="h-full flex-1 overflow-auto">
+        <main className="h-full flex-1 overflow-auto p-3 sm:p-6">
           <Outlet />
         </main>
       </div>

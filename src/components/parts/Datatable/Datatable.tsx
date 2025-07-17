@@ -45,7 +45,15 @@ interface DataTableProps<TData> extends React.HTMLAttributes<HTMLDivElement> {
    * @type string | null
    */
   emptyDataLabel?: string;
+
+  /**
+   * Force mobile view even on desktop
+   * @default false
+   * @type boolean
+   */
+  forceMobileView?: boolean;
 }
+
 
 export function DataTable<TData>({
   table,
@@ -55,82 +63,87 @@ export function DataTable<TData>({
   children,
   className,
   emptyDataLabel,
+  forceMobileView = false,
   ...props
 }: DataTableProps<TData>) {
   return (
-    <div className={`w-full space-y-2.5 overflow-auto ${className}`} {...props}>
+    <div className={`w-full space-y-2.5 ${className}`} {...props}>
       {children}
-      <div className="overflow-hidden rounded-md border-1 border-gray-200">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id} className="">
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      style={{
-                        ...getCommonPinningStyles({ column: header.column }),
-                      }}
-                      className={`text-${
-                        (header.column.columnDef.meta as ColumnMetaType)?.HeadAlign ?? 'left'
-                      }`}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {!isLoading ? (
-              <>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map(row => (
-                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                      {row.getVisibleCells().map(cell => {
-                        return (
-                          <TableData
-                            key={cell.id}
-                            style={{
-                              ...getCommonPinningStyles({
-                                column: cell.column,
-                              }),
-                            }}
-                            className={`text-${
-                              (cell.column.columnDef.meta as ColumnMetaType)?.CellAlign ?? 'left'
-                            }`}
-                          >
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                          </TableData>
-                        );
-                      })}
+      
+      <div className="overflow-hidden rounded-md border border-gray-200">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map(headerGroup => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map(header => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        style={{
+                          ...getCommonPinningStyles({ column: header.column }),
+                        }}
+                        className={`text-${
+                          (header.column.columnDef.meta as ColumnMetaType)?.HeadAlign ?? 'left'
+                        } min-w-[120px]`}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {!isLoading ? (
+                <>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map(row => (
+                      <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                        {row.getVisibleCells().map(cell => {
+                          return (
+                            <TableData
+                              key={cell.id}
+                              style={{
+                                ...getCommonPinningStyles({
+                                  column: cell.column,
+                                }),
+                              }}
+                              className={`text-${
+                                (cell.column.columnDef.meta as ColumnMetaType)?.CellAlign ?? 'left'
+                              }`}
+                            >
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </TableData>
+                          );
+                        })}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableData colSpan={table.getAllColumns().length} className="h-24 text-center">
+                        <Empty label={emptyDataLabel} />
+                      </TableData>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableData colSpan={table.getAllColumns().length} className="h-24 text-center">
-                      <Empty label={emptyDataLabel} />
-                    </TableData>
-                  </TableRow>
-                )}
-              </>
-            ) : (
-              <>
-                {Array.from({ length: 9 }).map((_, index) => (
-                  <TableSkeletonRow key={index}>
-                    <TableSkeleton />
-                  </TableSkeletonRow>
-                ))}
-              </>
-            )}
-          </TableBody>
-        </Table>
+                  )}
+                </>
+              ) : (
+                <>
+                  {Array.from({ length: 9 }).map((_, index) => (
+                    <TableSkeletonRow key={index}>
+                      <TableSkeleton />
+                    </TableSkeletonRow>
+                  ))}
+                </>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </div>
+      
       <div className="flex flex-col gap-2.5">
         <TablePagination table={table} />
       </div>

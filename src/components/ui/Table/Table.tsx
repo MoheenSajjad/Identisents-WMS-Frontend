@@ -403,18 +403,28 @@ export const TablePagination = <TData,>({
 }) => {
   const currentPage = table.getState().pagination.pageIndex + 1;
   const totalPages = table.getPageCount();
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const getVisiblePages = () => {
     const pages: number[] = [];
-    const maxVisiblePages = 5;
+    const maxVisiblePages = isMobile ? 3 : 5;
 
     if (totalPages <= maxVisiblePages) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      let start = currentPage - 2;
-      let end = currentPage + 2;
+      let start = currentPage - Math.floor(maxVisiblePages / 2);
+      let end = currentPage + Math.floor(maxVisiblePages / 2);
 
       if (start < 1) {
         start = 1;
@@ -435,10 +445,54 @@ export const TablePagination = <TData,>({
   };
 
   const visiblePages = getVisiblePages();
-  console.log('visibl pages', visiblePages);
 
   if (totalPages <= 1) {
     return null;
+  }
+
+  if (isMobile) {
+    return (
+      <div className={`flex items-center justify-between bg-white px-4 py-3 ${className}`}>
+        <div className="flex items-center gap-2">
+          <Button
+            className="!border-gray-400 !text-gray-900 hover:!border-gray-600 min-h-touch min-w-touch"
+            size={Button.Size.ICON}
+            roundness={Button.Roundness.FULL}
+            variant={Button.Variant.OUTLINE}
+            icon={<Icons.ChevronLeft className="font-bold text-black" />}
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage() || isDisabled}
+          />
+          <span className="text-sm text-gray-600 px-2">
+            {currentPage} of {totalPages}
+          </span>
+          <Button
+            className="!border-gray-400 !text-gray-900 hover:!border-gray-600 min-h-touch min-w-touch"
+            size={Button.Size.ICON}
+            roundness={Button.Roundness.FULL}
+            variant={Button.Variant.OUTLINE}
+            icon={<Icons.ChevronRight className="font-bold text-black" />}
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage() || isDisabled}
+          />
+        </div>
+        <div className="flex items-center gap-1">
+          {visiblePages.map(page => (
+            <Button
+              key={page}
+              onClick={() => table.setPageIndex(page - 1)}
+              size={Button.Size.ICON}
+              roundness={Button.Roundness.FULL}
+              variant={currentPage === page ? Button.Variant.PRIMARY : Button.Variant.SECONDARY}
+              disabled={isDisabled}
+              className="min-h-touch min-w-touch"
+            >
+              {page}
+            </Button>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (

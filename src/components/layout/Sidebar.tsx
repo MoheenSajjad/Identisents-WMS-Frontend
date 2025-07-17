@@ -101,7 +101,7 @@ const NavItem: React.FC<NavItemProps> = ({ item, isActive, onItemClick }) => {
   };
 
   const itemClasses = cn(
-    'flex items-center gap-3 px-3 py-2 transition-all duration-200 group',
+    'flex items-center gap-3 px-3 py-3 transition-all duration-200 group min-h-touch',
     'hover:bg-gray-100 text-gray-600',
     isActive && 'bg-blue-400 text-black border-l-4 border-gray-800 rounded-tl rounded-bl'
   );

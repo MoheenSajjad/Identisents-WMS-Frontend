@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Menu, LogOut } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '@/hooks/use-auth';
+import { NetworkStatusBadge } from '@/components/parts/pwa-status';
 
 interface NavbarProps {
   onMenuClick: () => void;
@@ -33,31 +34,36 @@ const Navbar: React.FC<NavbarProps> = ({ onMenuClick, sidebarOpen }) => {
   };
 
   return (
-    <header className="bg-[#ffffff]transition-colors border-b-[1px] border-l-[1px] border-gray-200">
-      <div className="flex items-center justify-between px-4 py-2">
-        <div className="flex items-center gap-2">
+    <header className="bg-[#ffffff] transition-colors border-b-[1px] border-l-[1px] border-gray-200">
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-3">
           <Button
             icon={<Menu size={18} />}
             variant={Button.Variant.GHOST}
             onClick={onMenuClick}
             roundness={Button.Roundness.FULL}
             size={Button.Size.ICON}
-            className="p-2"
+            className="min-h-touch min-w-touch"
             aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
           />
 
           <div className="flex items-center space-x-1 text-sm text-black md:space-x-2">
-            <span className="text-gray-500">Pages</span>
-            <span className="text-gray-500">/</span>
-            <span className="cursor-pointer font-semibold text-black">{getPageTitle()}</span>
+            <span className="text-gray-500 hidden sm:inline">Pages</span>
+            <span className="text-gray-500 hidden sm:inline">/</span>
+            <span className="cursor-pointer font-semibold text-black text-base sm:text-sm">{getPageTitle()}</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <NetworkStatusBadge className="hidden sm:flex" />
           <div className="relative" ref={searchRef}>
             <div className="relative">{/* <CompanyDropdown showLabel={false} /> */}</div>
           </div>
-          <button className="rounded-full p-2 hover:bg-gray-100" onClick={handelLogout}>
+          <button 
+            className="rounded-full p-2 hover:bg-gray-100 min-h-touch min-w-touch flex items-center justify-center transition-colors" 
+            onClick={handelLogout}
+            aria-label="Logout"
+          >
             <LogOut className="h-5 w-5 text-[#233558]" />
           </button>
         </div>

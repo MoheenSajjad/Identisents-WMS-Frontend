@@ -120,10 +120,10 @@ export const Button: ButtonComponent = ({
   };
 
   const sizeClasses = {
-    [ButtonSize.SMALL]: 'h-8 px-3 text-sm',
-    [ButtonSize.DEFAULT]: 'h-9 px-4 text-xs',
-    [ButtonSize.LARGE]: 'h-11 px-8 text-base',
-    [ButtonSize.ICON]: 'h-8 w-8 p-0',
+    [ButtonSize.SMALL]: 'h-9 px-3 text-sm min-h-touch',
+    [ButtonSize.DEFAULT]: 'h-10 px-4 text-sm min-h-touch',
+    [ButtonSize.LARGE]: 'h-12 px-8 text-base min-h-touch',
+    [ButtonSize.ICON]: 'h-10 w-10 p-0 min-h-touch min-w-touch',
   };
 
   const colorModifiers: Record<ButtonColor, Partial<Record<ButtonVariant, string>>> = {
