@@ -14,6 +14,9 @@ import { BinLocationService } from '@/services/bin-location-services/bin-locatio
 import { getColumns } from './columns';
 import { ApiResponse, PaginatedResponse } from '@/types/api';
 import { useNavigate } from 'react-router-dom';
+import { BulkUploadModal } from '@/components/parts/modals/bulk-upload-modal';
+import { Button } from '@/components/ui/Button';
+import { Upload } from 'lucide-react';
 
 export const BinLocation = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +27,12 @@ export const BinLocation = () => {
     toggleOn: openDeleteModal,
     toggleOff: closeDeleteModal,
     isToggled: isDeleteModalOpen,
+  } = useToggle();
+
+  const {
+    toggleOn: openBulkUploadModal,
+    toggleOff: closeBulkUploadModal,
+    isToggled: isBulkUploadModalOpen,
   } = useToggle();
 
   const navigate = useNavigate();
@@ -89,6 +98,13 @@ export const BinLocation = () => {
           <DataTable table={table} isLoading={isLoading}>
             <DataTableToolbar table={table}>
               <ReloadButton onClick={refetch} />
+              <Button
+                variant={Button.Variant.OUTLINE}
+                onClick={openBulkUploadModal}
+                icon={<Upload />}
+              >
+                Bulk Upload
+              </Button>
               <AddNewButton onClick={() => navigate('/bin-location/create')} />
             </DataTableToolbar>
           </DataTable>
@@ -106,6 +122,16 @@ export const BinLocation = () => {
           deleteMessage="Are you sure you want to delete this bin location?"
           restoreHeader="Restore Bin Location"
           restoreMessage="Are you sure you want to restore this bin location?"
+        />
+      )}
+
+      {isBulkUploadModalOpen && (
+        <BulkUploadModal
+          isOpen={isBulkUploadModalOpen}
+          onClose={closeBulkUploadModal}
+          onSuccess={() => {
+            refetch();
+          }}
         />
       )}
     </>

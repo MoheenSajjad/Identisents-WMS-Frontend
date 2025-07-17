@@ -5,6 +5,7 @@ interface RequestOptions {
   signal?: AbortSignal;
   params?: Record<string, any>;
   headers?: Record<string, string>;
+  responseType?: 'arraybuffer' | 'blob' | 'document' | 'json' | 'text' | 'stream';
 }
 
 abstract class BaseApiClient {
@@ -59,6 +60,10 @@ abstract class BaseApiClient {
       config.headers = { ...config.headers, ...options.headers };
     }
 
+    if (options?.responseType) {
+      config.responseType = options.responseType;
+    }
+
     return config;
   }
 
@@ -79,6 +84,7 @@ class ApiClient extends BaseApiClient {
       method: 'GET',
       url,
       params: options?.params,
+
       ...config,
     });
   }
