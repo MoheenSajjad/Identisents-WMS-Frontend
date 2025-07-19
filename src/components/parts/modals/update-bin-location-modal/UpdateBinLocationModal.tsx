@@ -4,11 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Modal, ModalContent, ModalFooter, ModalHeader } from '@/components/ui/modal';
 import { Form } from '@/components/ui/form';
 import { CancelButton, SubmitButton } from '@/components/parts/Buttons';
-import {
-  ISAPItemGroup,
-  SAPItemGroupsDropdown,
-} from '@/components/parts/dropdowns/sap-item-group-dropdown';
-import { ISAPItem, SapItemsDropdown } from '@/components/parts/dropdowns/sap-items-dropdown';
+import { SAPItemGroupsDropdown } from '@/components/parts/dropdowns/sap-item-group-dropdown';
+import { SapItemsDropdown } from '@/components/parts/dropdowns/sap-items-dropdown';
 import { NumberFormField, TextFormField } from '@/components/ui/formField';
 import { FormSwitch } from '@/components/ui/form-switch';
 import { IBinLocation } from '@/types/bin-location';
@@ -58,12 +55,7 @@ export const UpdateBinLocationModal = ({
     },
   });
 
-  const {
-    control,
-    watch,
-    setValue,
-    formState: { errors },
-  } = form;
+  const { control, watch, setValue } = form;
 
   const { submit: updateBinLocation, isSubmitting } = useFormSubmit(
     (data: UpdateBinLocationFormData, signal: AbortSignal) =>
@@ -151,7 +143,7 @@ export const UpdateBinLocationModal = ({
                 <Controller
                   name="itemName"
                   control={control}
-                  render={({ field, fieldState }) => (
+                  render={({ fieldState }) => (
                     <SapItemsDropdown
                       value={watch('itemCode') ?? ''}
                       className="w-full"

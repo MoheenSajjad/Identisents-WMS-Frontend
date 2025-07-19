@@ -159,6 +159,12 @@ export const Icons = {
       <path d="M8.644 21.42a10 10 0 0 0 7.631-.38" />
     </SvgIcon>
   ),
+  CirclePlay: ({ className }: IconProps) => (
+    <SvgIcon className={className}>
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="10 8 16 12 10 16 10 8" />
+    </SvgIcon>
+  ),
   CheckCheck: ({ className }: IconProps) => (
     <SvgIcon className={className}>
       <path d="M18 6 7 17l-5-5" />

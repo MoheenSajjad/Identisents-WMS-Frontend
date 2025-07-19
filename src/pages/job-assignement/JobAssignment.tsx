@@ -20,6 +20,7 @@ export const JobAssignment = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [jobToDelete, setJobToDelete] = useState<IJobAssignment | null>(null);
   const [assignJobId, setAssignJobId] = useState<string | null>(null);
+  const [currentEmployeeId, setCurrentEmployeeId] = useState<string | null>(null);
 
   const { toggleOn, toggleOff, isToggled } = useToggle();
 
@@ -46,15 +47,18 @@ export const JobAssignment = () => {
     await deleteJob({ id: jobToDelete._id, isDelete: jobToDelete.isDeleted });
   };
 
-  const handleAssignClicked = (id: string) => {
+  const handleAssignClicked = (id: string, employeeId?: string) => {
     setAssignJobId(id);
+    setCurrentEmployeeId(employeeId || null);
+    // Always open assignment modal first
     toggleOn();
   };
+
 
   const columns = useMemo(
     () =>
       getColumns(
-        id => handleAssignClicked(id),
+        (id, employeeId) => handleAssignClicked(id, employeeId),
         job => {
           setJobToDelete(job);
           openDeleteModal();
@@ -115,15 +119,22 @@ export const JobAssignment = () => {
 
       {isToggled && assignJobId && (
         <AssignJobModal
-          onCancel={toggleOff}
+          onCancel={() => {
+            setAssignJobId(null);
+            setCurrentEmployeeId(null);
+            toggleOff();
+          }}
           onSubmit={() => {
             setAssignJobId(null);
+            setCurrentEmployeeId(null);
             toggleOff();
             refetch();
           }}
           jobId={assignJobId}
+          currentEmployeeId={currentEmployeeId}
         />
       )}
+
 
       <Outlet />
     </>

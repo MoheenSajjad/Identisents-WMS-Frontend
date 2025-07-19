@@ -16,6 +16,16 @@ export function getColumns(
 ): ColumnDef<IEmployee>[] {
   return [
     {
+      accessorKey: 'userCode',
+      header: ({ column }) => (
+        <HeaderButton
+          label="User Code"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        />
+      ),
+      enableSorting: true,
+    },
+    {
       accessorKey: 'employeeCode',
       header: ({ column }) => (
         <HeaderButton
@@ -34,10 +44,6 @@ export function getColumns(
         />
       ),
       enableSorting: true,
-    },
-    {
-      accessorKey: 'email',
-      header: () => <HeaderButton label="Email" />,
     },
     {
       accessorKey: 'mobilePhone',

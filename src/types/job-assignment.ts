@@ -9,6 +9,9 @@ export interface IJobAssignment {
   status: JobStatus;
   isActive: boolean;
   isDeleted: false;
+  sapStatus: SapStatus;
+  sapError?: string;
+  sapAttemptedAt?: string;
   createdAt: string;
   updatedAt: string;
   employeeId: {
@@ -28,7 +31,8 @@ export enum ObjectType {
 
 export enum JobStatus {
   PENDING = 'Pending',
-  ASSIGNED = 'Assigned',
+  ASSIGNED = 'Not Started',
+  IN_PROCESS = 'In Process',
   COMPLETED = 'Completed',
   CLOSED = 'Closed',
 }
@@ -37,6 +41,12 @@ export enum DocStatus {
   CLOSES = 'Closed',
   OPEN = 'Open',
   CANCELED = 'Canceled',
+}
+
+export enum SapStatus {
+  PENDING = 'pending',
+  SUCCESS = 'success',
+  FAILED = 'failed',
 }
 
 export interface Batch {
@@ -110,8 +120,12 @@ export interface IJobAssignmentDetail {
   status: string;
   isActive: boolean;
   isDeleted: boolean;
+  sapStatus: SapStatus;
+  sapError?: string;
+  sapAttemptedAt?: string;
   createdAt: string;
   updatedAt: string;
   __v: number;
   transactions: Transaction[];
+  document?: any;
 }

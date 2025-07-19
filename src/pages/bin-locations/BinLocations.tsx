@@ -47,10 +47,6 @@ export const BinLocation = () => {
     }
   );
 
-  function handleSelection(location: IBinLocation | null) {
-    setSelectedBinLocation(location);
-  }
-
   async function handleDelete() {
     if (!binLocationDelete) return;
     await deleteBinLocation({ id: binLocationDelete._id, isDelete: binLocationDelete.isDeleted });

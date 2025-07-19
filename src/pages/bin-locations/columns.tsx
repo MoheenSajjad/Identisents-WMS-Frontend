@@ -61,6 +61,16 @@ export function getColumns(
         `${row.original.itemName ? row.original.itemName : '-'} (${row.original.itemCode ? row.original.itemCode : '-'})`,
     },
     {
+      accessorKey: 'uom',
+      header: ({ column }) => (
+        <HeaderButton
+          label="UOM"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        />
+      ),
+      enableSorting: true,
+    },
+    {
       accessorKey: 'capacity',
       header: ({ column }) => (
         <HeaderButton

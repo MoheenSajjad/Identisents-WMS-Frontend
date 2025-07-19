@@ -2,7 +2,6 @@ import { IGeneratedBinLocation } from '@/components/parts/modals/bin-location-ge
 import { ApiResponse, PaginatedResponse } from '@/types/api';
 import {
   IBinLocation,
-  ICreateBinLocation,
   IUpdateBinLocation,
   IGenerateBinLocationCodesProps,
 } from '@/types/bin-location';

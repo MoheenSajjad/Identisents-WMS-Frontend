@@ -7,9 +7,10 @@ import { DateTime } from '@/utils/date-time';
 import { Button } from '@/components/ui/Button';
 import { Icons } from '@/components/Icons';
 import { useNavigate } from 'react-router-dom';
+import { CircleDot } from 'lucide-react';
 
 export const getColumns = (
-  onAssign: (id: string) => void,
+  onAssign: (id: string, employeeId?: string) => void,
   onDelete?: (job: IJobAssignment) => void
 ): ColumnDef<IJobAssignment>[] => [
   {
@@ -32,6 +33,7 @@ export const getColumns = (
     ),
     enableSorting: true,
   },
+
   {
     accessorKey: 'assignedTo',
     header: ({ column }) => (
@@ -80,10 +82,12 @@ export const getColumns = (
             : Button.Variant.OUTLINE
         }
         size={Button.Size.SMALL}
-        onClick={() => onAssign(row.original._id)}
-        disabled={row.original.status != 'Pending'}
+        onClick={() => onAssign(row.original._id, row.original.employeeId?._id)}
+        disabled={
+          row.original.status != JobStatus.PENDING && row.original.status != JobStatus.ASSIGNED
+        }
       >
-        {row.original.status === 'Assigned' ? 'Assigned' : 'Assign'}
+        {row.original.status !== JobStatus.PENDING ? 'Assigned' : 'Assign'}
       </Button>
     ),
   },
@@ -107,21 +111,25 @@ const renderJobStatusTag = (status: string) => {
   return (
     <Tag
       type={
-        status === 'Pending'
+        status === JobStatus.PENDING
           ? Tag.type.INACTIVE
-          : status === 'Assigned'
+          : status === JobStatus.ASSIGNED
             ? Tag.type.INFO
-            : status === 'Completed'
-              ? Tag.type.ACTIVE
-              : Tag.type.ON_TRACK
+            : status === JobStatus.IN_PROCESS
+              ? Tag.type.WARNING
+              : status === JobStatus.COMPLETED
+                ? Tag.type.ACTIVE
+                : Tag.type.ERROR
       }
       icon={
-        status === 'Pending' ? (
+        status === JobStatus.PENDING ? (
           <Icons.ClockFading />
-        ) : status === 'Assigned' ? (
-          <Icons.User />
-        ) : status === 'Completed' ? (
-          <Icons.CheckCheck />
+        ) : status === JobStatus.ASSIGNED ? (
+          <Icons.CirclePlay />
+        ) : status === JobStatus.IN_PROCESS ? (
+          <Icons.Loader />
+        ) : status === JobStatus.COMPLETED ? (
+          <Icons.CheckCircle />
         ) : (
           <Icons.CircleX />
         )
@@ -130,3 +138,4 @@ const renderJobStatusTag = (status: string) => {
     />
   );
 };
+

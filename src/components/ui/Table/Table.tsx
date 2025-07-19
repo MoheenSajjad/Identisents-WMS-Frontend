@@ -3,7 +3,6 @@ import { Button } from '../Button';
 import { Icons } from '@/components/Icons';
 import { type Table as TanstackTable } from '@tanstack/react-table';
 
-// Drag and Drop imports
 import {
   DndContext,
   closestCenter,
@@ -23,7 +22,6 @@ import {
 import { restrictToVerticalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 import { CSS } from '@dnd-kit/utilities';
 
-// Drag and Drop Types
 interface DragDropConfig<T = any> {
   enabled: boolean;
   items: T[];
@@ -31,7 +29,6 @@ interface DragDropConfig<T = any> {
   getItemId: (item: T, index: number) => string;
 }
 
-// Grip Icon Component
 const GripIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4 text-gray-400' }) => (
   <svg
     className={className}
@@ -43,7 +40,6 @@ const GripIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4 text-
   </svg>
 );
 
-// Drag Handle Component
 interface DragHandleProps {
   id: string;
   className?: string;
@@ -69,7 +65,6 @@ const DragHandle: React.FC<DragHandleProps> = ({ id, className = '' }) => {
   );
 };
 
-// Sortable Table Row Component
 interface SortableTableRowProps extends React.HTMLAttributes<HTMLTableRowElement> {
   id: string;
   dragDropConfig?: DragDropConfig;
@@ -116,13 +111,12 @@ const SortableTableRow = React.forwardRef<HTMLTableRowElement, SortableTableRowP
 );
 SortableTableRow.displayName = 'SortableTableRow';
 
-// Enhanced Table Components
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement> & { dragDropConfig?: DragDropConfig }
 >(({ className, dragDropConfig, children, ...props }, ref) => (
   <div
-    className={`relative max-h-[400px] w-full overflow-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 ${className}`}
+    className={`relative max-h-[400px] w-full overflow-auto [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 ${className}`}
   >
     <table ref={ref} className={`w-full caption-bottom text-sm`} {...props}>
       {children}
